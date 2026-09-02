@@ -5,6 +5,7 @@ import {
   updateStudent,
   deleteStudent,
   getStudentByCode,
+  getStudentMasterFile,
   saveEssay,
   getEssay,
   getStudentEssays,
@@ -126,6 +127,19 @@ export async function getStudentDetailsHandler(req, res) {
       scoreHistory,
       mistakeProfile
     });
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+}
+
+export async function getStudentFileHandler(req, res) {
+  try {
+    const { id } = req.params;
+    const master = getStudentMasterFile(id);
+    if (!master) {
+      return res.status(404).json({ success: false, error: 'Student file not found.' });
+    }
+    res.json({ success: true, student_file: master });
   } catch (err) {
     res.status(500).json({ success: false, error: err.message });
   }

@@ -126,21 +126,46 @@ export function saveEssay(essay) {
   };
   fs.writeFileSync(path.join(ESSAYS_DIR, `${id}.json`), JSON.stringify(record, null, 2), 'utf-8');
   
-  // Update student stats
+  // Update student stats and dedicated student file
   if (record.student_id) {
     const student = getStudent(record.student_id);
     if (student) {
       const overallBand = record.feedback?.scores?.overall_band || 0;
       const highestBand = Math.max(student.highest_band || 0, overallBand);
+      const essaysHistory = Array.isArray(student.essays_history) ? student.essays_history : [];
+      
+      essaysHistory.unshift({
+        id: record.id,
+        created_at: record.created_at,
+        task_type: record.task_type,
+        word_count: record.word_count,
+        overall_band: overallBand,
+        scores: record.feedback?.scores || {},
+        feedback_summary: record.feedback?.executive_summary || {},
+        mistakes_count: (record.feedback?.detailed_mistakes || []).length
+      });
+
       updateStudent(record.student_id, {
         essay_count: (student.essay_count || 0) + 1,
         latest_band: overallBand,
-        highest_band: highestBand
+        highest_band: highestBand,
+        essays_history: essaysHistory
       });
     }
   }
 
   return record;
+}
+
+export function getStudentMasterFile(id) {
+  ensureDirs();
+  const student = getStudent(id);
+  if (!student) return null;
+  const fullEssays = getStudentEssays(id);
+  return {
+    ...student,
+    full_essays: fullEssays
+  };
 }
 
 export function getEssay(id) {

@@ -31,22 +31,12 @@
 
       <div class="header-actions">
         <!-- Active Student Selector -->
-        <div id="header-student-pill" class="student-pill" title="اضغط لتبديل أو إضافة طالب">
+        <div id="header-student-pill" class="student-pill" title="اضغط لتسجيل الدخول بكود الطالب">
           <div id="header-student-avatar" class="student-avatar">S</div>
           <span id="header-student-name" class="student-name">طالب تجريبي</span>
           <span id="header-student-status" class="badge badge-success" style="margin-right:4px;">مفعل</span>
           <span style="font-size:0.7rem; color:var(--text-muted);">▼</span>
         </div>
-
-        <!-- AI Provider Status Pill -->
-        <span id="active-provider-badge" class="badge badge-warning">
-          جاري فحص المزود...
-        </span>
-
-        <!-- Settings Button -->
-        <button id="settings-btn" class="btn btn-secondary btn-sm" title="إعدادات الـ API">
-          ⚙️ الإعدادات
-        </button>
       </div>
     </div>
   </header>
@@ -260,13 +250,9 @@
         </div>
       </div>
 
-      <!-- Add New Student Form -->
-      <div class="form-group">
-        <label class="form-label">أو تسجيل اسم طالب جديد:</label>
-        <div style="display:flex; gap:0.5rem;">
-          <input type="text" id="new-student-name-input" class="form-input" placeholder="اسم الطالب الكامل...">
-          <button id="add-student-btn" class="btn btn-secondary" style="white-space:nowrap;">+ تسجيل جديد</button>
-        </div>
+      <!-- Important Note for Students -->
+      <div style="background:#fffbeb; border:1px solid #fde68a; border-radius:var(--radius-md); padding:0.85rem 1rem; font-size:0.85rem; color:#92400e; margin-bottom:1.25rem; line-height:1.6;">
+        📌 <strong>تنبيه للطلاب:</strong> يتم إنشاء وتفعيل حسابات الطلاب حصرياً من قِبل المعلم بعد سداد رسوم الاشتراك (100$). إذا لم يكن لديك كود بعد، يرجى التواصل مع المعلم عبر الواتساب لتزويدك بكود الدخول الخاص بك.
       </div>
 
       <div class="form-group" style="margin-bottom:0;">

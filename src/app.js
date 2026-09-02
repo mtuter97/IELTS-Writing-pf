@@ -7,6 +7,7 @@ import {
   getStudentsHandler,
   createStudentHandler,
   getStudentDetailsHandler,
+  getStudentFileHandler,
   updateStudentStatusHandler,
   deleteStudentHandler,
   loginStudentByCodeHandler,
@@ -32,6 +33,7 @@ app.get('/api/health', (req, res) => res.json({ status: 'ok', time: new Date().t
 app.get('/api/students', getStudentsHandler);
 app.post('/api/students', createStudentHandler);
 app.get('/api/students/:id', getStudentDetailsHandler);
+app.get('/api/students/:id/file', getStudentFileHandler);
 app.post('/api/students/:id/status', updateStudentStatusHandler);
 app.delete('/api/students/:id', deleteStudentHandler);
 app.post('/api/students/login-by-code', loginStudentByCodeHandler);

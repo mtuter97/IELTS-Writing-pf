@@ -304,6 +304,12 @@ function setupAppEvents() {
       renderStudentDashboard();
     }
   });
+
+  window.addEventListener('admin-inspect-student', async (e) => {
+    const { studentId } = e.detail;
+    switchTab('profile');
+    renderStudentDashboard();
+  });
 }
 
 export function showToast(message, type = 'info') {

@@ -111,6 +111,12 @@ export async function renderAdminDashboard() {
               <button class="btn btn-sm ${isActive ? 'btn-secondary' : 'btn-primary'} toggle-status-btn" data-id="${s.id}" data-current="${s.status}">
                 ${isActive ? 'تعليق ⏸️' : 'تفعيل بنقرة ✅'}
               </button>
+              <button class="btn btn-sm btn-secondary view-student-file-btn" data-id="${s.id}" title="عرض ملف الطالب وسجل مقالاته ونتائجه الكاملة">
+                📂 ملف النتائج
+              </button>
+              <button class="btn btn-sm btn-secondary download-student-file-btn" data-id="${s.id}" data-name="${s.name}" title="تنزيل ملف الطالب كاملاً كـ JSON">
+                ⬇️
+              </button>
               ${waLink ? `
                 <a href="${waLink}" target="_blank" class="btn btn-sm" style="background:#25D366; color:white;" title="مراسلة الطالب بالبيانات عبر الواتساب">
                   واتساب 💬
@@ -134,12 +140,15 @@ export async function renderAdminDashboard() {
               <span>🛡️</span> لوحة تحكم المعلم (Teacher Management Suite)
             </h2>
             <p style="font-size:0.85rem; color:var(--text-muted);">
-              إدارة تفعيل حسابات الطلاب ومراقبة الاشتراكات وأكواد الدخول
+              إدارة تفعيل حسابات الطلاب، استخراج الأكواد، وضبط إعدادات الـ API والمنظومة
             </p>
           </div>
-          <div style="display:flex; gap:0.5rem;">
+          <div style="display:flex; gap:0.5rem; flex-wrap:wrap;">
             <button id="open-add-student-modal-btn" class="btn btn-primary">
               <span>➕</span> إضافة طالب جديد
+            </button>
+            <button id="admin-open-settings-btn" class="btn btn-secondary">
+              <span>⚙️</span> إعدادات الـ API والمنظومة
             </button>
             <button id="admin-logout-btn" class="btn btn-secondary btn-sm">
               خروج 🚪
@@ -241,6 +250,40 @@ export async function renderAdminDashboard() {
         navigator.clipboard.writeText(code);
         alert(`تم نسخ كود الطالب: ${code}`);
       });
+    });
+
+    container.querySelectorAll('.view-student-file-btn').forEach(btn => {
+      btn.addEventListener('click', async () => {
+        const id = btn.getAttribute('data-id');
+        localStorage.setItem('ielts_active_student_id', id);
+        window.dispatchEvent(new CustomEvent('admin-inspect-student', { detail: { studentId: id } }));
+      });
+    });
+
+    container.querySelectorAll('.download-student-file-btn').forEach(btn => {
+      btn.addEventListener('click', async () => {
+        const id = btn.getAttribute('data-id');
+        const name = btn.getAttribute('data-name');
+        try {
+          const res = await fetch(`/api/students/${id}/file`);
+          const data = await res.json();
+          if (data.success) {
+            const blob = new Blob([JSON.stringify(data.student_file, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `student_${name}_${id}.json`;
+            a.click();
+            URL.revokeObjectURL(url);
+          }
+        } catch (e) {
+          alert('فشل تنزيل ملف الطالب: ' + e.message);
+        }
+      });
+    });
+
+    document.getElementById('admin-open-settings-btn')?.addEventListener('click', () => {
+      document.getElementById('settings-modal')?.classList.add('open');
     });
 
     document.getElementById('admin-logout-btn')?.addEventListener('click', () => {
