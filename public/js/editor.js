@@ -256,7 +256,17 @@ export function initEditor() {
       } catch (err) {
         clearInterval(stepInterval);
         if (overlay) overlay.classList.remove('active');
-        alert(`حدث خطأ أثناء التقييم:\n${err.message}\n\nيرجى التأكد من إدخال مفتاح الـ API بشكل صحيح في شاشة الإعدادات.`);
+        
+        if (err.is_pending_activation) {
+          const banner = document.getElementById('subscription-notice-banner');
+          if (banner) {
+            banner.style.display = 'block';
+            banner.scrollIntoView({ behavior: 'smooth' });
+          }
+          alert(`⚠️ تنبيه الاشتراك:\n${err.message}`);
+        } else {
+          alert(`حدث خطأ أثناء التقييم:\n${err.message}\n\nيرجى التأكد من إدخال مفتاح الـ API بشكل صحيح في شاشة الإعدادات.`);
+        }
       }
     });
   }

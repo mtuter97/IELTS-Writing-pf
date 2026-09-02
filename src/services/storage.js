@@ -50,21 +50,54 @@ export function getStudent(id) {
   return JSON.parse(fs.readFileSync(studentPath, 'utf-8'));
 }
 
-export function createStudent(name) {
+export function createStudent(name, phone = '', status = 'active', notes = '') {
   ensureDirs();
   const trimmed = name.trim();
   const id = 'stu_' + Date.now() + '_' + Math.random().toString(36).substring(2, 7);
+  const access_code = 'IELTS-' + Math.floor(1000 + Math.random() * 9000);
+  
   const newStudent = {
     id,
+    access_code,
     name: trimmed,
+    phone: phone.trim(),
+    status: status || 'active', // 'active' | 'pending'
+    subscription_price: 100,
+    notes: notes.trim(),
     created_at: new Date().toISOString(),
     updated_at: new Date().toISOString(),
     essay_count: 0,
     latest_band: null,
     highest_band: null
   };
-  fs.writeFileSync(path.join(STUDENTS_DIR, `${id}.json`), JSON.stringify(newStudent, null, 2), 'utf-8');
+  
+  memoryStudents.set(id, newStudent);
+  try {
+    fs.writeFileSync(path.join(STUDENTS_DIR, `${id}.json`), JSON.stringify(newStudent, null, 2), 'utf-8');
+  } catch (e) {}
+  
   return newStudent;
+}
+
+export function getStudentByCode(codeOrId) {
+  if (!codeOrId) return null;
+  const cleanCode = codeOrId.trim().toUpperCase();
+  const all = getAllStudents();
+  return all.find(s => 
+    (s.access_code && s.access_code.toUpperCase() === cleanCode) ||
+    s.id === codeOrId.trim() ||
+    (s.phone && s.phone === codeOrId.trim())
+  ) || null;
+}
+
+export function deleteStudent(id) {
+  ensureDirs();
+  memoryStudents.delete(id);
+  try {
+    const studentPath = path.join(STUDENTS_DIR, `${id}.json`);
+    if (fs.existsSync(studentPath)) fs.unlinkSync(studentPath);
+  } catch (e) {}
+  return true;
 }
 
 export function updateStudent(id, partial) {
@@ -76,7 +109,10 @@ export function updateStudent(id, partial) {
     ...partial,
     updated_at: new Date().toISOString()
   };
-  fs.writeFileSync(path.join(STUDENTS_DIR, `${id}.json`), JSON.stringify(updated, null, 2), 'utf-8');
+  memoryStudents.set(id, updated);
+  try {
+    fs.writeFileSync(path.join(STUDENTS_DIR, `${id}.json`), JSON.stringify(updated, null, 2), 'utf-8');
+  } catch (e) {}
   return updated;
 }
 
@@ -134,34 +170,34 @@ export function getStudentEssays(studentId) {
 
 export function getSettings() {
   ensureDirs();
+  const defaults = {
+    active_provider: process.env.ACTIVE_AI_PROVIDER || 'gemini',
+    gemini_api_key: process.env.GEMINI_API_KEY || '',
+    groq_api_key: process.env.GROQ_API_KEY || '',
+    openrouter_api_key: process.env.OPENROUTER_API_KEY || '',
+    gemini_model: process.env.GEMINI_MODEL || 'gemini-2.5-flash',
+    groq_model: process.env.GROQ_MODEL || 'llama-3.3-70b-versatile',
+    openrouter_model: process.env.OPENROUTER_MODEL || 'google/gemini-2.5-flash',
+    admin_pin: process.env.ADMIN_PIN || 'admin123',
+    teacher_whatsapp: '966549724510',
+    subscription_price: 100
+  };
+
   if (!fs.existsSync(SETTINGS_FILE)) {
-    const defaultSettings = {
-      active_provider: process.env.ACTIVE_AI_PROVIDER || 'gemini',
-      gemini_api_key: process.env.GEMINI_API_KEY || '',
-      groq_api_key: process.env.GROQ_API_KEY || '',
-      openrouter_api_key: process.env.OPENROUTER_API_KEY || '',
-      gemini_model: process.env.GEMINI_MODEL || 'gemini-2.5-flash',
-      groq_model: process.env.GROQ_MODEL || 'llama-3.3-70b-versatile',
-      openrouter_model: process.env.OPENROUTER_MODEL || 'google/gemini-2.5-flash'
-    };
-    fs.writeFileSync(SETTINGS_FILE, JSON.stringify(defaultSettings, null, 2), 'utf-8');
-    return defaultSettings;
+    try {
+      fs.writeFileSync(SETTINGS_FILE, JSON.stringify(defaults, null, 2), 'utf-8');
+    } catch (e) {}
+    return defaults;
   }
   try {
     const content = fs.readFileSync(SETTINGS_FILE, 'utf-8');
     const parsed = JSON.parse(content);
-    // Fill in environment fallbacks if empty
     return {
-      active_provider: parsed.active_provider || process.env.ACTIVE_AI_PROVIDER || 'gemini',
-      gemini_api_key: parsed.gemini_api_key || process.env.GEMINI_API_KEY || '',
-      groq_api_key: parsed.groq_api_key || process.env.GROQ_API_KEY || '',
-      openrouter_api_key: parsed.openrouter_api_key || process.env.OPENROUTER_API_KEY || '',
-      gemini_model: parsed.gemini_model || process.env.GEMINI_MODEL || 'gemini-2.5-flash',
-      groq_model: parsed.groq_model || process.env.GROQ_MODEL || 'llama-3.3-70b-versatile',
-      openrouter_model: parsed.openrouter_model || process.env.OPENROUTER_MODEL || 'google/gemini-2.5-flash'
+      ...defaults,
+      ...parsed
     };
   } catch (e) {
-    return {};
+    return defaults;
   }
 }
 

@@ -34,6 +34,7 @@
         <div id="header-student-pill" class="student-pill" title="اضغط لتبديل أو إضافة طالب">
           <div id="header-student-avatar" class="student-avatar">S</div>
           <span id="header-student-name" class="student-name">طالب تجريبي</span>
+          <span id="header-student-status" class="badge badge-success" style="margin-right:4px;">مفعل</span>
           <span style="font-size:0.7rem; color:var(--text-muted);">▼</span>
         </div>
 
@@ -62,11 +63,61 @@
       <button class="tab-btn" data-tab="profile">
         <span>🧬</span> ملف الطالب وبصمة الأخطاء (Mistake DNA)
       </button>
+      <button class="tab-btn" data-tab="admin" style="margin-right:auto; color:#d97706;">
+        <span>🛡️</span> لوحة تحكم المعلم (Teacher Suite)
+      </button>
     </div>
   </nav>
 
   <!-- Main View Area -->
   <main class="main-wrapper">
+
+    <!-- HERO INTRODUCTION SECTION -->
+    <section class="hero-section">
+      <div class="hero-badge-pill">
+        <span>🏆</span> المنظومة الأكاديمية الأولى المطابقة لمعايير كامبريدج ومجلس الثقافة البريطاني
+      </div>
+      <h2 class="hero-title">
+        تشخيص جراحي لمقالات الآيلتس مع <span>تقنية بصمة الأخطاء المتكررة</span>
+      </h2>
+      <p class="hero-subtitle">
+        لا تكتفِ بالحصول على درجة تقديرية مجردة! تحلل هذه المنظومة مقالك بدقة فاحص معتمد عبر المعايير الأربعة الرسمية (TR, CC, LR, GRA)، وتكتشف أخطاءك النحوية والمفردات التي تكررت من مقالات سابقة، مع تقديم إعادة صياغة نموذجية بمستوى Band 8+ وخطة عمل فورية لعلاج نقاط الضعف.
+      </p>
+
+      <div class="hero-features-row">
+        <div class="hero-feature-item">
+          <span>🎯</span> معايير رسمية 100% (Band Descriptors)
+        </div>
+        <div class="hero-feature-item">
+          <span>🧬</span> رصد الأخطاء المتكررة (Chronic Mistake Alert)
+        </div>
+        <div class="hero-feature-item">
+          <span>⏱️</span> محاكي بيئة حاسوب اختبار الآيلتس
+        </div>
+        <div class="hero-feature-item">
+          <span>📄</span> تقارير تقييم رسمية جاهزة للطباعة والتصدير كـ PDF
+        </div>
+      </div>
+    </section>
+
+    <!-- SUBSCRIPTION & WHATSAPP ACTIVATION BANNER -->
+    <div id="subscription-notice-banner" class="subscription-banner">
+      <div class="sub-banner-content">
+        <div class="sub-banner-text">
+          <h3>
+            <span>⚠️</span> حساب الطالب بانتظار التفعيل | سعر الاشتراك: <span class="price-tag">100 دولار</span>
+          </h3>
+          <p>
+            للاستفادة الكاملة من محاكي الاختبار والتقييم الفوري غير المحدود وتتبع بصمة الأخطاء، يتم دفع رسوم الاشتراك (100$) وتفعيل حسابك يدوياً من خلال المعلم مباشرة عبر الواتساب.
+          </p>
+        </div>
+        <div>
+          <a href="https://wa.me/966549724510" target="_blank" class="btn-whatsapp wa-activation-link">
+            <span>💬</span> تفعيل الحساب عبر الواتساب (966549724510)
+          </a>
+        </div>
+      </div>
+    </div>
 
     <!-- VIEW 1: EDITOR & SIMULATOR -->
     <section id="view-editor" class="view-section active">
@@ -183,29 +234,83 @@
       </div>
     </section>
 
+    <!-- VIEW 4: TEACHER / ADMIN DASHBOARD -->
+    <section id="view-admin" class="view-section">
+      <div id="admin-dashboard-content">
+        <!-- Dynamically rendered by admin.js -->
+      </div>
+    </section>
+
   </main>
 
-  <!-- MODAL: Student Management -->
+  <!-- MODAL: Student Management & Login by Code -->
   <div id="student-modal" class="modal-backdrop">
     <div class="modal-card">
       <div class="modal-header">
-        <h3 class="modal-title">👤 إدارة حسابات الطلاب</h3>
+        <h3 class="modal-title">👤 حساب الطالب والدخول</h3>
         <button id="close-student-modal" class="close-btn">&times;</button>
       </div>
 
-      <div class="form-group">
-        <label class="form-label">إضافة طالب جديد:</label>
+      <!-- Login by Student Code -->
+      <div style="background:var(--bg-card-subtle); padding:1rem; border-radius:var(--radius-md); border:1px solid var(--border-color); margin-bottom:1.25rem;">
+        <label class="form-label">🔑 تسجيل دخول سريع بكود الطالب (Access Code):</label>
         <div style="display:flex; gap:0.5rem;">
-          <input type="text" id="new-student-name-input" class="form-input" placeholder="اسم الطالب (مثال: أحمد محمد)...">
-          <button id="add-student-btn" class="btn btn-primary" style="white-space:nowrap;">+ إضافة</button>
+          <input type="text" id="login-code-input" class="form-input" placeholder="مثال: IELTS-1042 أو رقم الهاتف...">
+          <button id="login-by-code-btn" class="btn btn-primary" style="white-space:nowrap;">دخول الحساب</button>
+        </div>
+      </div>
+
+      <!-- Add New Student Form -->
+      <div class="form-group">
+        <label class="form-label">أو تسجيل اسم طالب جديد:</label>
+        <div style="display:flex; gap:0.5rem;">
+          <input type="text" id="new-student-name-input" class="form-input" placeholder="اسم الطالب الكامل...">
+          <button id="add-student-btn" class="btn btn-secondary" style="white-space:nowrap;">+ تسجيل جديد</button>
         </div>
       </div>
 
       <div class="form-group" style="margin-bottom:0;">
-        <label class="form-label">اختر الطالب الحالي:</label>
-        <div id="modal-student-list" style="max-height: 280px; overflow-y: auto;">
+        <label class="form-label">الطلاب المسجلين على هذا الجهاز:</label>
+        <div id="modal-student-list" style="max-height: 250px; overflow-y: auto;">
           <!-- Dynamically populated -->
         </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: Add Student by Teacher (Admin) -->
+  <div id="add-student-modal" class="modal-backdrop">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 class="modal-title">➕ إضافة وتفعيل طالب جديد (لوحة المعلم)</h3>
+        <button id="close-add-student-modal" class="close-btn">&times;</button>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">اسم الطالب الكامل:</label>
+        <input type="text" id="admin-new-student-name" class="form-input" placeholder="مثال: عبد الله أحمد">
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">رقم الهاتف / الواتساب:</label>
+        <input type="text" id="admin-new-student-phone" class="form-input" placeholder="مثال: 966500000000">
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">حالة الاشتراك المبدئية:</label>
+        <select id="admin-new-student-status" class="form-select">
+          <option value="active">مفعل (Active) - جاهز للاختبار فوراً</option>
+          <option value="pending">في انتظار التفعيل (Pending) - يتطلب دفع 100$</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">ملاحظات المعلم (اختياري):</label>
+        <input type="text" id="admin-new-student-notes" class="form-input" placeholder="مثال: مشترك في دورة شهر سبتمبر">
+      </div>
+
+      <div style="display:flex; justify-content:flex-end; gap:0.5rem; margin-top:1.5rem;">
+        <button id="admin-save-student-btn" class="btn btn-primary">حفظ وتوليد كود الدخول 🚀</button>
       </div>
     </div>
   </div>
@@ -252,6 +357,19 @@
           <a href="https://openrouter.ai/keys" target="_blank" style="color:var(--primary); font-size:0.75rem; text-decoration:none; margin-right:4px;">(احصل عليه هنا)</a>
         </label>
         <input type="password" id="setting-openrouter-key" class="form-input" placeholder="sk-or-v1-...">
+      </div>
+
+      <!-- Teacher WhatsApp & PIN Settings -->
+      <div style="border-top:1px solid var(--border-color); padding-top:1rem; margin-top:1rem;">
+        <div class="form-group">
+          <label class="form-label">رقم واتساب المعلم لتلقي الاشتراكات:</label>
+          <input type="text" id="setting-teacher-whatsapp" class="form-input" value="966549724510" placeholder="966549724510">
+        </div>
+
+        <div class="form-group" style="margin-bottom:0;">
+          <label class="form-label">رمز مرور المعلم (Teacher PIN):</label>
+          <input type="password" id="setting-admin-pin" class="form-input" placeholder="admin123">
+        </div>
       </div>
 
       <div style="display:flex; justify-content:flex-end; gap:0.5rem; margin-top:1.5rem;">

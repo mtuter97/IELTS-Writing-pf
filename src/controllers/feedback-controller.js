@@ -2,6 +2,9 @@ import {
   getAllStudents,
   getStudent,
   createStudent,
+  updateStudent,
+  deleteStudent,
+  getStudentByCode,
   saveEssay,
   getEssay,
   getStudentEssays,
@@ -24,12 +27,70 @@ export async function getStudentsHandler(req, res) {
 
 export async function createStudentHandler(req, res) {
   try {
-    const { name } = req.body;
+    const { name, phone = '', status = 'active', notes = '' } = req.body;
     if (!name || !name.trim()) {
       return res.status(400).json({ success: false, error: 'Student name is required.' });
     }
-    const student = createStudent(name);
+    const student = createStudent(name, phone, status, notes);
     res.json({ success: true, student });
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+}
+
+export async function updateStudentStatusHandler(req, res) {
+  try {
+    const { id } = req.params;
+    const { status } = req.body;
+    if (!['active', 'pending'].includes(status)) {
+      return res.status(400).json({ success: false, error: 'Status must be active or pending.' });
+    }
+    const updated = updateStudent(id, { status });
+    if (!updated) {
+      return res.status(404).json({ success: false, error: 'Student not found.' });
+    }
+    res.json({ success: true, student: updated });
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+}
+
+export async function deleteStudentHandler(req, res) {
+  try {
+    const { id } = req.params;
+    deleteStudent(id);
+    res.json({ success: true, message: 'Student deleted successfully.' });
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+}
+
+export async function loginStudentByCodeHandler(req, res) {
+  try {
+    const { code } = req.body;
+    if (!code || !code.trim()) {
+      return res.status(400).json({ success: false, error: 'Student code or ID is required.' });
+    }
+    const student = getStudentByCode(code);
+    if (!student) {
+      return res.status(404).json({ success: false, error: 'كود الطالب غير صحيح أو غير مسجل في النظام.' });
+    }
+    res.json({ success: true, student });
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+}
+
+export async function verifyAdminHandler(req, res) {
+  try {
+    const { pin } = req.body;
+    const settings = getSettings();
+    const correctPin = settings.admin_pin || 'admin123';
+    
+    if (pin && pin.trim() === correctPin) {
+      return res.json({ success: true, authorized: true });
+    }
+    return res.status(401).json({ success: false, authorized: false, error: 'رمز مرور المعلم غير صحيح.' });
   } catch (err) {
     res.status(500).json({ success: false, error: err.message });
   }
@@ -83,12 +144,24 @@ export async function evaluateEssayHandler(req, res) {
     const wordCount = words.length;
     const minThreshold = MIN_WORD_COUNTS[task_type] || 250;
 
-    // Student profile verification
+    // Student profile verification & subscription check
     let student = null;
     let mistakeHistory = null;
     if (student_id) {
       student = getStudent(student_id);
       if (student) {
+        if (student.status === 'pending') {
+          return res.status(403).json({
+            success: false,
+            is_pending_activation: true,
+            error: 'عذراً، هذا الحساب في انتظار التفعيل. سعر الاشتراك في الأداة هو 100 دولار. يرجى التواصل مع المعلم عبر الواتساب لتفعيل حسابك.',
+            student_id: student.id,
+            student_name: student.name,
+            access_code: student.access_code,
+            teacher_whatsapp: '966549724510',
+            price: 100
+          });
+        }
         mistakeHistory = getStudentMistakeHistory(student_id);
       }
     }
@@ -207,7 +280,10 @@ export async function getSettingsHandler(req, res) {
       openrouter_configured: Boolean(settings.openrouter_api_key),
       gemini_model: settings.gemini_model,
       groq_model: settings.groq_model,
-      openrouter_model: settings.openrouter_model
+      openrouter_model: settings.openrouter_model,
+      teacher_whatsapp: settings.teacher_whatsapp || '966549724510',
+      subscription_price: settings.subscription_price || 100,
+      admin_pin_configured: Boolean(settings.admin_pin)
     };
     res.json({ success: true, settings: masked });
   } catch (err) {
@@ -224,7 +300,10 @@ export async function saveSettingsHandler(req, res) {
       openrouter_api_key,
       gemini_model,
       groq_model,
-      openrouter_model
+      openrouter_model,
+      admin_pin,
+      teacher_whatsapp,
+      subscription_price
     } = req.body;
 
     const updates = {};
@@ -235,6 +314,9 @@ export async function saveSettingsHandler(req, res) {
     if (gemini_model) updates.gemini_model = gemini_model;
     if (groq_model) updates.groq_model = groq_model;
     if (openrouter_model) updates.openrouter_model = openrouter_model;
+    if (admin_pin) updates.admin_pin = admin_pin.trim();
+    if (teacher_whatsapp) updates.teacher_whatsapp = teacher_whatsapp.trim();
+    if (subscription_price) updates.subscription_price = Number(subscription_price);
 
     const updated = saveSettings(updates);
     res.json({

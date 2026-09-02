@@ -1,4 +1,4 @@
-import { fetchStudents, createStudent, fetchStudentDetails } from './api.js';
+import { fetchStudents, createStudent, fetchStudentDetails, loginStudentByCode } from './api.js';
 export { createStudent };
 
 let activeStudent = null;
@@ -18,21 +18,69 @@ export async function initStudentState() {
     localStorage.setItem('ielts_active_student_id', activeStudent.id);
   } else {
     // Create initial default student
-    activeStudent = await createStudent('طالب تجريبي (Demo Student)');
+    activeStudent = await createStudent({ name: 'طالب تجريبي (Demo Student)', status: 'active' });
     localStorage.setItem('ielts_active_student_id', activeStudent.id);
   }
 
   updateStudentHeaderUI();
+  updateSubscriptionBanner();
   return activeStudent;
 }
 
 export function updateStudentHeaderUI() {
   const nameEl = document.getElementById('header-student-name');
   const avatarEl = document.getElementById('header-student-avatar');
+  const statusBadge = document.getElementById('header-student-status');
+
   if (nameEl && activeStudent) {
     nameEl.textContent = activeStudent.name;
     const initial = activeStudent.name.trim().charAt(0).toUpperCase();
     if (avatarEl) avatarEl.textContent = initial || 'S';
+
+    if (statusBadge) {
+      if (activeStudent.status === 'active') {
+        statusBadge.className = 'badge badge-success';
+        statusBadge.textContent = '✅ مفعل';
+      } else {
+        statusBadge.className = 'badge badge-danger';
+        statusBadge.textContent = '⏳ بانتظار التفعيل (100$)';
+      }
+    }
+  }
+
+  updateSubscriptionBanner();
+}
+
+export function updateSubscriptionBanner() {
+  const banner = document.getElementById('subscription-notice-banner');
+  if (!banner) return;
+
+  if (!activeStudent || activeStudent.status === 'pending') {
+    banner.style.display = 'block';
+    const waText = encodeURIComponent(`مرحباً أستاذي، أرغب في الاشتراك وتفعيل حسابي في أداة تصحيح كتابة الآيلتس (IELTS Writing Feedback Tool).
+اسم الطالب: ${activeStudent?.name || 'طالب جديد'}
+كود الحساب: ${activeStudent?.access_code || activeStudent?.id || 'غير محدد'}
+رسوم الاشتراك: 100 دولار`);
+
+    const waBtn = banner.querySelector('.wa-activation-link');
+    if (waBtn) {
+      waBtn.href = `https://wa.me/966549724510?text=${waText}`;
+    }
+  } else {
+    banner.style.display = 'none';
+  }
+}
+
+export async function loginWithCode(code) {
+  try {
+    const student = await loginStudentByCode(code);
+    activeStudent = student;
+    localStorage.setItem('ielts_active_student_id', student.id);
+    updateStudentHeaderUI();
+    window.dispatchEvent(new CustomEvent('student-changed', { detail: student }));
+    return student;
+  } catch (err) {
+    throw err;
   }
 }
 
@@ -64,9 +112,18 @@ export async function renderStudentModalList() {
       border-radius: var(--radius-md); margin-bottom: 0.5rem; cursor: pointer;
       background: ${s.id === activeStudent?.id ? 'var(--primary-light)' : 'var(--bg-card)'};
     `;
+    const isStudentActive = s.status === 'active';
     item.innerHTML = `
       <div>
-        <strong style="display:block; font-size:0.95rem;">${s.name}</strong>
+        <div style="display:flex; align-items:center; gap:0.5rem; margin-bottom:0.25rem;">
+          <strong style="font-size:0.95rem; color:var(--text-main);">${s.name}</strong>
+          <span style="font-family:monospace; font-size:0.75rem; background:var(--bg-card-subtle); padding:1px 6px; border-radius:4px; border:1px solid var(--border-color); color:var(--primary); font-weight:700;">
+            ${s.access_code || s.id}
+          </span>
+          <span class="badge ${isStudentActive ? 'badge-success' : 'badge-danger'}" style="font-size:0.7rem;">
+            ${isStudentActive ? 'مفعل' : 'معلق (100$)'}
+          </span>
+        </div>
         <span style="font-size:0.78rem; color:var(--text-muted);">المقالات: ${s.essay_count || 0} | أعلى باند: ${s.highest_band ? 'Band ' + s.highest_band : 'غير مقيم'}</span>
       </div>
       ${s.id === activeStudent?.id ? '<span class="badge badge-primary">نشط الآن</span>' : '<button class="btn btn-secondary btn-sm select-btn">اختيار</button>'}

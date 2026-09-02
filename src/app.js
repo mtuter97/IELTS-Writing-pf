@@ -7,6 +7,10 @@ import {
   getStudentsHandler,
   createStudentHandler,
   getStudentDetailsHandler,
+  updateStudentStatusHandler,
+  deleteStudentHandler,
+  loginStudentByCodeHandler,
+  verifyAdminHandler,
   evaluateEssayHandler,
   getEssayHandler,
   getSettingsHandler,
@@ -23,13 +27,23 @@ app.use(express.static(path.join(__dirname, '../public')));
 
 // API Routes
 app.get('/api/health', (req, res) => res.json({ status: 'ok', time: new Date().toISOString() }));
+
+// Students
 app.get('/api/students', getStudentsHandler);
 app.post('/api/students', createStudentHandler);
 app.get('/api/students/:id', getStudentDetailsHandler);
+app.post('/api/students/:id/status', updateStudentStatusHandler);
+app.delete('/api/students/:id', deleteStudentHandler);
+app.post('/api/students/login-by-code', loginStudentByCodeHandler);
 
+// Admin
+app.post('/api/admin/verify', verifyAdminHandler);
+
+// Evaluation & Essays
 app.post('/api/evaluate', evaluateEssayHandler);
 app.get('/api/essays/:id', getEssayHandler);
 
+// Settings
 app.get('/api/settings', getSettingsHandler);
 app.post('/api/settings', saveSettingsHandler);
 
