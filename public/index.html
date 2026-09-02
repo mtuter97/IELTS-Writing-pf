@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IELTS Writing Examiner & Feedback Engine | أداة تقييم وتصحيح الآيلتس</title>
+  <meta name="description" content="أداة تقييم متقدمة لمقالات الآيلتس مبنية على معايير كامبريدج ومجلس الثقافة البريطاني الرسمية مع تتبع الأخطاء المتكررة وتصدير التقارير.">
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Styles -->
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/editor.css">
+  <link rel="stylesheet" href="css/report.css">
+</head>
+<body>
+
+  <!-- Top App Header -->
+  <header class="app-header">
+    <div class="header-container">
+      <div class="brand-wrapper">
+        <div class="brand-icon">IE</div>
+        <div class="brand-text">
+          <h1>IELTS Writing Examiner</h1>
+          <p>محرك التقييم التشخيصي المعتمد وتتبع الأخطاء المتكررة</p>
+        </div>
+      </div>
+
+      <div class="header-actions">
+        <!-- Active Student Selector -->
+        <div id="header-student-pill" class="student-pill" title="اضغط لتبديل أو إضافة طالب">
+          <div id="header-student-avatar" class="student-avatar">S</div>
+          <span id="header-student-name" class="student-name">طالب تجريبي</span>
+          <span style="font-size:0.7rem; color:var(--text-muted);">▼</span>
+        </div>
+
+        <!-- AI Provider Status Pill -->
+        <span id="active-provider-badge" class="badge badge-warning">
+          جاري فحص المزود...
+        </span>
+
+        <!-- Settings Button -->
+        <button id="settings-btn" class="btn btn-secondary btn-sm" title="إعدادات الـ API">
+          ⚙️ الإعدادات
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Navigation Tabs -->
+  <nav class="tabs-nav">
+    <div class="tabs-container">
+      <button class="tab-btn active" data-tab="editor">
+        <span>✍️</span> محاكي وكتابة المقال (Exam Simulator)
+      </button>
+      <button class="tab-btn" data-tab="report">
+        <span>📊</span> تقرير التقييم المعتمد (Diagnostic Report)
+      </button>
+      <button class="tab-btn" data-tab="profile">
+        <span>🧬</span> ملف الطالب وبصمة الأخطاء (Mistake DNA)
+      </button>
+    </div>
+  </nav>
+
+  <!-- Main View Area -->
+  <main class="main-wrapper">
+
+    <!-- VIEW 1: EDITOR & SIMULATOR -->
+    <section id="view-editor" class="view-section active">
+      <div class="editor-grid">
+        
+        <!-- Left Panel: Prompt & Setup -->
+        <aside class="prompt-panel">
+          <div class="panel-title">
+            <span>📝</span> إعدادات المهمة وموضوع السؤال
+          </div>
+
+          <!-- Task Type Selector -->
+          <div class="form-group" style="margin-bottom:0.5rem;">
+            <label class="form-label">نوع المهمة (Task Type):</label>
+            <div class="task-type-selector">
+              <button type="button" class="type-btn active" data-type="task_2">Task 2 (مقال)</button>
+              <button type="button" class="type-btn" data-type="task_1_academic">Task 1 (أكاديمي)</button>
+              <button type="button" class="type-btn" data-type="task_1_general">Task 1 (عام)</button>
+            </div>
+          </div>
+
+          <!-- Quick Cambridge Prompt Picker -->
+          <div class="prompt-quick-picker">
+            <label>مواضيع نموذجية رسمية جاهزة:</label>
+            <select id="prompt-select" class="form-select">
+              <!-- Dynamically populated -->
+            </select>
+          </div>
+
+          <!-- Custom Prompt Input -->
+          <div class="form-group" style="margin-bottom:0;">
+            <label class="form-label">نص السؤال أو الموضوع (Prompt):</label>
+            <textarea id="prompt-input" class="form-textarea prompt-textarea" placeholder="الصق نص السؤال هنا..."></textarea>
+          </div>
+
+          <div style="background:var(--bg-card-subtle); padding:0.85rem; border-radius:var(--radius-md); font-size:0.78rem; color:var(--text-secondary); line-height:1.5;">
+            💡 <strong>معايير الفاحص:</strong> تأكد من تغطية جميع عناصر السؤال لإحراز Band 7+ في معيار Task Response وتجنب الآراء العامة غير المدعومة بأمثلة.
+          </div>
+        </aside>
+
+        <!-- Right Panel: Writing Workspace -->
+        <div class="essay-workspace">
+          
+          <!-- Exam Control Toolbar -->
+          <div class="exam-toolbar">
+            <div class="toolbar-left">
+              <!-- Live Timer -->
+              <div id="timer-box" class="timer-box" title="مؤقت الاختبار التنازلي">
+                <span>⏱️</span>
+                <span id="timer-digits" class="timer-digits">40:00</span>
+                <div class="timer-controls">
+                  <button id="timer-toggle-btn" class="timer-btn" title="بدء / إيقاف المؤقت">▶️</button>
+                  <button id="timer-reset-btn" class="timer-btn" title="إعادة تعيين المؤقت">🔄</button>
+                </div>
+              </div>
+
+              <!-- Word Counter -->
+              <div id="word-count-pill" class="word-counter-pill under">
+                <span>الكلمات:</span>
+                <span id="word-count-number">0</span> / <span id="word-count-min">250</span>
+              </div>
+            </div>
+
+            <div class="toolbar-right">
+              <!-- Exam Mode Toggle -->
+              <label class="exam-mode-toggle" title="تعطيل التصحيح التلقائي والخطوط الحمراء لمحاكاة بيئة اختبار الآيلتس على الحاسوب بدقة">
+                <span class="switch">
+                  <input type="checkbox" id="exam-mode-checkbox">
+                  <span class="slider"></span>
+                </span>
+                <span>وضع الامتحان الصارم (Strict Exam Mode)</span>
+              </label>
+            </div>
+          </div>
+
+          <!-- Main Essay Textarea -->
+          <textarea
+            id="essay-input"
+            class="essay-input-area"
+            placeholder="ابدأ كتابة مقالك هنا... (يمكنك تفعيل وضع الامتحان لمحاكاة الاختبار الحقيقي بدون تصحيح إملائي تلقائي)"
+          ></textarea>
+
+          <!-- Footer Action Bar -->
+          <div class="editor-footer">
+            <span class="footer-tip">
+              📌 يتم فحص مقالك بالاعتماد الكامل على معايير كامبريدج ومطابقته مع سجل أخطائك السابقة.
+            </span>
+            <button id="submit-essay-btn" class="btn btn-primary btn-lg">
+              <span>🚀 إرسال المقال للتقييم والتشخيص الفوري</span>
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- VIEW 2: FEEDBACK REPORT -->
+    <section id="view-report" class="view-section">
+      <div id="report-content-area">
+        <div style="text-align:center; padding:5rem 2rem; background:var(--bg-card); border-radius:var(--radius-lg); border:1px solid var(--border-color);">
+          <div style="font-size:3rem; margin-bottom:1rem;">📝</div>
+          <h3 style="font-size:1.35rem; font-weight:800; margin-bottom:0.5rem;">لم يتم تقييم أي مقال في هذه الجلسة بعد</h3>
+          <p style="color:var(--text-muted); font-size:0.92rem; max-width:500px; margin:0 auto 1.5rem;">
+            انتقل إلى شاشة "محاكي وكتابة المقال"، اكتب مقالك واضغط على "إرسال المقال للتقييم" لعرض تقرير الفاحص الشامل والدرجات التفصيلية.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- VIEW 3: STUDENT PROFILE & MISTAKE DNA -->
+    <section id="view-profile" class="view-section">
+      <div id="student-profile-content">
+        <!-- Dynamically rendered by student.js -->
+      </div>
+    </section>
+
+  </main>
+
+  <!-- MODAL: Student Management -->
+  <div id="student-modal" class="modal-backdrop">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 class="modal-title">👤 إدارة حسابات الطلاب</h3>
+        <button id="close-student-modal" class="close-btn">&times;</button>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">إضافة طالب جديد:</label>
+        <div style="display:flex; gap:0.5rem;">
+          <input type="text" id="new-student-name-input" class="form-input" placeholder="اسم الطالب (مثال: أحمد محمد)...">
+          <button id="add-student-btn" class="btn btn-primary" style="white-space:nowrap;">+ إضافة</button>
+        </div>
+      </div>
+
+      <div class="form-group" style="margin-bottom:0;">
+        <label class="form-label">اختر الطالب الحالي:</label>
+        <div id="modal-student-list" style="max-height: 280px; overflow-y: auto;">
+          <!-- Dynamically populated -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: Settings & API Keys -->
+  <div id="settings-modal" class="modal-backdrop">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 class="modal-title">⚙️ إعدادات الذكاء الاصطناعي والـ API</h3>
+        <button id="close-settings-modal" class="close-btn">&times;</button>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">المزود النشط حالياً (Active Provider):</label>
+        <select id="setting-provider-select" class="form-select">
+          <option value="gemini">Google AI Studio (Gemini 2.5 Flash) - مجاني وسريع جداً</option>
+          <option value="groq">Groq Cloud (Llama 3.3 70B) - استجابة فائقة السرعة</option>
+          <option value="openrouter">OpenRouter (نماذج متعددة)</option>
+        </select>
+      </div>
+
+      <!-- Google Gemini Key -->
+      <div class="form-group">
+        <label class="form-label">
+          Google AI Studio API Key:
+          <a href="https://aistudio.google.com/app/api-keys" target="_blank" style="color:var(--primary); font-size:0.75rem; text-decoration:none; margin-right:4px;">(احصل عليه مجاناً)</a>
+        </label>
+        <input type="password" id="setting-gemini-key" class="form-input" placeholder="AIzaSy...">
+      </div>
+
+      <!-- Groq Key -->
+      <div class="form-group">
+        <label class="form-label">
+          Groq Cloud API Key:
+          <a href="https://console.groq.com/keys" target="_blank" style="color:var(--primary); font-size:0.75rem; text-decoration:none; margin-right:4px;">(احصل عليه مجاناً)</a>
+        </label>
+        <input type="password" id="setting-groq-key" class="form-input" placeholder="gsk_...">
+      </div>
+
+      <!-- OpenRouter Key -->
+      <div class="form-group">
+        <label class="form-label">
+          OpenRouter API Key:
+          <a href="https://openrouter.ai/keys" target="_blank" style="color:var(--primary); font-size:0.75rem; text-decoration:none; margin-right:4px;">(احصل عليه هنا)</a>
+        </label>
+        <input type="password" id="setting-openrouter-key" class="form-input" placeholder="sk-or-v1-...">
+      </div>
+
+      <div style="display:flex; justify-content:flex-end; gap:0.5rem; margin-top:1.5rem;">
+        <button id="save-settings-btn" class="btn btn-primary">حفظ الإعدادات</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Loading / Evaluation Overlay -->
+  <div id="evaluating-overlay" class="evaluating-overlay">
+    <div class="spinner"></div>
+    <div id="eval-step-text" class="eval-step-text">قراءة المقال وتحليله وفق معايير كامبريدج الرسمية...</div>
+    <div class="eval-subtext">يجري الفحص التشخيصي بدقة بواسطة فاحص الآيلتس المعتمد</div>
+  </div>
+
+  <!-- Toast Container -->
+  <div id="toast-container" class="toast-container"></div>
+
+  <!-- Scripts -->
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,19 @@
+{
+  "name": "ielts-writing-feedback-tool",
+  "version": "1.0.0",
+  "description": "IELTS Writing Feedback & Diagnostic Tool with Band Descriptors and Mistake Tracking",
+  "main": "src/server.js",
+  "type": "module",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "node --watch src/server.js"
+  },
+  "keywords": ["ielts", "writing", "feedback", "band-descriptors", "ai-evaluator"],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2"
+  }
+}
