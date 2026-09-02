@@ -28,10 +28,18 @@ export const CRITERIA_KEYS = {
   GRA: 'grammatical_range_accuracy'
 };
 
+export const AI_PROVIDERS = {
+  GEMINI: 'gemini',
+  GROQ: 'groq',
+  OPENROUTER: 'openrouter',
+  YOU: 'you'
+};
+
 export const DEFAULT_MODELS = {
   gemini: 'gemini-3.6-flash',
   groq: 'llama-3.3-70b-versatile',
-  openrouter: 'google/gemini-2.5-flash'
+  openrouter: 'google/gemini-2.5-flash',
+  you: 'you-smart'
 };
 
 /**

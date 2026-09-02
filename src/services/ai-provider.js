@@ -153,6 +153,73 @@ async function callOpenRouter({ apiKey, model, systemPrompt, userPrompt }) {
 }
 
 /**
+ * You.com Platform API (https://you.com/platform)
+ */
+async function callYouCom({ apiKey, systemPrompt, userPrompt }) {
+  const combinedPrompt = `${systemPrompt}\n\nIMPORTANT: You must return ONLY a valid JSON object strictly matching the schema with NO markdown code blocks or extra text.\n\n${userPrompt}`;
+
+  const endpoints = [
+    {
+      url: 'https://api.you.com/v1/answer',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-API-Key': apiKey
+      },
+      body: { input: combinedPrompt }
+    },
+    {
+      url: 'https://api.you.com/v1/research',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-API-Key': apiKey
+      },
+      body: { input: combinedPrompt, research_effort: 'standard' }
+    },
+    {
+      url: 'https://api.you.com/v1/chat/completions',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${apiKey}`,
+        'X-API-Key': apiKey
+      },
+      body: {
+        model: 'you-smart',
+        messages: [
+          { role: 'system', content: systemPrompt },
+          { role: 'user', content: userPrompt }
+        ]
+      }
+    }
+  ];
+
+  let lastError = null;
+  for (const ep of endpoints) {
+    try {
+      const response = await fetch(ep.url, {
+        method: 'POST',
+        headers: ep.headers,
+        body: JSON.stringify(ep.body)
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        const textOutput = data?.answer || data?.output || data?.response || data?.choices?.[0]?.message?.content || (typeof data === 'string' ? data : null);
+        if (textOutput) {
+          return cleanJsonText(textOutput);
+        }
+      } else {
+        const errText = await response.text();
+        lastError = new Error(`You.com (${ep.url}) error ${response.status}: ${errText}`);
+      }
+    } catch (err) {
+      lastError = err;
+    }
+  }
+
+  throw lastError || new Error('Failed to obtain response from You.com Platform API.');
+}
+
+/**
  * Unified Evaluator Dispatcher
  */
 export async function evaluateWithAI({ provider, apiKey, model, systemPrompt, userPrompt }) {
@@ -172,8 +239,12 @@ export async function evaluateWithAI({ provider, apiKey, model, systemPrompt, us
     case 'openrouter':
       rawJson = await callOpenRouter({ apiKey, model, systemPrompt, userPrompt });
       break;
+    case 'you':
+    case 'youcom':
+      rawJson = await callYouCom({ apiKey, systemPrompt, userPrompt });
+      break;
     default:
-      throw new Error(`Unsupported AI provider: ${provider}. Supported: gemini, groq, openrouter`);
+      throw new Error(`Unsupported AI provider: ${provider}. Supported: gemini, groq, openrouter, you`);
   }
 
   try {

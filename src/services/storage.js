@@ -200,9 +200,11 @@ export function getSettings() {
     gemini_api_key: process.env.GEMINI_API_KEY || '',
     groq_api_key: process.env.GROQ_API_KEY || '',
     openrouter_api_key: process.env.OPENROUTER_API_KEY || '',
-    gemini_model: process.env.GEMINI_MODEL || 'gemini-2.5-flash',
+    you_api_key: process.env.YOU_API_KEY || '',
+    gemini_model: process.env.GEMINI_MODEL || 'gemini-3.6-flash',
     groq_model: process.env.GROQ_MODEL || 'llama-3.3-70b-versatile',
     openrouter_model: process.env.OPENROUTER_MODEL || 'google/gemini-2.5-flash',
+    you_model: process.env.YOU_MODEL || 'you-smart',
     admin_pin: process.env.ADMIN_PIN || 'admin123',
     teacher_whatsapp: '966549724510',
     subscription_price: 100

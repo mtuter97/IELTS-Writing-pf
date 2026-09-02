@@ -1,3 +1,4 @@
+import { initTheme } from './theme.js';
 import { initStudentState, renderStudentModalList, renderStudentDashboard, loginWithCode } from './student.js';
 import { initEditor } from './editor.js';
 import { renderFeedbackReport } from './report-renderer.js';
@@ -7,6 +8,9 @@ import { fetchSettings, saveSettings, fetchEssay, createStudent } from './api.js
 let activeTab = 'editor';
 
 document.addEventListener('DOMContentLoaded', async () => {
+  // 0. Initialize Theme (Light / Dark Mode)
+  initTheme();
+
   // 1. Initialize Student State
   await initStudentState();
 

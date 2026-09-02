@@ -195,6 +195,9 @@ export async function evaluateEssayHandler(req, res) {
     } else if (provider === 'openrouter') {
       apiKey = settings.openrouter_api_key;
       model = settings.openrouter_model;
+    } else if (provider === 'you' || provider === 'youcom') {
+      apiKey = settings.you_api_key;
+      model = settings.you_model;
     }
 
     if (!apiKey) {
@@ -292,9 +295,11 @@ export async function getSettingsHandler(req, res) {
       gemini_configured: Boolean(settings.gemini_api_key),
       groq_configured: Boolean(settings.groq_api_key),
       openrouter_configured: Boolean(settings.openrouter_api_key),
+      you_configured: Boolean(settings.you_api_key),
       gemini_model: settings.gemini_model,
       groq_model: settings.groq_model,
       openrouter_model: settings.openrouter_model,
+      you_model: settings.you_model,
       teacher_whatsapp: settings.teacher_whatsapp || '966549724510',
       subscription_price: settings.subscription_price || 100,
       admin_pin_configured: Boolean(settings.admin_pin)
@@ -312,9 +317,11 @@ export async function saveSettingsHandler(req, res) {
       gemini_api_key,
       groq_api_key,
       openrouter_api_key,
+      you_api_key,
       gemini_model,
       groq_model,
       openrouter_model,
+      you_model,
       admin_pin,
       teacher_whatsapp,
       subscription_price
@@ -325,9 +332,11 @@ export async function saveSettingsHandler(req, res) {
     if (gemini_api_key !== undefined) updates.gemini_api_key = gemini_api_key.trim();
     if (groq_api_key !== undefined) updates.groq_api_key = groq_api_key.trim();
     if (openrouter_api_key !== undefined) updates.openrouter_api_key = openrouter_api_key.trim();
+    if (you_api_key !== undefined) updates.you_api_key = you_api_key.trim();
     if (gemini_model) updates.gemini_model = gemini_model;
     if (groq_model) updates.groq_model = groq_model;
     if (openrouter_model) updates.openrouter_model = openrouter_model;
+    if (you_model) updates.you_model = you_model;
     if (admin_pin) updates.admin_pin = admin_pin.trim();
     if (teacher_whatsapp) updates.teacher_whatsapp = teacher_whatsapp.trim();
     if (subscription_price) updates.subscription_price = Number(subscription_price);
