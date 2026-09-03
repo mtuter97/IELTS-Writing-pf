@@ -36,13 +36,28 @@
           <span id="theme-toggle-text" style="font-size:0.82rem;">داكن</span>
         </button>
 
-        <!-- Active Student Selector -->
-        <div id="header-student-pill" class="student-pill" title="اضغط لتسجيل الدخول بكود الطالب">
-          <div id="header-student-avatar" class="student-avatar">S</div>
-          <span id="header-student-name" class="student-name">طالب تجريبي</span>
-          <span id="header-student-status" class="badge badge-success" style="margin-right:4px;">مفعل</span>
-          <span style="font-size:0.7rem; color:var(--text-muted);">▼</span>
+        <!-- Student Hub (Login / Active Profile) -->
+        <div id="header-student-container" class="header-student-container">
+          <button id="header-login-btn" class="student-login-trigger-btn" title="تسجيل دخول الطالب">
+            <span>🔑</span> دخول الطالب
+          </button>
+          
+          <div id="header-student-profile" class="header-student-profile" style="display:none;" title="حساب الطالب النشط">
+            <div id="header-student-avatar" class="student-avatar">S</div>
+            <div class="student-meta">
+              <span id="header-student-name" class="student-name">طالب</span>
+              <span id="header-student-status" class="badge badge-success">مفعل</span>
+            </div>
+            <button id="header-student-logout-btn" class="btn-logout" title="تسجيل الخروج لحماية حسابك">
+              <span>🚪</span>
+            </button>
+          </div>
         </div>
+
+        <!-- Dedicated Teacher Portal Entry Button -->
+        <button id="header-teacher-btn" class="teacher-portal-trigger-btn" title="بوابة المعلم والمشرف المحمية">
+          <span>🛡️</span> لوحة المعلم
+        </button>
       </div>
     </div>
   </header>
@@ -57,10 +72,7 @@
         <span>📊</span> تقرير التقييم المعتمد (Diagnostic Report)
       </button>
       <button class="tab-btn" data-tab="profile">
-        <span>🧬</span> ملف الطالب وبصمة الأخطاء (Mistake DNA)
-      </button>
-      <button class="tab-btn" data-tab="admin" style="margin-right:auto; color:#d97706;">
-        <span>🛡️</span> لوحة تحكم المعلم (Teacher Suite)
+        <span>🧬</span> ملفي الأكاديمي وبصمة أخطائي (My Academic DNA)
       </button>
     </div>
   </nav>

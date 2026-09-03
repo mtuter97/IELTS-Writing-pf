@@ -17,8 +17,18 @@ import { buildSystemPrompt, buildUserPrompt } from '../prompts/system-prompt.js'
 import { evaluateWithAI } from '../services/ai-provider.js';
 import { calculateOfficialBand, MIN_WORD_COUNTS, IELTS_TASK_TYPES } from '../config/constants.js';
 
+function verifyAdminRequest(req) {
+  const pin = req.headers['x-admin-pin'] || req.query?.admin_pin || req.body?.admin_pin;
+  const settings = getSettings();
+  const correctPin = settings.admin_pin || 'admin123';
+  return Boolean(pin && pin.trim() === correctPin);
+}
+
 export async function getStudentsHandler(req, res) {
   try {
+    if (!verifyAdminRequest(req)) {
+      return res.status(401).json({ success: false, error: 'غير مصرح: عرض قائمة الطلاب متاح للمعلم فقط.' });
+    }
     const students = getAllStudents();
     res.json({ success: true, students });
   } catch (err) {
@@ -28,6 +38,9 @@ export async function getStudentsHandler(req, res) {
 
 export async function createStudentHandler(req, res) {
   try {
+    if (!verifyAdminRequest(req)) {
+      return res.status(401).json({ success: false, error: 'غير مصرح: إضافة طالب جديد متاحة للمعلم فقط.' });
+    }
     const { name, phone = '', status = 'active', notes = '' } = req.body;
     if (!name || !name.trim()) {
       return res.status(400).json({ success: false, error: 'Student name is required.' });
@@ -41,6 +54,9 @@ export async function createStudentHandler(req, res) {
 
 export async function updateStudentStatusHandler(req, res) {
   try {
+    if (!verifyAdminRequest(req)) {
+      return res.status(401).json({ success: false, error: 'غير مصرح: تعديل حالة الطالب متاح للمعلم فقط.' });
+    }
     const { id } = req.params;
     const { status } = req.body;
     if (!['active', 'pending'].includes(status)) {
@@ -58,6 +74,9 @@ export async function updateStudentStatusHandler(req, res) {
 
 export async function deleteStudentHandler(req, res) {
   try {
+    if (!verifyAdminRequest(req)) {
+      return res.status(401).json({ success: false, error: 'غير مصرح: حذف الطالب متاح للمعلم فقط.' });
+    }
     const { id } = req.params;
     deleteStudent(id);
     res.json({ success: true, message: 'Student deleted successfully.' });
@@ -134,6 +153,9 @@ export async function getStudentDetailsHandler(req, res) {
 
 export async function getStudentFileHandler(req, res) {
   try {
+    if (!verifyAdminRequest(req)) {
+      return res.status(401).json({ success: false, error: 'غير مصرح: استعراض الملف الأكاديمي الشامل متاح للمعلم فقط.' });
+    }
     const { id } = req.params;
     const master = getStudentMasterFile(id);
     if (!master) {
@@ -312,6 +334,9 @@ export async function getSettingsHandler(req, res) {
 
 export async function saveSettingsHandler(req, res) {
   try {
+    if (!verifyAdminRequest(req)) {
+      return res.status(401).json({ success: false, error: 'غير مصرح: تعديل إعدادات المنظومة متاح للمعلم فقط.' });
+    }
     const {
       active_provider,
       gemini_api_key,

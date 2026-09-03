@@ -17,28 +17,36 @@ export function setActiveStudent(student) {
 }
 
 export async function initStudentState() {
+  const savedId = localStorage.getItem('ielts_active_student_id');
+  
+  if (savedId) {
+    try {
+      const data = await fetchStudentDetails(savedId);
+      if (data && data.student) {
+        activeStudent = data.student;
+        updateStudentHeaderUI();
+        return activeStudent;
+      }
+    } catch (e) {
+      console.warn('Could not fetch saved student details:', e);
+    }
+  }
+
+  // Attempt to fetch students (will succeed if teacher/admin is authenticated)
   try {
     const students = await fetchStudents();
-    const savedId = localStorage.getItem('ielts_active_student_id');
-    
-    if (savedId) {
-      const found = students.find(s => s.id === savedId);
-      if (found) {
-        activeStudent = found;
-      }
-    }
-
-    if (!activeStudent && students.length > 0) {
+    if (students && students.length > 0) {
       activeStudent = students[0];
       localStorage.setItem('ielts_active_student_id', activeStudent.id);
+      updateStudentHeaderUI();
+      return activeStudent;
     }
-
-    updateStudentHeaderUI();
-    return activeStudent;
   } catch (err) {
-    console.warn('Failed to load students:', err);
-    return null;
+    // Normal behavior for students when admin pin is not set
   }
+
+  updateStudentHeaderUI();
+  return null;
 }
 
 export function updateStudentHeaderUI() {
@@ -114,45 +122,63 @@ export async function renderStudentModalList() {
   const listContainer = document.getElementById('modal-student-list');
   if (!listContainer) return;
 
-  const students = await fetchStudents();
   listContainer.innerHTML = '';
 
-  students.forEach(s => {
-    const item = document.createElement('div');
-    item.className = `student-list-item ${s.id === activeStudent?.id ? 'active' : ''}`;
-    item.style.cssText = `
-      display: flex; justify-content: space-between; align-items: center;
-      padding: 0.75rem 1rem; border: 1px solid var(--border-color);
-      border-radius: var(--radius-md); margin-bottom: 0.5rem; cursor: pointer;
-      background: ${s.id === activeStudent?.id ? 'var(--primary-light)' : 'var(--bg-card)'};
-      transition: all 0.2s ease;
-    `;
-    const isStudentActive = s.status === 'active';
-    item.innerHTML = `
-      <div>
-        <div style="display:flex; align-items:center; gap:0.5rem; margin-bottom:0.25rem;">
-          <strong style="font-size:0.95rem; color:var(--text-main);">${s.name}</strong>
-          <span style="font-family:monospace; font-size:0.75rem; background:var(--bg-card-subtle); padding:1px 6px; border-radius:4px; border:1px solid var(--border-color); color:var(--primary); font-weight:700;">
-            ${s.access_code || s.id}
-          </span>
-          <span class="badge ${isStudentActive ? 'badge-success' : 'badge-danger'}" style="font-size:0.7rem;">
-            ${isStudentActive ? 'مفعل' : 'معلق (100$)'}
-          </span>
+  try {
+    const students = await fetchStudents();
+    students.forEach(s => {
+      const item = document.createElement('div');
+      item.className = `student-list-item ${s.id === activeStudent?.id ? 'active' : ''}`;
+      item.style.cssText = `
+        display: flex; justify-content: space-between; align-items: center;
+        padding: 0.75rem 1rem; border: 1px solid var(--border-color);
+        border-radius: var(--radius-md); margin-bottom: 0.5rem; cursor: pointer;
+        background: ${s.id === activeStudent?.id ? 'var(--primary-light)' : 'var(--bg-card)'};
+        transition: all 0.2s ease;
+      `;
+      const isStudentActive = s.status === 'active';
+      item.innerHTML = `
+        <div>
+          <div style="display:flex; align-items:center; gap:0.5rem; margin-bottom:0.25rem;">
+            <strong style="font-size:0.95rem; color:var(--text-main);">${s.name}</strong>
+            <span style="font-family:monospace; font-size:0.75rem; background:var(--bg-card-subtle); padding:1px 6px; border-radius:4px; border:1px solid var(--border-color); color:var(--primary); font-weight:700;">
+              ${s.access_code || s.id}
+            </span>
+            <span class="badge ${isStudentActive ? 'badge-success' : 'badge-danger'}" style="font-size:0.7rem;">
+              ${isStudentActive ? 'مفعل' : 'معلق (100$)'}
+            </span>
+          </div>
+          <span style="font-size:0.78rem; color:var(--text-muted);">المقالات: ${s.essay_count || 0} | أعلى باند: ${s.highest_band ? 'Band ' + s.highest_band : 'غير مقيم'}</span>
         </div>
-        <span style="font-size:0.78rem; color:var(--text-muted);">المقالات: ${s.essay_count || 0} | أعلى باند: ${s.highest_band ? 'Band ' + s.highest_band : 'غير مقيم'}</span>
-      </div>
-      ${s.id === activeStudent?.id ? '<span class="badge badge-primary">نشط الآن</span>' : '<button class="btn btn-secondary btn-sm select-btn">اختيار</button>'}
-    `;
+        ${s.id === activeStudent?.id ? '<span class="badge badge-primary">نشط الآن</span>' : '<button class="btn btn-secondary btn-sm select-btn">اختيار</button>'}
+      `;
 
-    item.addEventListener('click', async (e) => {
-      await switchStudent(s.id);
-      document.getElementById('student-modal').classList.remove('open');
-      renderStudentModalList();
-      window.dispatchEvent(new CustomEvent('student-changed', { detail: s }));
+      item.addEventListener('click', async (e) => {
+        await switchStudent(s.id);
+        document.getElementById('student-modal').classList.remove('open');
+        renderStudentModalList();
+        window.dispatchEvent(new CustomEvent('student-changed', { detail: s }));
+      });
+
+      listContainer.appendChild(item);
     });
-
-    listContainer.appendChild(item);
-  });
+  } catch (err) {
+    if (activeStudent) {
+      listContainer.innerHTML = `
+        <div style="padding:0.75rem 1rem; background:var(--primary-light); border-radius:var(--radius-md); border:1px solid var(--primary-border);">
+          <span style="font-size:0.8rem; color:var(--text-muted); display:block;">أنت مسجل حالياً بحساب:</span>
+          <strong style="color:var(--text-main); font-size:0.95rem;">${activeStudent.name}</strong> 
+          <span style="font-family:monospace; color:var(--primary); font-weight:700;">(${activeStudent.access_code || activeStudent.id})</span>
+        </div>
+      `;
+    } else {
+      listContainer.innerHTML = `
+        <p style="font-size:0.82rem; color:var(--text-muted); text-align:center; padding:0.75rem;">
+          أدخل كود الحساب المسلم لك من المعلم للدخول.
+        </p>
+      `;
+    }
+  }
 }
 
 /**

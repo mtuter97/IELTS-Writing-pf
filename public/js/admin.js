@@ -58,6 +58,7 @@ export async function renderAdminDashboard() {
         if (res.authorized) {
           isAdminAuthenticated = true;
           sessionStorage.setItem('ielts_admin_auth', 'true');
+          sessionStorage.setItem('ielts_admin_pin', pin);
           renderAdminDashboard();
         }
       } catch (err) {
@@ -489,6 +490,7 @@ export async function renderAdminDashboard() {
     // Attach Logout
     document.getElementById('admin-logout-btn')?.addEventListener('click', () => {
       sessionStorage.removeItem('ielts_admin_auth');
+      sessionStorage.removeItem('ielts_admin_pin');
       isAdminAuthenticated = false;
       renderAdminDashboard();
     });

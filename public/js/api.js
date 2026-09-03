@@ -1,11 +1,34 @@
 /**
- * API Client Layer
+ * API Client Layer with Privacy and Secure Admin Headers
  */
 
 const API_BASE = '/api';
 
+export function getStoredAdminPin() {
+  return sessionStorage.getItem('ielts_admin_pin') || '';
+}
+
+export function setStoredAdminPin(pin) {
+  if (pin) {
+    sessionStorage.setItem('ielts_admin_pin', pin);
+  } else {
+    sessionStorage.removeItem('ielts_admin_pin');
+  }
+}
+
+function getAdminHeaders() {
+  const pin = getStoredAdminPin();
+  const headers = { 'Content-Type': 'application/json' };
+  if (pin) {
+    headers['x-admin-pin'] = pin;
+  }
+  return headers;
+}
+
 export async function fetchStudents() {
-  const res = await fetch(`${API_BASE}/students`);
+  const res = await fetch(`${API_BASE}/students`, {
+    headers: getAdminHeaders()
+  });
   const data = await res.json();
   if (!data.success) throw new Error(data.error);
   return data.students;
@@ -15,7 +38,7 @@ export async function createStudent(payload) {
   const body = typeof payload === 'string' ? { name: payload } : payload;
   const res = await fetch(`${API_BASE}/students`, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers: getAdminHeaders(),
     body: JSON.stringify(body)
   });
   const data = await res.json();
@@ -26,7 +49,7 @@ export async function createStudent(payload) {
 export async function updateStudentStatus(id, status) {
   const res = await fetch(`${API_BASE}/students/${id}/status`, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers: getAdminHeaders(),
     body: JSON.stringify({ status })
   });
   const data = await res.json();
@@ -36,7 +59,8 @@ export async function updateStudentStatus(id, status) {
 
 export async function deleteStudent(id) {
   const res = await fetch(`${API_BASE}/students/${id}`, {
-    method: 'DELETE'
+    method: 'DELETE',
+    headers: getAdminHeaders()
   });
   const data = await res.json();
   if (!data.success) throw new Error(data.error);
@@ -62,6 +86,7 @@ export async function verifyAdminPin(pin) {
   });
   const data = await res.json();
   if (!data.success) throw new Error(data.error || 'رمز مرور غير صحيح');
+  setStoredAdminPin(pin);
   return data;
 }
 
@@ -70,6 +95,15 @@ export async function fetchStudentDetails(id) {
   const data = await res.json();
   if (!data.success) throw new Error(data.error);
   return data;
+}
+
+export async function fetchStudentMasterFile(id) {
+  const res = await fetch(`${API_BASE}/students/${id}/file`, {
+    headers: getAdminHeaders()
+  });
+  const data = await res.json();
+  if (!data.success) throw new Error(data.error);
+  return data.student_file;
 }
 
 export async function submitEssayEvaluation(payload) {
@@ -107,7 +141,7 @@ export async function fetchSettings() {
 export async function saveSettings(settings) {
   const res = await fetch(`${API_BASE}/settings`, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers: getAdminHeaders(),
     body: JSON.stringify(settings)
   });
   const data = await res.json();
