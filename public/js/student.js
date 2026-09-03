@@ -13,35 +13,44 @@ export function setActiveStudent(student) {
   activeStudent = student;
   if (student && student.id) {
     localStorage.setItem('ielts_active_student_id', student.id);
+    localStorage.setItem('ielts_active_student_data', JSON.stringify(student));
   } else {
     localStorage.removeItem('ielts_active_student_id');
+    localStorage.removeItem('ielts_active_student_data');
   }
   updateStudentHeaderUI();
 }
 
 export async function initStudentState() {
   try {
-    const savedId = localStorage.getItem('ielts_active_student_id');
+    // 1. Instantly restore cached student session so refreshing NEVER logs the user out
+    const cachedData = localStorage.getItem('ielts_active_student_data');
+    if (cachedData) {
+      try {
+        const parsed = JSON.parse(cachedData);
+        if (parsed && parsed.id) {
+          activeStudent = parsed;
+          updateStudentHeaderUI();
+        }
+      } catch (_) {}
+    }
+
+    const savedId = localStorage.getItem('ielts_active_student_id') || (activeStudent && activeStudent.id);
     if (savedId) {
       try {
         const student = await fetchStudentDetails(savedId);
         if (student && student.id) {
           activeStudent = student;
-        } else {
-          localStorage.removeItem('ielts_active_student_id');
-          activeStudent = null;
+          localStorage.setItem('ielts_active_student_id', student.id);
+          localStorage.setItem('ielts_active_student_data', JSON.stringify(student));
         }
       } catch (e) {
-        // If student not found or deleted
-        localStorage.removeItem('ielts_active_student_id');
-        activeStudent = null;
+        // DO NOT log out on network glitch or server spin-up! Retain the cached session!
+        console.warn('Network issue fetching student details, maintaining active student session:', e.message);
       }
-    } else {
-      activeStudent = null;
     }
   } catch (err) {
     console.warn('Init student state fallback:', err);
-    activeStudent = null;
   }
 
   updateStudentHeaderUI();
@@ -51,6 +60,7 @@ export async function initStudentState() {
 export function logoutStudent() {
   activeStudent = null;
   localStorage.removeItem('ielts_active_student_id');
+  localStorage.removeItem('ielts_active_student_data');
   updateStudentHeaderUI();
   window.dispatchEvent(new CustomEvent('student-changed', { detail: null }));
   renderStudentDashboard();
@@ -104,9 +114,7 @@ export function updateStudentHeaderUI() {
 export async function loginWithCode(code) {
   try {
     const student = await loginStudentByCode(code);
-    activeStudent = student;
-    localStorage.setItem('ielts_active_student_id', student.id);
-    updateStudentHeaderUI();
+    setActiveStudent(student);
     window.dispatchEvent(new CustomEvent('student-changed', { detail: student }));
     return student;
   } catch (err) {
@@ -116,10 +124,8 @@ export async function loginWithCode(code) {
 
 export async function loginWithGoogle(googleData) {
   const result = await authWithGoogle(googleData);
-  activeStudent = result.student;
-  localStorage.setItem('ielts_active_student_id', activeStudent.id);
-  updateStudentHeaderUI();
-  window.dispatchEvent(new CustomEvent('student-changed', { detail: activeStudent }));
+  setActiveStudent(result.student);
+  window.dispatchEvent(new CustomEvent('student-changed', { detail: result.student }));
   renderStudentDashboard();
   return result;
 }
@@ -127,10 +133,8 @@ export async function loginWithGoogle(googleData) {
 export async function activateStudentAccount(code) {
   if (!activeStudent) throw new Error('لا يوجد حساب نشط لتفعيله.');
   const updatedStudent = await activateStudentByCode(activeStudent.id, code);
-  activeStudent = updatedStudent;
-  localStorage.setItem('ielts_active_student_id', updatedStudent.id);
-  updateStudentHeaderUI();
-  window.dispatchEvent(new CustomEvent('student-changed', { detail: activeStudent }));
+  setActiveStudent(updatedStudent);
+  window.dispatchEvent(new CustomEvent('student-changed', { detail: updatedStudent }));
   renderStudentDashboard();
   return updatedStudent;
 }

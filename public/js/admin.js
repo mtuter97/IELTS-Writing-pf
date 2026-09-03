@@ -11,10 +11,12 @@ export function getIsAdminAuthenticated() {
 }
 
 export function checkAdminSession() {
-  const pin = sessionStorage.getItem('ielts_admin_pin');
-  const auth = sessionStorage.getItem('ielts_admin_auth');
+  const pin = localStorage.getItem('ielts_admin_pin') || sessionStorage.getItem('ielts_admin_pin');
+  const auth = localStorage.getItem('ielts_admin_auth') || sessionStorage.getItem('ielts_admin_auth');
   if (auth === 'true' && pin) {
     isAdminAuthenticated = true;
+    sessionStorage.setItem('ielts_admin_auth', 'true');
+    sessionStorage.setItem('ielts_admin_pin', pin);
   } else {
     isAdminAuthenticated = false;
   }
@@ -64,6 +66,8 @@ export async function renderAdminDashboard() {
           isAdminAuthenticated = true;
           sessionStorage.setItem('ielts_admin_auth', 'true');
           sessionStorage.setItem('ielts_admin_pin', pin);
+          localStorage.setItem('ielts_admin_auth', 'true');
+          localStorage.setItem('ielts_admin_pin', pin);
           setStoredAdminPin(pin);
           renderAdminDashboard();
         }
@@ -513,6 +517,8 @@ export async function renderAdminDashboard() {
     document.getElementById('admin-logout-btn')?.addEventListener('click', () => {
       sessionStorage.removeItem('ielts_admin_auth');
       sessionStorage.removeItem('ielts_admin_pin');
+      localStorage.removeItem('ielts_admin_auth');
+      localStorage.removeItem('ielts_admin_pin');
       isAdminAuthenticated = false;
       renderAdminDashboard();
     });

@@ -82,15 +82,41 @@ export function initEditor() {
   const timerResetBtn = document.getElementById('timer-reset-btn');
   const submitBtn = document.getElementById('submit-essay-btn');
 
-  // Task type selection
+  // Task type selection with persistence
+  const savedTaskType = localStorage.getItem('ielts_draft_task_type');
+  if (savedTaskType) {
+    currentTaskType = savedTaskType;
+    typeButtons.forEach(btn => {
+      btn.classList.toggle('active', btn.getAttribute('data-type') === savedTaskType);
+    });
+  }
+
   typeButtons.forEach(btn => {
     btn.addEventListener('click', () => {
       typeButtons.forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
       currentTaskType = btn.getAttribute('data-type');
+      localStorage.setItem('ielts_draft_task_type', currentTaskType);
       updateTaskDefaults();
     });
   });
+
+  // Restore saved drafts if user refreshes page
+  const savedPrompt = localStorage.getItem('ielts_draft_prompt');
+  if (savedPrompt && promptInput && !promptInput.value) {
+    promptInput.value = savedPrompt;
+  }
+
+  const savedEssay = localStorage.getItem('ielts_draft_essay');
+  if (savedEssay && essayInput && !essayInput.value) {
+    essayInput.value = savedEssay;
+  }
+
+  if (promptInput) {
+    promptInput.addEventListener('input', () => {
+      localStorage.setItem('ielts_draft_prompt', promptInput.value);
+    });
+  }
 
   // Load Prompt Dropdown
   function populatePromptPicker() {
@@ -111,6 +137,7 @@ export function initEditor() {
       const list = PRACTICE_PROMPTS[currentTaskType] || [];
       if (idx !== '' && list[idx]) {
         promptInput.value = list[idx].prompt;
+        localStorage.setItem('ielts_draft_prompt', promptInput.value);
       }
     });
   }
@@ -162,7 +189,10 @@ export function initEditor() {
   }
 
   if (essayInput) {
-    essayInput.addEventListener('input', updateWordCount);
+    essayInput.addEventListener('input', () => {
+      updateWordCount();
+      localStorage.setItem('ielts_draft_essay', essayInput.value);
+    });
   }
 
   // Timer logic

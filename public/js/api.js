@@ -5,13 +5,15 @@
 const API_BASE = '/api';
 
 export function getStoredAdminPin() {
-  return sessionStorage.getItem('ielts_admin_pin') || '';
+  return localStorage.getItem('ielts_admin_pin') || sessionStorage.getItem('ielts_admin_pin') || '';
 }
 
 export function setStoredAdminPin(pin) {
   if (pin) {
+    localStorage.setItem('ielts_admin_pin', pin);
     sessionStorage.setItem('ielts_admin_pin', pin);
   } else {
+    localStorage.removeItem('ielts_admin_pin');
     sessionStorage.removeItem('ielts_admin_pin');
   }
 }

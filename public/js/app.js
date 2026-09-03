@@ -32,9 +32,14 @@ document.addEventListener('DOMContentLoaded', async () => {
   // 7. Initialize Community Subscriber Metric (Starting at 100+ as requested)
   updateSubscribersMetric();
 
-  // 8. Handle Direct Admin Route / Secret Hash Access
+  // 8. Handle Direct Admin Route / Secret Hash Access or restore saved tab
   if (window.location.hash === '#admin' || window.location.pathname === '/admin') {
     switchTab('admin');
+  } else {
+    const savedTab = localStorage.getItem('ielts_active_tab');
+    if (savedTab && (savedTab === 'profile' || savedTab === 'report' || savedTab === 'editor')) {
+      switchTab(savedTab);
+    }
   }
 
   window.addEventListener('hashchange', () => {
@@ -80,6 +85,7 @@ function setupTabs() {
 
 export function switchTab(tabName) {
   activeTab = tabName;
+  localStorage.setItem('ielts_active_tab', tabName);
   const tabButtons = document.querySelectorAll('.tab-btn');
   const views = document.querySelectorAll('.view-section');
 
@@ -95,6 +101,16 @@ export function switchTab(tabName) {
     renderStudentDashboard();
   } else if (tabName === 'admin') {
     renderAdminDashboard();
+  } else if (tabName === 'report') {
+    const cached = localStorage.getItem('ielts_latest_evaluation');
+    if (cached) {
+      try {
+        const parsed = JSON.parse(cached);
+        if (parsed && parsed.essay && parsed.feedback) {
+          renderFeedbackReport(parsed.essay, parsed.feedback);
+        }
+      } catch (_) {}
+    }
   }
 }
 
@@ -380,6 +396,9 @@ async function updateProviderStatusBadge() {
 function setupAppEvents() {
   window.addEventListener('evaluation-completed', (e) => {
     const { essay, feedback } = e.detail;
+    try {
+      localStorage.setItem('ielts_latest_evaluation', JSON.stringify({ essay, feedback }));
+    } catch (_) {}
     // Client-side cache persistence
     if (essay && essay.student_id) {
       try {
