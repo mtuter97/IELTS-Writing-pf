@@ -302,6 +302,37 @@ body {
   border-color: var(--danger);
 }
 
+.btn-google {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
+  background: var(--bg-card);
+  color: var(--text-main);
+  border: 1px solid var(--border-color);
+  padding: 0.65rem 1.25rem;
+  border-radius: var(--radius-md);
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+}
+
+.btn-google:hover {
+  background: var(--bg-card-subtle);
+  border-color: var(--primary);
+  transform: translateY(-1px);
+  box-shadow: 0 3px 8px rgba(0,0,0,0.12);
+}
+
+.google-prompt-modal-card {
+  max-width: 440px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: 1.75rem;
+  box-shadow: var(--shadow-xl);
+}
+
 /* Student Portal Landing Card */
 .student-portal-login-card {
   max-width: 680px;

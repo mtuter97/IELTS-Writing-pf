@@ -1,4 +1,4 @@
-import { fetchStudentDetails, loginStudentByCode } from './api.js';
+import { fetchStudentDetails, loginStudentByCode, authWithGoogle, activateStudentByCode } from './api.js';
 
 let activeStudent = null;
 let activeMistakeFilter = 'all'; // 'all', 'grammar', 'vocabulary', 'coherence', 'task'
@@ -23,9 +23,9 @@ export async function initStudentState() {
     const savedId = localStorage.getItem('ielts_active_student_id');
     if (savedId) {
       try {
-        const data = await fetchStudentDetails(savedId);
-        if (data && data.student) {
-          activeStudent = data.student;
+        const student = await fetchStudentDetails(savedId);
+        if (student && student.id) {
+          activeStudent = student;
         } else {
           localStorage.removeItem('ielts_active_student_id');
           activeStudent = null;
@@ -67,12 +67,18 @@ export function updateStudentHeaderUI() {
     if (loginBtn) loginBtn.style.display = 'none';
     if (profileContainer) profileContainer.style.display = 'flex';
     if (nameEl) nameEl.textContent = activeStudent.name;
-    if (avatarEl) avatarEl.textContent = (activeStudent.name || 'S').trim().substring(0, 1).toUpperCase();
+    if (avatarEl) {
+      if (activeStudent.picture) {
+        avatarEl.innerHTML = `<img src="${activeStudent.picture}" style="width:100%; height:100%; border-radius:50%; object-fit:cover;" />`;
+      } else {
+        avatarEl.textContent = (activeStudent.name || 'S').trim().substring(0, 1).toUpperCase();
+      }
+    }
     
     if (statusEl) {
       const isActive = activeStudent.status === 'active';
-      statusEl.className = `badge ${isActive ? 'badge-success' : 'badge-danger'}`;
-      statusEl.textContent = isActive ? 'مفعل' : 'معلق (100$)';
+      statusEl.className = `badge ${isActive ? 'badge-success' : 'badge-warning'}`;
+      statusEl.textContent = isActive ? 'مفعل' : '⏳ بانتظار التفعيل';
     }
 
     if (banner) {
@@ -80,7 +86,7 @@ export function updateStudentHeaderUI() {
         banner.style.display = 'block';
         const waLink = banner.querySelector('.btn-whatsapp');
         if (waLink) {
-          const text = encodeURIComponent(`مرحباً أستاذي، أود تفعيل اشتراكي في أداة تقييم الآيلتس (رسوم 100$). اسمي: ${activeStudent.name}، كود الحساب: ${activeStudent.access_code || activeStudent.id}.`);
+          const text = encodeURIComponent(`مرحباً أستاذي، قمت بالتسجيل باسم: ${activeStudent.name} ${activeStudent.email ? `(${activeStudent.email})` : ''}. أود استلام كود التفعيل في منصة الآيلتس.`);
           waLink.href = `https://wa.me/966549724510?text=${text}`;
         }
       } else {
@@ -107,6 +113,27 @@ export async function loginWithCode(code) {
   }
 }
 
+export async function loginWithGoogle(googleData) {
+  const result = await authWithGoogle(googleData);
+  activeStudent = result.student;
+  localStorage.setItem('ielts_active_student_id', activeStudent.id);
+  updateStudentHeaderUI();
+  window.dispatchEvent(new CustomEvent('student-changed', { detail: activeStudent }));
+  renderStudentDashboard();
+  return result;
+}
+
+export async function activateStudentAccount(code) {
+  if (!activeStudent) throw new Error('لا يوجد حساب نشط لتفعيله.');
+  const updatedStudent = await activateStudentByCode(activeStudent.id, code);
+  activeStudent = updatedStudent;
+  localStorage.setItem('ielts_active_student_id', updatedStudent.id);
+  updateStudentHeaderUI();
+  window.dispatchEvent(new CustomEvent('student-changed', { detail: activeStudent }));
+  renderStudentDashboard();
+  return updatedStudent;
+}
+
 /**
  * Render Student Academic Portal and Mistake DNA
  */
@@ -114,7 +141,7 @@ export async function renderStudentDashboard() {
   const container = document.getElementById('student-profile-content');
   if (!container) return;
 
-  // 1. If not logged in -> Render clean private Portal Landing with Login
+  // 1. If not logged in -> Render clean private Portal Landing with Login Options
   if (!activeStudent) {
     container.innerHTML = `
       <div class="student-portal-login-card">
@@ -122,11 +149,30 @@ export async function renderStudentDashboard() {
         <h2 style="font-size:1.6rem; font-weight:800; color:var(--text-main); margin-bottom:0.75rem;">
           بوابة الطالب الأكاديمية وبصمة الأخطاء
         </h2>
-        <p style="color:var(--text-secondary); font-size:0.95rem; max-width:540px; margin:0 auto 1.75rem; line-height:1.6;">
-          أدخل كود الاشتراك الخاص بك (Student Access Code) للوصول إلى سجلك الأكاديمي، متابعة تطور درجات الباند، ورصد بصمة أخطائك المتكررة عبر المقالات.
+        <p style="color:var(--text-secondary); font-size:0.95rem; max-width:540px; margin:0 auto 1.5rem; line-height:1.6;">
+          سجل دخولك بحساب Google أو أدخل كود الوصول للوصول إلى سجلك الأكاديمي، متابعة درجات الباند، ورصد بصمة أخطائك المتكررة.
         </p>
 
-        <div style="background:var(--bg-card-subtle); border:1px solid var(--border-color); border-radius:var(--radius-md); padding:1.25rem; max-width:460px; margin:0 auto 2rem; box-shadow:var(--shadow-sm);">
+        <!-- Fast Google Button in Portal -->
+        <div style="margin-bottom:1.5rem;">
+          <button id="portal-google-login-btn" class="btn btn-google" style="margin:0 auto; width:100%; max-width:440px; justify-content:center; gap:0.6rem; padding:0.75rem 1.25rem; font-size:0.95rem;">
+            <svg width="18" height="18" viewBox="0 0 18 18">
+              <path fill="#4285F4" d="M17.64 9.2045c0-.6381-.0573-1.2518-.1636-1.8409H9v3.4814h4.8436c-.2086 1.125-.8427 2.0782-1.7959 2.7164v2.2581h2.9087c1.7018-1.5668 2.6836-3.874 2.6836-6.615z"/>
+              <path fill="#34A853" d="M9 18c2.43 0 4.4673-.806 5.9564-2.1805l-2.9087-2.2581c-.8059.54-1.8368.859-3.0477.859-2.344 0-4.3282-1.5831-5.036-3.7104H.9573v2.3318C2.4382 15.9832 5.4818 18 9 18z"/>
+              <path fill="#FBBC05" d="M3.964 10.71c-.18-.54-.2822-1.1168-.2822-1.71s.1023-1.17.2823-1.71V4.9582H.9573A8.9965 8.9965 0 0 0 0 9c0 1.4523.3477 2.8268.9573 4.0418l3.0067-2.3318z"/>
+              <path fill="#EA4335" d="M9 3.5795c1.3214 0 2.5077.4541 3.4405 1.346l2.5813-2.5814C13.4632.9205 11.426 0 9 0 5.4818 0 2.4382 2.0168.9573 4.9582L3.964 7.29C4.6718 5.1627 6.656 3.5795 9 3.5795z"/>
+            </svg>
+            <span>المتابعة والتسجيل باستخدام حساب Google</span>
+          </button>
+        </div>
+
+        <div style="display:flex; align-items:center; max-width:440px; margin:1.25rem auto; gap:0.75rem;">
+          <div style="flex:1; height:1px; background:var(--border-color);"></div>
+          <span style="font-size:0.78rem; color:var(--text-muted); font-weight:700;">أو الدخول المباشر بالكود</span>
+          <div style="flex:1; height:1px; background:var(--border-color);"></div>
+        </div>
+
+        <div style="background:var(--bg-card-subtle); border:1px solid var(--border-color); border-radius:var(--radius-md); padding:1.25rem; max-width:440px; margin:0 auto 2rem; box-shadow:var(--shadow-sm);">
           <label style="display:block; font-size:0.85rem; font-weight:700; color:var(--text-main); margin-bottom:0.5rem; text-align:right;">
             🔑 كود الطالب الخاص (Access Code):
           </label>
@@ -138,11 +184,6 @@ export async function renderStudentDashboard() {
         </div>
 
         <div class="portal-features-grid">
-          <div class="portal-feature-box">
-            <span style="font-size:1.8rem; display:block; margin-bottom:0.4rem;">🎯</span>
-            <strong style="display:block; color:var(--text-main); font-size:0.95rem; margin-bottom:0.25rem;">متابعة الهدف والباند</strong>
-            <p style="font-size:0.8rem; color:var(--text-muted); margin:0;">رسم بياني لتطورك عبر المعايير الأربعة (TR, CC, LR, GRA) نحو الباند المستهدف.</p>
-          </div>
 
           <div class="portal-feature-box">
             <span style="font-size:1.8rem; display:block; margin-bottom:0.4rem;">🧬</span>
@@ -204,7 +245,96 @@ export async function renderStudentDashboard() {
     return;
   }
 
-  // 2. If student is logged in -> Render Personal Dashboard
+  // 1.5. If logged in BUT status === 'pending' -> Render Exclusive Activation Screen
+  if (activeStudent.status === 'pending') {
+    container.innerHTML = `
+      <div class="student-portal-login-card" style="border: 2px dashed #f59e0b; background: rgba(245, 158, 11, 0.04); max-width: 620px;">
+        <div style="width:75px; height:75px; margin:0 auto 1.25rem; border-radius:50%; background:rgba(245, 158, 11, 0.15); display:flex; align-items:center; justify-content:center; font-size:2.2rem; border:2px solid #f59e0b;">
+          ⏳
+        </div>
+        
+        <h2 style="font-size:1.5rem; font-weight:800; color:var(--text-main); margin-bottom:0.5rem;">
+          أهلاً بك يا ${activeStudent.name} 👋
+        </h2>
+        <p style="color:var(--text-secondary); font-size:0.92rem; margin-bottom:1.5rem;">
+          تم تسجيل دخولك بنجاح${activeStudent.email ? ` عبر Google (${activeStudent.email})` : ''}.
+        </p>
+
+        <div style="background:var(--bg-card); border:1px solid var(--border-color); border-radius:var(--radius-md); padding:1.5rem; margin-bottom:1.5rem; text-align:right; box-shadow:var(--shadow-sm);">
+          <div style="color:#f59e0b; font-weight:800; font-size:1rem; margin-bottom:0.75rem; display:flex; align-items:center; gap:0.5rem;">
+            <span>🔒</span> حسابك بانتظار إدخال كود التفعيل
+          </div>
+          <p style="font-size:0.88rem; color:var(--text-secondary); line-height:1.65; margin-bottom:1.25rem;">
+            تم حظر محاكي تقييم المقالات مؤقتاً حتى تقوم بتأكيد اشتراكك وإدخال <strong>كود التفعيل</strong> الذي يرسله لك المعلم عبر الواتساب.
+          </p>
+
+          <div style="margin-bottom:1.25rem; background:var(--bg-card-subtle); padding:1rem; border-radius:var(--radius-sm); border:1px solid var(--border-color);">
+            <div style="font-size:0.85rem; font-weight:700; color:var(--text-main); margin-bottom:0.4rem;">
+              1️⃣ تواصل مع المعلم لاستلام كود التفعيل:
+            </div>
+            <a href="https://wa.me/966549724510?text=${encodeURIComponent(`مرحباً أستاذي، قمت بالتسجيل عبر Google باسم (${activeStudent.name}) وبريد (${activeStudent.email || ''}). أود استلام كود التفعيل الخاص بي في منصة الآيلتس.`)}" target="_blank" class="btn btn-whatsapp" style="display:inline-flex; width:100%; justify-content:center; gap:0.5rem; padding:0.65rem 1rem;">
+              <span>💬</span> مراسلة المعلم عبر الواتساب (966549724510)
+            </a>
+          </div>
+
+          <div>
+            <div style="font-size:0.85rem; font-weight:700; color:var(--text-main); margin-bottom:0.4rem;">
+              2️⃣ أدخل كود التفعيل الذي أرسله لك المعلم:
+            </div>
+            <div style="display:flex; gap:0.5rem;">
+              <input type="text" id="pending-activation-code-input" class="form-input" placeholder="مثال: IELTS-4098" style="font-family:monospace; font-weight:700; font-size:1.05rem; text-align:center;">
+              <button id="pending-activate-btn" class="btn btn-primary" style="white-space:nowrap; padding:0.6rem 1.4rem;">تفعيل الحساب الآن 🚀</button>
+            </div>
+            <div id="pending-activation-error" style="color:var(--danger); font-size:0.85rem; margin-top:0.5rem; display:none; font-weight:600;"></div>
+          </div>
+        </div>
+
+        <button id="pending-logout-btn" class="btn btn-secondary btn-sm" style="gap:0.4rem; padding:0.5rem 1.25rem;">
+          <span>🚪</span> تسجيل الخروج من هذا الحساب
+        </button>
+      </div>
+    `;
+
+    document.getElementById('pending-logout-btn')?.addEventListener('click', () => {
+      logoutStudent();
+    });
+
+    const actBtn = document.getElementById('pending-activate-btn');
+    const actInput = document.getElementById('pending-activation-code-input');
+    const actErr = document.getElementById('pending-activation-error');
+
+    async function handleActivation() {
+      const code = actInput?.value.trim();
+      if (!code) {
+        if (actErr) { actErr.style.display = 'block'; actErr.textContent = 'يرجى كتابة كود التفعيل أولاً.'; }
+        return;
+      }
+      actBtn.disabled = true;
+      actBtn.textContent = 'جاري التفعيل...';
+      if (actErr) actErr.style.display = 'none';
+
+      try {
+        await activateStudentAccount(code);
+        alert('🎉 تهانينا! تم تفعيل حسابك بنجاح. تم فتح محاكي التقييم وتشخيص الأخطاء بالكامل.');
+      } catch (e) {
+        actBtn.disabled = false;
+        actBtn.textContent = 'تفعيل الحساب الآن 🚀';
+        if (actErr) {
+          actErr.style.display = 'block';
+          actErr.textContent = e.message || 'كود التفعيل غير مطابق.';
+        }
+      }
+    }
+
+    actBtn?.addEventListener('click', handleActivation);
+    actInput?.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') handleActivation();
+    });
+
+    return;
+  }
+
+  // 2. If student is logged in and active -> Render Personal Dashboard
   container.innerHTML = `
     <div style="text-align:center; padding:4rem 2rem;">
       <div class="spinner" style="margin:0 auto 1rem;"></div>

@@ -122,12 +122,16 @@ export async function renderAdminDashboard() {
           <td style="padding:0.9rem 0.6rem; font-weight:700; color:var(--text-muted);">#${idx + 1}</td>
           <td style="padding:0.9rem 0.6rem;">
             <div style="display:flex; align-items:center; gap:0.6rem;">
-              <div style="width:32px; height:32px; border-radius:50%; background:var(--primary-light); color:var(--primary); font-weight:800; display:flex; align-items:center; justify-content:center; font-size:0.85rem; border:1px solid var(--primary-border);">
-                ${initials}
+              <div style="width:34px; height:34px; border-radius:50%; background:var(--primary-light); color:var(--primary); font-weight:800; display:flex; align-items:center; justify-content:center; font-size:0.85rem; border:1px solid var(--primary-border); overflow:hidden;">
+                ${s.picture ? `<img src="${s.picture}" style="width:100%; height:100%; object-fit:cover;" />` : initials}
               </div>
               <div>
-                <strong style="display:block; color:var(--text-main); font-size:0.95rem;">${s.name}</strong>
-                <span style="font-size:0.75rem; color:var(--text-muted);">${s.phone || 'بدون رقم هاتف'}</span>
+                <strong style="display:block; color:var(--text-main); font-size:0.95rem;">
+                  ${s.name} ${s.email ? `<span style="font-size:0.75rem; color:#4285F4; font-weight:600;">(Google)</span>` : ''}
+                </strong>
+                <span style="font-size:0.75rem; color:var(--text-muted);">
+                  ${s.email ? `📧 ${s.email}` : (s.phone ? `📱 ${s.phone}` : 'بدون رقم هاتف')}
+                </span>
               </div>
             </div>
           </td>

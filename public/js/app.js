@@ -1,5 +1,5 @@
 import { initTheme } from './theme.js';
-import { initStudentState, renderStudentDashboard, loginWithCode, logoutStudent, getActiveStudent } from './student.js';
+import { initStudentState, renderStudentDashboard, loginWithCode, loginWithGoogle, logoutStudent, getActiveStudent } from './student.js';
 import { initEditor } from './editor.js';
 import { renderFeedbackReport } from './report-renderer.js';
 import { renderAdminDashboard } from './admin.js';
@@ -138,6 +138,68 @@ function setupModals() {
   if (closeStudentModal && studentModal) {
     closeStudentModal.addEventListener('click', () => {
       studentModal.classList.remove('open');
+    });
+  }
+
+  // Google Sign-In wiring
+  const googleLoginBtn = document.getElementById('google-login-btn');
+  const googleDialogModal = document.getElementById('google-signin-dialog-modal');
+  const closeGoogleDialogModal = document.getElementById('close-google-dialog-modal');
+  const googleConfirmBtn = document.getElementById('google-confirm-signin-btn');
+  const googleInputName = document.getElementById('google-input-name');
+  const googleInputEmail = document.getElementById('google-input-email');
+
+  if (googleLoginBtn && googleDialogModal) {
+    googleLoginBtn.addEventListener('click', () => {
+      studentModal?.classList.remove('open');
+      googleDialogModal.classList.add('open');
+      setTimeout(() => googleInputName?.focus(), 100);
+    });
+  }
+
+  if (closeGoogleDialogModal && googleDialogModal) {
+    closeGoogleDialogModal.addEventListener('click', () => {
+      googleDialogModal.classList.remove('open');
+    });
+  }
+
+  if (googleConfirmBtn) {
+    googleConfirmBtn.addEventListener('click', async () => {
+      const name = googleInputName?.value.trim() || 'طالب Google';
+      const email = googleInputEmail?.value.trim() || '';
+
+      if (!email || !email.includes('@')) {
+        alert('يرجى إدخال بريد إلكتروني صحيح (Gmail).');
+        googleInputEmail?.focus();
+        return;
+      }
+
+      googleConfirmBtn.disabled = true;
+      googleConfirmBtn.textContent = 'جاري تسجيل الدخول...';
+
+      try {
+        const result = await loginWithGoogle({
+          name,
+          email,
+          picture: `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=4285F4&color=fff&size=128`,
+          google_id: 'g_' + Date.now()
+        });
+
+        googleDialogModal.classList.remove('open');
+        googleConfirmBtn.disabled = false;
+        googleConfirmBtn.innerHTML = '<span>🚀</span> تأكيد ومتابعة الدخول';
+
+        showToast(`مرحباً ${result.student.name}! تم تسجيل حسابك. بانتظار كود التفعيل من المعلم.`, 'info');
+        switchTab('profile');
+      } catch (err) {
+        googleConfirmBtn.disabled = false;
+        googleConfirmBtn.innerHTML = '<span>🚀</span> تأكيد ومتابعة الدخول';
+        alert('فشل تسجيل الدخول عبر Google: ' + err.message);
+      }
+    });
+
+    googleInputEmail?.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') googleConfirmBtn.click();
     });
   }
 
