@@ -1,5 +1,5 @@
 import { initTheme } from './theme.js';
-import { initStudentState, renderStudentDashboard, loginWithCode, logoutStudent } from './student.js';
+import { initStudentState, renderStudentDashboard, loginWithCode, logoutStudent, getActiveStudent } from './student.js';
 import { initEditor } from './editor.js';
 import { renderFeedbackReport } from './report-renderer.js';
 import { renderAdminDashboard } from './admin.js';
@@ -82,16 +82,30 @@ function setupModals() {
     });
   }
 
+  // Modal active session elements
+  const modalActiveBox = document.getElementById('modal-active-session-box');
+  const modalActiveName = document.getElementById('modal-active-student-name');
+  const modalLogoutBtn = document.getElementById('modal-logout-btn');
+
+  function openStudentModal() {
+    const student = getActiveStudent();
+    if (student) {
+      if (modalActiveBox) modalActiveBox.style.display = 'block';
+      if (modalActiveName) modalActiveName.textContent = `${student.name} (${student.access_code || student.id})`;
+    } else {
+      if (modalActiveBox) modalActiveBox.style.display = 'none';
+    }
+    if (loginErrorDiv) loginErrorDiv.style.display = 'none';
+    studentModal.classList.add('open');
+    if (loginCodeInput) {
+      loginCodeInput.value = '';
+      setTimeout(() => loginCodeInput.focus(), 100);
+    }
+  }
+
   // Header Student Login Button
   if (headerLoginBtn && studentModal) {
-    headerLoginBtn.addEventListener('click', () => {
-      if (loginErrorDiv) loginErrorDiv.style.display = 'none';
-      studentModal.classList.add('open');
-      if (loginCodeInput) {
-        loginCodeInput.value = '';
-        setTimeout(() => loginCodeInput.focus(), 100);
-      }
-    });
+    headerLoginBtn.addEventListener('click', openStudentModal);
   }
 
   // Header Student Profile Pill click -> Navigate to My Academic DNA
@@ -106,7 +120,17 @@ function setupModals() {
   if (headerLogoutBtn) {
     headerLogoutBtn.addEventListener('click', (e) => {
       e.stopPropagation();
+      e.preventDefault();
       logoutStudent();
+      showToast('تم تسجيل الخروج بنجاح. حسابك محمي ومقالاتك محفوظة.', 'info');
+    });
+  }
+
+  // Modal Logout Button
+  if (modalLogoutBtn && studentModal) {
+    modalLogoutBtn.addEventListener('click', () => {
+      logoutStudent();
+      studentModal.classList.remove('open');
       showToast('تم تسجيل الخروج بنجاح. حسابك محمي ومقالاتك محفوظة.', 'info');
     });
   }
