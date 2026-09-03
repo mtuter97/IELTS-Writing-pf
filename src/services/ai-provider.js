@@ -29,7 +29,7 @@ export function cleanJsonText(rawText) {
  * Google AI Studio (Gemini REST API)
  */
 async function callGemini({ apiKey, model, systemPrompt, userPrompt }) {
-  const candidateModels = [model, 'gemini-2.5-flash', 'gemini-1.5-flash', 'gemini-1.5-pro'].filter(Boolean);
+  const candidateModels = [model, 'gemini-3.6-flash', 'gemini-2.5-flash', 'gemini-1.5-flash'].filter(Boolean);
   const uniqueModels = [...new Set(candidateModels)];
 
   let lastError = null;
@@ -165,11 +165,11 @@ async function callOpenRouter({ apiKey, model, systemPrompt, userPrompt }) {
  * You.com Platform API (https://you.com/platform)
  */
 async function callYouCom({ apiKey, systemPrompt, userPrompt }) {
-  const combinedPrompt = `${systemPrompt}\n\nIMPORTANT: You must return ONLY a valid JSON object strictly matching the schema with NO markdown code blocks or extra text.\n\n${userPrompt}`;
+  const combinedPrompt = `${systemPrompt}\n\nCRITICAL INSTRUCTION: You must evaluate this text and return ONLY a valid JSON object strictly matching the schema with NO extra text or markdown formatting.\n\n${userPrompt}`;
 
   const endpoints = [
     {
-      url: 'https://api.you.com/v1/answer',
+      url: 'https://api.you.com/v1/research',
       headers: {
         'Content-Type': 'application/json',
         'X-API-Key': apiKey
@@ -177,27 +177,12 @@ async function callYouCom({ apiKey, systemPrompt, userPrompt }) {
       body: { input: combinedPrompt }
     },
     {
-      url: 'https://api.you.com/v1/research',
+      url: 'https://api.you.com/v1/answer',
       headers: {
         'Content-Type': 'application/json',
         'X-API-Key': apiKey
       },
-      body: { input: combinedPrompt, research_effort: 'standard' }
-    },
-    {
-      url: 'https://api.you.com/v1/chat/completions',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${apiKey}`,
-        'X-API-Key': apiKey
-      },
-      body: {
-        model: 'you-smart',
-        messages: [
-          { role: 'system', content: systemPrompt },
-          { role: 'user', content: userPrompt }
-        ]
-      }
+      body: { query: combinedPrompt }
     }
   ];
 
@@ -212,9 +197,21 @@ async function callYouCom({ apiKey, systemPrompt, userPrompt }) {
 
       if (response.ok) {
         const data = await response.json();
-        const textOutput = data?.answer || data?.output || data?.response || data?.choices?.[0]?.message?.content || (typeof data === 'string' ? data : null);
-        if (textOutput) {
-          return cleanJsonText(textOutput);
+        let rawText = '';
+        if (typeof data?.output?.content === 'string') {
+          rawText = data.output.content;
+        } else if (typeof data?.output === 'string') {
+          rawText = data.output;
+        } else if (typeof data?.answer === 'string') {
+          rawText = data.answer;
+        } else if (typeof data?.response === 'string') {
+          rawText = data.response;
+        } else if (typeof data?.choices?.[0]?.message?.content === 'string') {
+          rawText = data.choices[0].message.content;
+        }
+
+        if (rawText) {
+          return cleanJsonText(rawText);
         }
       } else {
         const errText = await response.text();
@@ -229,38 +226,63 @@ async function callYouCom({ apiKey, systemPrompt, userPrompt }) {
 }
 
 /**
- * Unified Evaluator Dispatcher
+ * Unified Evaluator Dispatcher with Multi-Provider Auto-Fallback
  */
-export async function evaluateWithAI({ provider, apiKey, model, systemPrompt, userPrompt }) {
-  if (!apiKey) {
-    throw new Error(`API key for provider '${provider}' is missing. Please set it in Settings or .env`);
+export async function evaluateWithAI({ provider, apiKey, model, systemPrompt, userPrompt, allSettings = {} }) {
+  async function runProvider(prov, key, mdl) {
+    switch (prov.toLowerCase()) {
+      case 'you':
+      case 'youcom':
+        return await callYouCom({ apiKey: key, systemPrompt, userPrompt });
+      case 'gemini':
+      case 'google':
+        return await callGemini({ apiKey: key, model: mdl || 'gemini-2.5-flash', systemPrompt, userPrompt });
+      case 'groq':
+        return await callGroq({ apiKey: key, model: mdl || 'llama-3.3-70b-versatile', systemPrompt, userPrompt });
+      case 'openrouter':
+        return await callOpenRouter({ apiKey: key, model: mdl || 'google/gemini-2.5-flash', systemPrompt, userPrompt });
+      default:
+        throw new Error(`Unsupported AI provider: ${prov}`);
+    }
   }
 
-  let rawJson = '';
-  switch (provider.toLowerCase()) {
-    case 'gemini':
-    case 'google':
-      rawJson = await callGemini({ apiKey, model, systemPrompt, userPrompt });
-      break;
-    case 'groq':
-      rawJson = await callGroq({ apiKey, model, systemPrompt, userPrompt });
-      break;
-    case 'openrouter':
-      rawJson = await callOpenRouter({ apiKey, model, systemPrompt, userPrompt });
-      break;
-    case 'you':
-    case 'youcom':
-      rawJson = await callYouCom({ apiKey, systemPrompt, userPrompt });
-      break;
-    default:
-      throw new Error(`Unsupported AI provider: ${provider}. Supported: gemini, groq, openrouter, you`);
+  // Priority queue: Requested provider first, then other available providers as fallbacks
+  const providersToTry = [];
+  const primaryProv = provider || 'you';
+  providersToTry.push({
+    provider: primaryProv,
+    apiKey: apiKey || allSettings.you_api_key || allSettings.gemini_api_key,
+    model: model
+  });
+
+  // Register fallbacks
+  if (primaryProv !== 'you' && allSettings.you_api_key) {
+    providersToTry.push({ provider: 'you', apiKey: allSettings.you_api_key, model: allSettings.you_model });
+  }
+  if (primaryProv !== 'gemini' && allSettings.gemini_api_key) {
+    providersToTry.push({ provider: 'gemini', apiKey: allSettings.gemini_api_key, model: 'gemini-2.5-flash' });
+  }
+  if (primaryProv !== 'groq' && allSettings.groq_api_key) {
+    providersToTry.push({ provider: 'groq', apiKey: allSettings.groq_api_key, model: allSettings.groq_model });
+  }
+  if (primaryProv !== 'openrouter' && allSettings.openrouter_api_key) {
+    providersToTry.push({ provider: 'openrouter', apiKey: allSettings.openrouter_api_key, model: allSettings.openrouter_model });
   }
 
-  try {
-    const parsedData = JSON.parse(rawJson);
-    return parsedData;
-  } catch (err) {
-    console.error('Failed to parse AI response as JSON. Raw output was:', rawJson);
-    throw new Error(`Failed to parse AI assessment result as JSON: ${err.message}`);
+  let lastError = null;
+  for (const candidate of providersToTry) {
+    if (!candidate.apiKey) continue;
+    try {
+      const rawJson = await runProvider(candidate.provider, candidate.apiKey, candidate.model);
+      const parsedData = JSON.parse(rawJson);
+      if (parsedData && (parsedData.scores || parsedData.detailed_mistakes)) {
+        return parsedData;
+      }
+    } catch (err) {
+      console.warn(`[AI Engine] Provider '${candidate.provider}' encountered issue: ${err.message}. Trying next available provider...`);
+      lastError = err;
+    }
   }
+
+  throw lastError || new Error('All AI providers failed to evaluate. Please verify your API keys in settings.');
 }

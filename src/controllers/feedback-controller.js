@@ -309,13 +309,14 @@ export async function evaluateEssayHandler(req, res) {
     const systemPrompt = buildSystemPrompt(task_type, mistakeHistory);
     const userPrompt = buildUserPrompt(task_type, prompt_question, essay_content);
 
-    // Call AI
+    // Call AI with smart multi-provider fallback
     const rawAiResult = await evaluateWithAI({
       provider,
       apiKey,
       model,
       systemPrompt,
-      userPrompt
+      userPrompt,
+      allSettings: settings
     });
 
     // Enforce official Band Score calculation & Rounding

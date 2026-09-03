@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "start": "node src/server.js",
-    "dev": "node --watch src/server.js"
+    "dev": "node --watch --watch-path=src src/server.js"
   },
   "keywords": ["ielts", "writing", "feedback", "band-descriptors", "ai-evaluator"],
   "author": "",
