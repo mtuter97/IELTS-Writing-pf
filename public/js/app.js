@@ -39,6 +39,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     const savedTab = localStorage.getItem('ielts_active_tab');
     if (savedTab && (savedTab === 'profile' || savedTab === 'report' || savedTab === 'editor')) {
       switchTab(savedTab);
+    } else {
+      switchTab('editor');
     }
   }
 
@@ -88,6 +90,7 @@ export function switchTab(tabName) {
   localStorage.setItem('ielts_active_tab', tabName);
   const tabButtons = document.querySelectorAll('.tab-btn');
   const views = document.querySelectorAll('.view-section');
+  const landingSections = document.querySelectorAll('.hero_area, .feature-area, .why-choose-area, .testimonial-area');
 
   tabButtons.forEach(btn => {
     btn.classList.toggle('active', btn.getAttribute('data-tab') === tabName);
@@ -96,6 +99,13 @@ export function switchTab(tabName) {
   views.forEach(view => {
     view.classList.toggle('active', view.id === `view-${tabName}`);
   });
+
+  // Only show landing overview sections on the simulator/editor tab
+  const isEditor = (tabName === 'editor');
+  landingSections.forEach(sec => {
+    sec.style.display = isEditor ? 'block' : 'none';
+  });
+  window.scrollTo({ top: 0, behavior: 'smooth' });
 
   if (tabName === 'profile') {
     renderStudentDashboard();

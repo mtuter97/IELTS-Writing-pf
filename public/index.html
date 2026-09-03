@@ -9,22 +9,49 @@
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Outfit:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   
-  <!-- Styles -->
-  <link rel="stylesheet" href="css/base.css?v=4.0-persistent-state">
-  <link rel="stylesheet" href="css/editor.css?v=4.0-persistent-state">
-  <link rel="stylesheet" href="css/report.css?v=4.0-persistent-state">
+  <!-- Edulax Vendor Styles & Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link rel="stylesheet" href="assets/edulax/css/all.min.css">
+  <link rel="stylesheet" href="assets/edulax/css/bootstrap-icons.css">
+  <link rel="stylesheet" href="assets/edulax/css/flaticon.css">
+  <link rel="stylesheet" href="assets/edulax/css/coustom-animation.css">
+
+  <!-- Core App Styles -->
+  <link rel="stylesheet" href="css/base.css?v=6.5-edulax-pro">
+  <link rel="stylesheet" href="css/editor.css?v=6.5-edulax-pro">
+  <link rel="stylesheet" href="css/report.css?v=6.5-edulax-pro">
 </head>
 <body>
 
+  <!-- Edulax Header Top Area -->
+  <div class="header-top-area">
+    <div class="header-top-container">
+      <div class="header-top-welcome">
+        <p>
+          <img src="assets/edulax/images/home-one/top-star.png" alt="star" class="top-star-icon">
+          <span>مرحباً بك في <strong>IELTS Examiner</strong> — المنظومة الأكاديمية الأولى المطابقة لمعايير كامبريدج 2026</span>
+        </p>
+      </div>
+      <div class="header-top-right">
+        <div class="edulax-header-from">
+          <a href="https://wa.me/966549724510" target="_blank" class="top-contact-link">
+            <svg class="svg-icon svg-icon-xs" style="fill:currentColor; stroke:none;" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
+            <span>خدمة المشتركين المباشرة (واتساب)</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- Top App Header -->
-  <header class="app-header">
+  <header class="app-header edulax-header-area">
     <div class="header-container">
       <div class="brand-wrapper">
-        <div class="brand-icon" style="background:var(--primary-gradient); color:#fff; box-shadow:0 0 20px var(--primary-glow); border:1px solid rgba(255,255,255,0.2);">
-          <svg class="svg-icon svg-icon-md" viewBox="0 0 24 24"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/><path d="m15 5 4 4"/></svg>
-        </div>
+        <a href="index.html" class="brand-logo-link">
+          <img src="assets/edulax/images/logo.png" alt="IELTS Examiner" class="edulax-logo-img">
+        </a>
         <div class="brand-text">
           <h1>IELTS Writing Examiner</h1>
           <p>منظومة الفاحص المعتمد 2026 وتتبع البصمة الأكاديمية</p>
@@ -35,7 +62,7 @@
         <!-- Theme Toggle Button (Light / Dark) -->
         <button id="theme-toggle-btn" class="theme-toggle-btn" title="تبديل المظهر (فاتح / داكن)">
           <span id="theme-toggle-icon">
-            <svg class="svg-icon svg-icon-sm" viewBox="0 0 24 24"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
+            <i class="bi bi-moon-stars-fill"></i>
           </span>
           <span id="theme-toggle-text" style="font-size:0.82rem;">داكن</span>
         </button>
@@ -43,7 +70,7 @@
         <!-- Student Hub (Login / Active Profile) -->
         <div id="header-student-container" class="header-student-container">
           <button id="header-login-btn" class="student-login-trigger-btn" title="تسجيل دخول الطالب">
-            <svg class="svg-icon svg-icon-sm" viewBox="0 0 24 24"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" x2="3" y1="12" y2="12"/></svg>
+            <i class="bi bi-person-fill-check"></i>
             <span>دخول الطالب</span>
           </button>
           
@@ -54,7 +81,7 @@
               <span id="header-student-status" class="badge badge-success">مفعل</span>
             </div>
             <button id="header-student-logout-btn" class="student-header-logout-btn" title="تسجيل الخروج لحماية حسابك">
-              <svg class="svg-icon svg-icon-xs" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" x2="9" y1="12" y2="12"/></svg>
+              <i class="bi bi-box-arrow-right"></i>
               <span>خروج</span>
             </button>
           </div>
@@ -63,20 +90,20 @@
     </div>
   </header>
 
-  <!-- Navigation Tabs -->
-  <nav class="tabs-nav">
+  <!-- Navigation Tabs Row -->
+  <nav class="tabs-nav" aria-label="Main Navigation">
     <div class="tabs-container">
       <button class="tab-btn active" data-tab="editor">
-        <svg class="svg-icon svg-icon-sm" viewBox="0 0 24 24"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/><path d="m15 5 4 4"/></svg>
+        <i class="bi bi-pencil-square" style="font-size:1rem;"></i>
         <span>محاكي وكتابة المقال (Exam Simulator)</span>
       </button>
       <button class="tab-btn" data-tab="report">
-        <svg class="svg-icon svg-icon-sm" viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/></svg>
+        <i class="bi bi-graph-up-arrow" style="font-size:1rem;"></i>
         <span>تقرير التقييم المعتمد (Diagnostic Report)</span>
       </button>
       <button class="tab-btn" data-tab="profile">
-        <svg class="svg-icon svg-icon-sm" viewBox="0 0 24 24"><path d="m2 15 5.5-5.5a2.12 2.12 0 0 1 3 0L12 11"/><path d="m12 13 1.5 1.5a2.12 2.12 0 0 0 3 0L22 9"/><path d="m17 4 3 3"/><path d="m4 17 3 3"/><path d="m9 10 6 6"/><path d="m15 8-6 6"/></svg>
-        <span>ملفي الأكاديمي وبصمة أخطائي (My Academic DNA)</span>
+        <i class="bi bi-person-workspace" style="font-size:1rem;"></i>
+        <span>ملفي وبصمة أخطائي (My Academic DNA)</span>
       </button>
     </div>
   </nav>
@@ -84,143 +111,101 @@
   <!-- Main View Area -->
   <main class="main-wrapper">
 
-    <!-- HERO INTRODUCTION SECTION -->
-    <section class="hero-section">
-      <div style="display:flex; gap:0.75rem; justify-content:center; flex-wrap:wrap; margin-bottom:1.25rem;">
-        <div class="hero-badge-pill">
-          <svg class="svg-icon svg-icon-sm" style="color:var(--accent-amber);" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-          <span>المنظومة الأكاديمية الأولى المطابقة لمعايير كامبريدج 2026</span>
-        </div>
-        <div class="hero-badge-pill" style="background:rgba(16, 185, 129, 0.08); border-color:rgba(16, 185, 129, 0.25); color:var(--success);">
-          <svg class="svg-icon svg-icon-xs" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-          <span>مجتمع المشتركين: أكثر من <strong id="hero-subscribers-count" style="font-weight:900;">100+</strong> طالب ومشترك نشط</span>
-        </div>
-      </div>
-      <h2 class="hero-title">
-        تشخيص جراحي لمقالات الآيلتس مع <span>تقنية بصمة الأخطاء المتكررة</span>
-      </h2>
-      <p class="hero-subtitle">
-        تحلل هذه المنظومة مقالك بدقة فاحص معتمد عبر المعايير الأربعة الرسمية (TR, CC, LR, GRA)، وترصد أخطاءك النحوية والمفردات التي تكررت من مقالات سابقة، مع توفير نموذج إعادة صياغة Band 8+ وخطة تدريب فورية.
-      </p>
+    <!-- ================================================== -->
+    <!-- Authentic Edulax Hero Area (Style One) -->
+    <!-- ================================================== -->
+    <section class="hero_area style-one">
+      <div class="hero-container">
+        <div class="hero-row">
+          
+          <!-- Left Column: Content -->
+          <div class="hero-col-left">
+            <div class="hero_content">
+              <h1 class="sub-title"><i class="bi bi-patch-check-fill"></i> 100% مطابقة لمعايير كامبريدج 2026</h1>
+              <h1 class="hero-main-title">تشخيص جراحي لمقالات الآيلتس</h1>
+              <h1 class="hero-main-title highlight-title">مع تقنية بصمة الأخطاء المتكررة</h1>
+              <p class="hero-desc">
+                تحلل هذه المنظومة مقالك بدقة فاحص معتمد عبر المعايير الأربعة الرسمية (TR, CC, LR, GRA)، وترصد أخطاءك النحوية والمفردات التي تكررت من مقالات سابقة، مع توفير نموذج إعادة صياغة Band 8+ وخطة تدريب فورية.
+              </p>
+              
+              <!-- Hero Buttons -->
+              <div class="hero-button">
+                <div class="hero-btn">
+                  <a href="javascript:void(0);" onclick="document.querySelector('[data-tab=\'editor\']').click(); document.getElementById('essay-input').focus();">ابدأ كتابة مقالك الآن <i class="bi bi-arrow-left"></i></a>
+                </div>
+                <div class="hero-course-btn">
+                  <a href="#criteria-features">معايير كامبريدج الأربعة <i class="bi bi-arrow-left"></i></a>
+                </div>
+              </div>
 
-      <!-- 2026 INTERACTIVE CAMBRIDGE CRITERIA CAROUSEL SLIDER -->
-      <div class="criteria-carousel-section">
-        <div class="criteria-carousel-header">
-          <div style="display:flex; align-items:center; gap:0.5rem;">
-            <svg class="svg-icon" style="color:var(--primary);" viewBox="0 0 24 24"><line x1="4" x2="4" y1="21" y2="14"/><line x1="4" x2="4" y1="10" y2="3"/><line x1="12" x2="12" y1="21" y2="12"/><line x1="12" x2="12" y1="8" y2="3"/><line x1="20" x2="20" y1="21" y2="16"/><line x1="20" x2="20" y1="12" y2="3"/><line x1="1" x2="7" y1="14" y2="14"/><line x1="9" x2="15" y1="8" y2="8"/><line x1="17" x2="23" y1="16" y2="16"/></svg>
-            <strong style="font-size:0.95rem; color:var(--text-main);">اسلايدز معايير كامبريدج الأربعة (Cambridge Band Descriptors):</strong>
-          </div>
-          <div class="carousel-nav-controls">
-            <button id="criteria-prev-btn" class="carousel-nav-btn" title="السابق">
-              <svg class="svg-icon svg-icon-xs" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></svg>
-            </button>
-            <button id="criteria-next-btn" class="carousel-nav-btn" title="التالي">
-              <svg class="svg-icon svg-icon-xs" viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></svg>
-            </button>
-          </div>
-        </div>
-
-        <div class="criteria-carousel-wrapper">
-          <div id="criteria-carousel" class="criteria-carousel">
-            <!-- Slide 1: Task Response -->
-            <div class="criteria-card">
-              <div>
-                <div class="criteria-card-top">
-                  <div class="criteria-icon-box" style="background:linear-gradient(135deg, #3b82f6, #1d4ed8);">
-                    <svg class="svg-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
+              <!-- Hero Rating & Social Proof Box -->
+              <div class="hero-rating-box">
+                <div class="hero-rating-icon">
+                  <img src="assets/edulax/images/home-one/star-icon.png" alt="star">
+                  <span>100+</span>
+                </div>
+                <div class="hero-rating-item-box">
+                  <div class="hero-star-icon">
+                    <ul>
+                      <li><i class="bi bi-star-fill"></i></li>
+                      <li><i class="bi bi-star-fill"></i></li>
+                      <li><i class="bi bi-star-fill"></i></li>
+                      <li><i class="bi bi-star-fill"></i></li>
+                      <li><i class="bi bi-star-fill"></i></li>
+                    </ul>
                   </div>
-                  <div>
-                    <h4 style="font-size:1rem; font-weight:800; color:var(--text-main); margin:0;">Task Response (TR)</h4>
-                    <span style="font-size:0.75rem; color:var(--primary); font-weight:700;">تغطية عناصر السؤال والأفكار الرئيسية</span>
+                  <div class="hero-rating-num">
+                    <span>(4.9/5 تقييم الفاحصين)</span>
+                  </div>
+                  <div class="hero-rating-des">
+                    <p>أكثر من <strong id="hero-subscribers-count" style="font-weight:900;">100+</strong> طالب ومشترك نشط يستفيدون يومياً</p>
                   </div>
                 </div>
-                <p style="font-size:0.84rem; color:var(--text-secondary); line-height:1.6; margin:0 0 1rem;">
-                  فحص دقيق لتغطية جميع أجزاء الموضوع بموقف واضح، وتطوير الحجج بأمثلة وشروحات منطقية دون استطراد أو خروج عن السياق.
-                </p>
-              </div>
-              <div style="background:var(--bg-card-subtle); padding:0.6rem 0.85rem; border-radius:var(--radius-sm); border:1px solid var(--border-color); font-size:0.75rem; font-weight:700; color:var(--text-muted); display:flex; justify-content:space-between;">
-                <span>شرط Band 8+:</span>
-                <span style="color:var(--success);">أفكار موسعة ومدعومة بإحكام</span>
-              </div>
-            </div>
-
-            <!-- Slide 2: Coherence & Cohesion -->
-            <div class="criteria-card">
-              <div>
-                <div class="criteria-card-top">
-                  <div class="criteria-icon-box" style="background:linear-gradient(135deg, #8b5cf6, #6d28d9);">
-                    <svg class="svg-icon" viewBox="0 0 24 24"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
-                  </div>
-                  <div>
-                    <h4 style="font-size:1rem; font-weight:800; color:var(--text-main); margin:0;">Coherence & Cohesion (CC)</h4>
-                    <span style="font-size:0.75rem; color:var(--accent-violet); font-weight:700;">التماسك والترابط المنطقي والفقرات</span>
-                  </div>
-                </div>
-                <p style="font-size:0.84rem; color:var(--text-secondary); line-height:1.6; margin:0 0 1rem;">
-                  ترتيب الأفكار بتسلسل سلس وتوزيع محكم للفقرات، واستخدام روابط الجمل (Linking Devices) باحترافية وتنوع دون تكرار مفرط.
-                </p>
-              </div>
-              <div style="background:var(--bg-card-subtle); padding:0.6rem 0.85rem; border-radius:var(--radius-sm); border:1px solid var(--border-color); font-size:0.75rem; font-weight:700; color:var(--text-muted); display:flex; justify-content:space-between;">
-                <span>شرط Band 8+:</span>
-                <span style="color:var(--success);">انتقال طبيعي وجمل موضوعية حاسمة</span>
-              </div>
-            </div>
-
-            <!-- Slide 3: Lexical Resource -->
-            <div class="criteria-card">
-              <div>
-                <div class="criteria-card-top">
-                  <div class="criteria-icon-box" style="background:linear-gradient(135deg, #10b981, #047857);">
-                    <svg class="svg-icon" viewBox="0 0 24 24"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg>
-                  </div>
-                  <div>
-                    <h4 style="font-size:1rem; font-weight:800; color:var(--text-main); margin:0;">Lexical Resource (LR)</h4>
-                    <span style="font-size:0.75rem; color:var(--success); font-weight:700;">الثراء اللغوي والتلازم اللفظي الأكاديمي</span>
-                  </div>
-                </div>
-                <p style="font-size:0.84rem; color:var(--text-secondary); line-height:1.6; margin:0 0 1rem;">
-                  قياس دقة المفردات والتراكيب الأكاديمية (Collocations)، مع تنبيهات الفاحص للكلمات المكررة والبدائل المعجمية الراقية.
-                </p>
-              </div>
-              <div style="background:var(--bg-card-subtle); padding:0.6rem 0.85rem; border-radius:var(--radius-sm); border:1px solid var(--border-color); font-size:0.75rem; font-weight:700; color:var(--text-muted); display:flex; justify-content:space-between;">
-                <span>شرط Band 8+:</span>
-                <span style="color:var(--success);">تلازم لفظي نادر ودقة بالغة في السياق</span>
-              </div>
-            </div>
-
-            <!-- Slide 4: Grammatical Range & Accuracy -->
-            <div class="criteria-card">
-              <div>
-                <div class="criteria-card-top">
-                  <div class="criteria-icon-box" style="background:linear-gradient(135deg, #f59e0b, #b45309);">
-                    <svg class="svg-icon" viewBox="0 0 24 24"><path d="m2 15 5.5-5.5a2.12 2.12 0 0 1 3 0L12 11"/><path d="m12 13 1.5 1.5a2.12 2.12 0 0 0 3 0L22 9"/><path d="m17 4 3 3"/><path d="m4 17 3 3"/><path d="m9 10 6 6"/><path d="m15 8-6 6"/></svg>
-                  </div>
-                  <div>
-                    <h4 style="font-size:1rem; font-weight:800; color:var(--text-main); margin:0;">Grammar Range & Accuracy (GRA)</h4>
-                    <span style="font-size:0.75rem; color:var(--accent-amber); font-weight:700;">تنوع التراكيب النحوية ودقة الإعراب</span>
-                  </div>
-                </div>
-                <p style="font-size:0.84rem; color:var(--text-secondary); line-height:1.6; margin:0 0 1rem;">
-                  فحص التراكيب المعقدة (Conditionals, Relative Clauses, Inversions) ورصد الأخطاء الشائعة في توافق الفاعل والفعل وعلامات الترقيم.
-                </p>
-              </div>
-              <div style="background:var(--bg-card-subtle); padding:0.6rem 0.85rem; border-radius:var(--radius-sm); border:1px solid var(--border-color); font-size:0.75rem; font-weight:700; color:var(--text-muted); display:flex; justify-content:space-between;">
-                <span>شرط Band 8+:</span>
-                <span style="color:var(--success);">أغلبية الجمل خالية من أي خطأ نحوي</span>
               </div>
             </div>
           </div>
-        </div>
 
-        <div id="criteria-dots" class="carousel-dots">
-          <span class="carousel-dot active" data-index="0"></span>
-          <span class="carousel-dot" data-index="1"></span>
-          <span class="carousel-dot" data-index="2"></span>
-          <span class="carousel-dot" data-index="3"></span>
+          <!-- Right Column: Cutout Student Thumbnail & Animated Floating Badges -->
+          <div class="hero-col-right">
+            <div class="hero-thumb-wrapper">
+              <div class="hero-thumb">
+                <img src="assets/edulax/images/home-one/hero-thumb1.png" alt="IELTS Writing Student">
+              </div>
+              <div class="hero-shape1 rotateme">
+                <img src="assets/edulax/images/home-one/hero-shape1.png" alt="shape">
+              </div>
+              <div class="hero-arrow-shape">
+                <img src="assets/edulax/images/home-one/hero-arrow.png" alt="arrow">
+              </div>
+              <div class="hero-dot-shape">
+                <img src="assets/edulax/images/home-one/hero-dot.png" alt="dot">
+              </div>
+              <div class="hero-shape3 bounce-animate-3">
+                <img src="assets/edulax/images/home-one/hero-shape3.png" alt="shape">
+              </div>
+
+              <!-- Floating Community Badge Box -->
+              <div class="hero-autor-box">
+                <div class="autor-thumb">
+                  <img src="assets/edulax/images/home-one/hero-autor.png" alt="Instructor">
+                </div>
+                <div class="hero-autor-content">
+                  <div style="display:flex; align-items:baseline; gap:2px;">
+                    <h2 class="counter">100</h2>
+                    <span>+</span>
+                  </div>
+                  <p>طالب ومشترك نشط</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
         </div>
       </div>
     </section>
 
+    <!-- ================================================== -->
+    <!-- Authentic Edulax Core Features Area (Cambridge Criteria) -->
     <!-- SUBSCRIPTION & WHATSAPP ACTIVATION BANNER -->
     <div id="subscription-notice-banner" class="subscription-banner">
       <div class="sub-banner-content">
@@ -294,14 +279,14 @@
             <div class="toolbar-left">
               <!-- 2026 Live Timer -->
               <div id="timer-box" class="timer-box" title="مؤقت الاختبار التنازلي">
-                <svg class="svg-icon svg-icon-sm" style="color:var(--primary);" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                <i class="bi bi-stopwatch-fill" style="color:var(--primary); font-size:1.1rem;"></i>
                 <span id="timer-digits" class="timer-digits">40:00</span>
                 <div class="timer-controls">
                   <button id="timer-toggle-btn" class="timer-btn" title="بدء / إيقاف المؤقت">
-                    <svg class="svg-icon svg-icon-xs" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                    <i class="bi bi-play-fill" style="font-size:1rem;"></i>
                   </button>
                   <button id="timer-reset-btn" class="timer-btn" title="إعادة تعيين المؤقت">
-                    <svg class="svg-icon svg-icon-xs" viewBox="0 0 24 24"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/></svg>
+                    <i class="bi bi-arrow-counterclockwise" style="font-size:0.9rem;"></i>
                   </button>
                 </div>
               </div>
@@ -315,9 +300,9 @@
 
               <!-- Word Counter -->
               <div id="word-count-pill" class="word-counter-pill under">
-                <svg class="svg-icon svg-icon-xs" viewBox="0 0 24 24"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/><path d="m15 5 4 4"/></svg>
+                <i class="bi bi-fonts" style="font-size:1rem;"></i>
                 <span>الكلمات:</span>
-                <span id="word-count-number">0</span> / <span id="word-count-min">250</span>
+                <strong id="word-count-number">0</strong> / <span id="word-count-min">250</span>
               </div>
             </div>
 
@@ -342,17 +327,343 @@
 
           <!-- Footer Action Bar -->
           <div class="editor-footer">
-            <span class="footer-tip" style="display:inline-flex; align-items:center; gap:0.4rem;">
-              <svg class="svg-icon svg-icon-xs" style="color:var(--primary);" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            <span class="footer-tip" style="display:inline-flex; align-items:center; gap:0.5rem;">
+              <i class="bi bi-shield-fill-check" style="color:var(--primary); font-size:1.1rem;"></i>
               <span>يتم فحص مقالك بالاعتماد الكامل على معايير كامبريدج ومطابقته مع سجل أخطائك السابقة.</span>
             </span>
-            <button id="submit-essay-btn" class="btn btn-primary btn-lg" style="display:inline-flex; align-items:center; gap:0.6rem;">
-              <svg class="svg-icon svg-icon-sm" viewBox="0 0 24 24"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/><path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/><path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"/><path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/></svg>
+            <button id="submit-essay-btn" class="btn btn-primary btn-lg" style="display:inline-flex; align-items:center; gap:0.75rem; padding:15px 36px; border-radius:28px; font-weight:800; font-size:1.05rem;">
+              <i class="bi bi-rocket-takeoff-fill" style="font-size:1.2rem;"></i>
               <span>إرسال المقال للتقييم والتشخيص الفوري</span>
+              <i class="bi bi-arrow-left" style="font-size:1.1rem;"></i>
             </button>
           </div>
         </div>
 
+      </div>
+    </section>
+
+    <!-- ================================================== -->
+    <section class="feature-area style-one" id="criteria-features">
+      <div class="section-title-space">
+        <div class="section-sub-title">
+          <h1>معايير التقييم الأربعة</h1>
+        </div>
+        <div class="section_title">
+          <h1>معايير كامبريدج الرسمية للتقييم</h1>
+          <p style="font-size:0.95rem; color:var(--text-muted); margin-top:4px;">Cambridge IELTS Band Descriptors (TR • CC • LR • GRA)</p>
+        </div>
+        <div class="carousel-nav-controls">
+          <button id="criteria-prev-btn" class="carousel-nav-btn" title="السابق">
+            <i class="bi bi-chevron-right"></i>
+          </button>
+          <button id="criteria-next-btn" class="carousel-nav-btn" title="التالي">
+            <i class="bi bi-chevron-left"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- 4 Authentic Edulax Single Feature Boxes with Sliding Corners -->
+      <div class="features-grid">
+        <!-- Box 1: Task Response -->
+        <div class="single-feature-box box-1">
+          <div>
+            <div class="feature-icon">
+              <img src="assets/edulax/images/home-one/feature-icon1.png" alt="Task Response">
+            </div>
+            <div class="feature-content">
+              <span class="feature-subtitle">المعيار الأول</span>
+              <h2 class="feature-title">Task Response (TR)</h2>
+              <p class="feature-desc">
+                فحص دقيق لتغطية جميع أجزاء الموضوع بموقف واضح، وتطوير الحجج بأمثلة وشروحات منطقية دون استطراد أو خروج عن السياق.
+              </p>
+            </div>
+          </div>
+          <div class="feature-band-badge">
+            <span>شرط Band 8+:</span>
+            <span style="color:var(--primary); font-weight:800;">أفكار موسعة ومدعومة</span>
+          </div>
+          <div class="edulax-hover-box hover-bx"></div>
+          <div class="edulax-hover-box hover-bx2"></div>
+          <div class="edulax-hover-box hover-bx3"></div>
+          <div class="edulax-hover-box hover-bx4"></div>
+        </div>
+
+        <!-- Box 2: Coherence & Cohesion -->
+        <div class="single-feature-box box-2">
+          <div>
+            <div class="feature-icon">
+              <img src="assets/edulax/images/home-one/feature-icon2.png" alt="Coherence & Cohesion">
+            </div>
+            <div class="feature-content">
+              <span class="feature-subtitle">المعيار الثاني</span>
+              <h2 class="feature-title">Coherence & Cohesion (CC)</h2>
+              <p class="feature-desc">
+                ترتيب الأفكار بتسلسل سلس وتوزيع محكم للفقرات، واستخدام روابط الجمل (Linking Devices) باحترافية وتنوع دون تكرار مفرط.
+              </p>
+            </div>
+          </div>
+          <div class="feature-band-badge">
+            <span>شرط Band 8+:</span>
+            <span style="color:#ff853f; font-weight:800;">انتقال طبيعي وجمل موضوعية</span>
+          </div>
+          <div class="edulax-hover-box hover-bx"></div>
+          <div class="edulax-hover-box hover-bx2"></div>
+          <div class="edulax-hover-box hover-bx3"></div>
+          <div class="edulax-hover-box hover-bx4"></div>
+        </div>
+
+        <!-- Box 3: Lexical Resource -->
+        <div class="single-feature-box box-3">
+          <div>
+            <div class="feature-icon">
+              <img src="assets/edulax/images/home-one/feature-icon3.png" alt="Lexical Resource">
+            </div>
+            <div class="feature-content">
+              <span class="feature-subtitle">المعيار الثالث</span>
+              <h2 class="feature-title">Lexical Resource (LR)</h2>
+              <p class="feature-desc">
+                قياس دقة المفردات والتراكيب الأكاديمية (Collocations)، مع تنبيهات الفاحص للكلمات المكررة والبدائل المعجمية الراقية.
+              </p>
+            </div>
+          </div>
+          <div class="feature-band-badge">
+            <span>شرط Band 8+:</span>
+            <span style="color:#15c1fa; font-weight:800;">تلازم لفظي نادر ودقة بالغة</span>
+          </div>
+          <div class="edulax-hover-box hover-bx"></div>
+          <div class="edulax-hover-box hover-bx2"></div>
+          <div class="edulax-hover-box hover-bx3"></div>
+          <div class="edulax-hover-box hover-bx4"></div>
+        </div>
+
+        <!-- Box 4: Grammatical Range & Accuracy -->
+        <div class="single-feature-box box-4">
+          <div>
+            <div class="feature-icon">
+              <img src="assets/edulax/images/home-one/feature-icon1.png" alt="Grammar Range & Accuracy" style="filter: hue-rotate(240deg);">
+            </div>
+            <div class="feature-content">
+              <span class="feature-subtitle">المعيار الرابع</span>
+              <h2 class="feature-title">Grammar Range (GRA)</h2>
+              <p class="feature-desc">
+                فحص التراكيب المعقدة (Conditionals, Relative Clauses, Inversions) ورصد الأخطاء الشائعة في توافق الفاعل وعلامات الترقيم.
+              </p>
+            </div>
+          </div>
+          <div class="feature-band-badge">
+            <span>شرط Band 8+:</span>
+            <span style="color:#a64cf9; font-weight:800;">خلو تام للأغلبية من الأخطاء</span>
+          </div>
+          <div class="edulax-hover-box hover-bx"></div>
+          <div class="edulax-hover-box hover-bx2"></div>
+          <div class="edulax-hover-box hover-bx3"></div>
+          <div class="edulax-hover-box hover-bx4"></div>
+        </div>
+      </div>
+
+      <!-- Hidden Carousel Hooks for JS events preservation -->
+      <div id="criteria-carousel" style="display:none;"></div>
+      <div id="criteria-dots" class="carousel-dots" style="margin-top:1.5rem;">
+        <span class="carousel-dot active" data-index="0"></span>
+        <span class="carousel-dot" data-index="1"></span>
+        <span class="carousel-dot" data-index="2"></span>
+        <span class="carousel-dot" data-index="3"></span>
+      </div>
+    </section>
+
+    <!-- ================================================== -->
+    <!-- Authentic Edulax Why Choose Us Area (Style One) -->
+    <!-- ================================================== -->
+    <section class="why-choose-area style-one">
+      <div class="choose-container">
+        <div class="choose-row">
+          
+          <!-- Content Side -->
+          <div class="choose-content">
+            <div class="section-sub-title">
+              <h1>لماذا تتدرب مع منظومة الفاحص؟</h1>
+            </div>
+            <div class="section_title">
+              <h1>منهجية تدريب وتشخيص استثنائية</h1>
+              <p style="font-size:0.95rem; color:var(--text-muted); margin-top:4px;">Innovative and verified Cambridge IELTS learning approaches</p>
+            </div>
+            <div class="section-title-desc">
+              <p style="font-size:0.95rem; line-height:1.75; color:var(--text-color); margin-top:14px; opacity:0.85;">
+                تجمع منظومتنا بين دقة فاحصي كامبريدج المعتمدين وسرعة الذكاء الاصطناعي الأكاديمي، لترصد نقاط ضعفك النحوية والمعجمية وتمنحك الأدوات العملية للارتقاء بـ Band Score في أسرع وقت.
+              </p>
+            </div>
+
+            <!-- 4 Interactive Item Pills with Colors & Icons -->
+            <div class="choose-item-menu">
+              <ul>
+                <li>
+                  <img src="assets/edulax/images/home-one/choose-icon1.png" alt="Simulation">
+                  <span>محاكاة واقعية لاختبار الحاسوب</span>
+                </li>
+                <li>
+                  <img src="assets/edulax/images/home-one/choose-icon2.png" alt="DNA Tracker">
+                  <span>رصد البصمة والأخطاء المتكررة</span>
+                </li>
+                <li>
+                  <img src="assets/edulax/images/home-one/choose-icon3.png" alt="Model 8+">
+                  <span>نموذج إعادة صياغة Band 8+</span>
+                </li>
+                <li>
+                  <img src="assets/edulax/images/home-one/choose-icon4.png" alt="Plan">
+                  <span>خطة تدريب علاجية فورية</span>
+                </li>
+              </ul>
+            </div>
+
+            <div class="choose-support-des">
+              <img src="assets/edulax/images/home-one/top-star.png" alt="star">
+              <span>تقييم فوري وتغذية راجعة تشخيصية خلال ثوانٍ معدودة</span>
+            </div>
+
+            <div class="choose-btn" style="margin-top:10px;">
+              <a href="javascript:void(0);" onclick="document.querySelector('[data-tab=\'editor\']').click(); document.getElementById('essay-input').focus();" class="btn btn-primary" style="padding:14px 34px; border-radius:28px; font-weight:800; display:inline-flex; align-items:center; gap:8px;">
+                <span>ابدأ تجربة المحاكي الآن</span>
+                <i class="bi bi-arrow-left"></i>
+              </a>
+            </div>
+          </div>
+
+          <!-- Thumb Side -->
+          <div class="choose-thumb">
+            <img src="assets/edulax/images/home-one/choose-thumb1.png" alt="Why Choose IELTS Examiner" class="main-thumb">
+            
+            <!-- Floating Skill/Success Box -->
+            <div class="choose-skill-box">
+              <div class="choose-skill-icon">
+                <img src="assets/edulax/images/home-one/choose-rat-icon.png" alt="Success Rate">
+              </div>
+              <div class="choose-skill-content">
+                <div style="display:flex; align-items:baseline; gap:2px;">
+                  <h2 class="counter">98</h2>
+                  <span>%</span>
+                </div>
+                <p>نسبة تحسن درجات الطلاب</p>
+              </div>
+            </div>
+
+            <!-- Floating Shapes -->
+            <div class="choose-shape-dot">
+              <img src="assets/edulax/images/home-one/choose-dot.png" alt="dot">
+            </div>
+            <div class="choose-shape-star">
+              <img src="assets/edulax/images/home-one/choose-star.png" alt="star">
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ================================================== -->
+    <!-- Authentic Edulax Testimonial & Social Proof Area -->
+    <!-- ================================================== -->
+    <section class="testimonial-area style-one">
+      <div class="testi-container">
+        <div class="section-title-space">
+          <div class="section-sub-title">
+            <h1>قصص نجاح المشتركين</h1>
+          </div>
+          <div class="section_title">
+            <h1>تجارب حقيقية لطلاب حققوا درجاتهم المستهدفة</h1>
+            <p style="font-size:0.95rem; color:var(--text-muted); margin-top:4px;">Real Experiences from Dedicated IELTS Candidates (Band 7.5 - 8.5)</p>
+          </div>
+        </div>
+
+        <div class="testi-row">
+          
+          <!-- Testimonial Thumb Image with Dot and Map -->
+          <div class="testi-thumb-wrapper">
+            <div class="testimonial-thumb">
+              <img src="assets/edulax/images/home-one/testi-thumb.png" alt="IELTS Candidates Success">
+            </div>
+            <div class="testi-dot-shape">
+              <img src="assets/edulax/images/home-one/testi-dot.png" alt="dot">
+            </div>
+            <div class="testi-map-shape">
+              <img src="assets/edulax/images/home-one/testi-map.png" alt="map">
+            </div>
+          </div>
+
+          <!-- Testimonial Cards Column -->
+          <div class="testi-cards-column">
+            <!-- Testimonial Card 1 -->
+            <div class="single-testi-box">
+              <div class="testi-header-row">
+                <div class="testi-quote">
+                  <img src="assets/edulax/images/home-one/testi-quote.png" alt="quote">
+                </div>
+                <div class="testi-ratting">
+                  <ul>
+                    <li><i class="bi bi-star-fill"></i></li>
+                    <li><i class="bi bi-star-fill"></i></li>
+                    <li><i class="bi bi-star-fill"></i></li>
+                    <li><i class="bi bi-star-fill"></i></li>
+                    <li><i class="bi bi-star-fill"></i></li>
+                  </ul>
+                </div>
+              </div>
+              <div class="testi-title">
+                <h3>قفزت من Band 6.0 إلى 8.0 بفضل كشف البصمة الأكاديمية!</h3>
+              </div>
+              <div class="testi-desc">
+                <p>
+                  "كنت أكرر نفس أخطاء أدوات الربط وحروف الجر في كل مقال دون أن يخبرني أحد. المنظومة كشفت أخطائي المتكررة بدقة ونموذج Band 8+ علمني كيف يصيغ الفاحص المعتمد الأفكار بسلاسة وقوة."
+                </p>
+              </div>
+              <div class="testi-autor-box">
+                <div class="testi-autor-thumb">
+                  <img src="assets/edulax/images/home-one/testi-autor1.png" alt="د. سارة العتيبي">
+                </div>
+                <div class="testi-autor-info">
+                  <h4>د. سارة العتيبي</h4>
+                  <span>مرشحة Academic — Band 8.0 في الكتابة</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Testimonial Card 2 -->
+            <div class="single-testi-box">
+              <div class="testi-header-row">
+                <div class="testi-quote">
+                  <img src="assets/edulax/images/home-one/testi-quote.png" alt="quote">
+                </div>
+                <div class="testi-ratting">
+                  <ul>
+                    <li><i class="bi bi-star-fill"></i></li>
+                    <li><i class="bi bi-star-fill"></i></li>
+                    <li><i class="bi bi-star-fill"></i></li>
+                    <li><i class="bi bi-star-fill"></i></li>
+                    <li><i class="bi bi-star-fill"></i></li>
+                  </ul>
+                </div>
+              </div>
+              <div class="testi-title">
+                <h3>محاكاة واقعية 100% لبيئة اختبار الآيلتس المحوسب</h3>
+              </div>
+              <div class="testi-desc">
+                <p>
+                  "المؤقت التنازلي مع وضع الامتحان الصارم أزال رهبة الوقت تماماً، وفحص معيار Task Response علمني الإجابة المباشرة والمدعومة بالأدلة دون حشو."
+                </p>
+              </div>
+              <div class="testi-autor-box">
+                <div class="testi-autor-thumb">
+                  <img src="assets/edulax/images/home-one/testi-autor3.png" alt="م. عبد الرحمن الخالدي">
+                </div>
+                <div class="testi-autor-info">
+                  <h4>م. عبد الرحمن الخالدي</h4>
+                  <span>مرشح General Training — Band 7.5 في الكتابة</span>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
       </div>
     </section>
 
@@ -385,19 +696,80 @@
 
   </main>
 
-  <!-- App Footer with 100+ Community Metric & Discreet Admin Access -->
-  <footer class="app-footer" style="margin-top:auto; padding:2rem 1.5rem; border-top:1px solid var(--border-color); background:var(--bg-card); font-size:0.84rem; color:var(--text-muted);">
-    <div style="max-width:1200px; margin:0 auto; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:1rem;">
-      <div style="display:flex; align-items:center; gap:0.6rem;">
-        <span style="font-weight:800; color:var(--text-main);">IELTS Writing Examiner</span>
-        <span>•</span>
-        <span>منظومة التقييم التشخيصي المعتمد 2026</span>
+  <!-- ================================================== -->
+  <!-- Authentic Edulax Multi-Column Footer Area -->
+  <!-- ================================================== -->
+  <footer class="footer-area">
+    <div class="footer-container">
+      <!-- Newsletter & Community Bar -->
+      <div class="footer-subscribe-row">
+        <div class="footer-logo">
+          <a href="index.html">
+            <img src="assets/edulax/images/home-one/footer-logo.png" alt="IELTS Examiner">
+          </a>
+        </div>
+        <div class="footer-subscribe-title">
+          <h2>انضم إلى مجتمع <span>المشتركين والناجحين</span></h2>
+        </div>
+        <div style="display:flex; align-items:center; gap:0.75rem; color:#fff; font-size:0.95rem;">
+          <i class="bi bi-people-fill" style="color:var(--primary); font-size:1.4rem;"></i>
+          <span>أكثر من <strong id="footer-subscribers-count" style="color:var(--primary); font-weight:900;">100+</strong> طالب ومشترك نشط</span>
+        </div>
       </div>
-      <div style="display:flex; align-items:center; gap:1.25rem;">
-        <span>🔥 أكثر من <strong style="color:var(--success); font-weight:800;" id="footer-subscribers-count">100+</strong> طالب ومشترك نشط</span>
-        <a href="#admin" id="footer-admin-link" style="color:var(--text-muted); font-size:0.8rem; text-decoration:none; opacity:0.35; transition:opacity 0.2s; display:inline-flex; align-items:center; gap:0.25rem;" title="بوابة الإدارة">
-          <span>🔒</span>
-        </a>
+
+      <!-- Footer Columns -->
+      <div class="footer-columns-grid">
+        <!-- Col 1: About -->
+        <div>
+          <div class="footer-widget-title">
+            <h3>عن المنظومة</h3>
+          </div>
+          <div class="footer-desc">
+            <p>
+              IELTS Writing Diagnostic Examiner هي منصة التقييم الأكاديمي الأولى المعتمدة لتدريب وتقييم مقالات الآيلتس وفق معايير كامبريدج ومجلس الثقافة البريطاني الرسمية 2026 مع كشف بصمة الأخطاء التراكمية.
+            </p>
+          </div>
+        </div>
+
+        <!-- Col 2: Quick Links -->
+        <div>
+          <div class="footer-widget-title">
+            <h3>روابط سريعة</h3>
+          </div>
+          <ul class="footer-links-list">
+            <li><a href="javascript:void(0);" onclick="document.querySelector('[data-tab=\'editor\']').click();"><i class="bi bi-chevron-left"></i>محاكي وكتابة المقال</a></li>
+            <li><a href="javascript:void(0);" onclick="document.querySelector('[data-tab=\'report\']').click();"><i class="bi bi-chevron-left"></i>تقرير التقييم والـ Band</a></li>
+            <li><a href="javascript:void(0);" onclick="document.querySelector('[data-tab=\'profile\']').click();"><i class="bi bi-chevron-left"></i>ملفي الأكاديمي وبصمة الأخطاء</a></li>
+            <li><a href="#criteria-features"><i class="bi bi-chevron-left"></i>معايير كامبريدج الأربعة</a></li>
+          </ul>
+        </div>
+
+        <!-- Col 3: Contact & Support -->
+        <div>
+          <div class="footer-widget-title">
+            <h3>الدعم والتواصل</h3>
+          </div>
+          <div class="footer-desc">
+            <p style="margin-bottom:12px;">للحصول على كود التفعيل أو اشتراكات المجموعات والمراكز:</p>
+            <a href="https://wa.me/966549724510" target="_blank" style="display:inline-flex; align-items:center; gap:8px; color:var(--primary); text-decoration:none; font-weight:700; font-size:0.95rem;">
+              <i class="bi bi-whatsapp" style="font-size:1.2rem;"></i>
+              <span>واتساب: +966 54 972 4510</span>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bottom Bar -->
+      <div class="footer-bottom-bar">
+        <div>
+          <span>© 2026 جميع الحقوق محفوظة — <strong>IELTS Writing Diagnostic Examiner</strong></span>
+        </div>
+        <div style="display:flex; align-items:center; gap:1.5rem;">
+          <span>مطابق لمعايير كامبريدج الرسمية (Band 0-9)</span>
+          <a href="#admin" id="footer-admin-link" style="color:rgba(255,255,255,0.3); text-decoration:none; transition:color 0.2s;" title="بوابة الإدارة">
+            <i class="bi bi-lock-fill"></i>
+          </a>
+        </div>
       </div>
     </div>
   </footer>
@@ -607,9 +979,18 @@
     </div>
   </div>
 
-  <!-- Loading / Evaluation Overlay -->
+  <!-- Loading / Evaluation Overlay with Edulax Preloader Animation -->
   <div id="evaluating-overlay" class="evaluating-overlay">
-    <div class="spinner"></div>
+    <div class="edulax-preloader-box">
+      <div class="spinner"></div>
+      <div class="txt-loading">
+        <span data-text-preloader="I" class="letters-loading">I</span>
+        <span data-text-preloader="E" class="letters-loading">E</span>
+        <span data-text-preloader="L" class="letters-loading">L</span>
+        <span data-text-preloader="T" class="letters-loading">T</span>
+        <span data-text-preloader="S" class="letters-loading">S</span>
+      </div>
+    </div>
     <div id="eval-step-text" class="eval-step-text">قراءة المقال وتحليله وفق معايير كامبريدج الرسمية...</div>
     <div class="eval-subtext">يجري الفحص التشخيصي بدقة بواسطة فاحص الآيلتس المعتمد</div>
   </div>
@@ -618,6 +999,6 @@
   <div id="toast-container" class="toast-container"></div>
 
   <!-- Scripts -->
-  <script type="module" src="js/app.js?v=4.0-persistent-state"></script>
+  <script type="module" src="js/app.js?v=5.0-edulax"></script>
 </body>
 </html>
