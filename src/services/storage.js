@@ -245,10 +245,13 @@ export function saveEssay(essay) {
         id: record.id,
         created_at: record.created_at,
         task_type: record.task_type,
+        prompt_question: record.prompt_question || '',
+        essay_content: record.essay_content || '',
         word_count: record.word_count,
         overall_band: overallBand,
         scores: record.feedback?.scores || {},
         feedback_summary: record.feedback?.executive_summary || {},
+        full_feedback: record.feedback || {},
         mistakes_count: (record.feedback?.detailed_mistakes || []).length
       });
 
