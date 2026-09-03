@@ -18,10 +18,18 @@ export function setActiveStudent(student) {
     localStorage.removeItem('ielts_active_student_id');
     localStorage.removeItem('ielts_active_student_data');
   }
+  try {
+    localStorage.removeItem('ielts_latest_evaluation');
+  } catch (_) {}
   updateStudentHeaderUI();
+  window.dispatchEvent(new CustomEvent('student-changed', { detail: student }));
 }
 
 export async function initStudentState() {
+  try {
+    localStorage.removeItem('ielts_latest_evaluation');
+  } catch (_) {}
+
   try {
     // 1. Instantly restore cached student session so refreshing NEVER logs the user out
     const cachedData = localStorage.getItem('ielts_active_student_data');
@@ -58,10 +66,15 @@ export async function initStudentState() {
 }
 
 export function logoutStudent() {
+  const prevStudent = activeStudent;
   activeStudent = null;
   localStorage.removeItem('ielts_active_student_id');
   localStorage.removeItem('ielts_active_student_data');
   localStorage.removeItem('ielts_latest_evaluation');
+  localStorage.removeItem('ielts_guest_evaluation');
+  if (prevStudent && prevStudent.id) {
+    localStorage.removeItem(`ielts_evaluation_${prevStudent.id}`);
+  }
   localStorage.removeItem('ielts_draft_essay');
   localStorage.removeItem('ielts_draft_prompt');
 

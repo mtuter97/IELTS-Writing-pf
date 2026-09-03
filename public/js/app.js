@@ -1,5 +1,5 @@
 import { initTheme } from './theme.js';
-import { initStudentState, renderStudentDashboard, loginWithCode, loginWithGoogle, logoutStudent, getActiveStudent } from './student.js';
+import { initStudentState, renderStudentDashboard, loginWithCode, loginWithGoogle, logoutStudent, getActiveStudent } from './student.js?v=7.0-privacy';
 import { initEditor } from './editor.js';
 import { renderFeedbackReport } from './report-renderer.js';
 import { renderAdminDashboard } from './admin.js';
@@ -8,6 +8,11 @@ import { fetchSettings, saveSettings, fetchEssay, createStudent } from './api.js
 let activeTab = 'editor';
 
 document.addEventListener('DOMContentLoaded', async () => {
+  // Purge legacy global leak keys immediately so no old report leaks across sessions!
+  try {
+    localStorage.removeItem('ielts_latest_evaluation');
+  } catch (_) {}
+
   // 0. Initialize Theme (Light / Dark Mode)
   initTheme();
 
@@ -32,9 +37,13 @@ document.addEventListener('DOMContentLoaded', async () => {
   // 7. Initialize Community Subscriber Metric (Starting at 100+ as requested)
   updateSubscribersMetric();
 
-  // 8. Handle Direct Admin Route / Secret Hash Access or restore saved tab
+  // 8. Handle Direct Route / Hash Access or restore saved tab
   if (window.location.hash === '#admin' || window.location.pathname === '/admin') {
     switchTab('admin');
+  } else if (window.location.hash === '#report') {
+    switchTab('report');
+  } else if (window.location.hash === '#profile') {
+    switchTab('profile');
   } else {
     const savedTab = localStorage.getItem('ielts_active_tab');
     if (savedTab && (savedTab === 'profile' || savedTab === 'report' || savedTab === 'editor')) {
@@ -46,6 +55,8 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   window.addEventListener('hashchange', () => {
     if (window.location.hash === '#admin') switchTab('admin');
+    else if (window.location.hash === '#report') switchTab('report');
+    else if (window.location.hash === '#profile') switchTab('profile');
   });
 
   // Secret keyboard shortcut for Admin: Ctrl + Alt + A
@@ -112,30 +123,87 @@ export function switchTab(tabName) {
   } else if (tabName === 'admin') {
     renderAdminDashboard();
   } else if (tabName === 'report') {
-    const cached = localStorage.getItem('ielts_latest_evaluation');
-    const reportContainer = document.getElementById('report-content-area');
-    let rendered = false;
+    syncReportView();
+  }
+}
+
+export function syncReportView() {
+  const reportContainer = document.getElementById('report-content-area');
+  if (!reportContainer) return;
+
+  const currentStudent = getActiveStudent();
+
+  // 1. If a student is logged in:
+  if (currentStudent && currentStudent.id) {
+    // Check for evaluation scoped to THIS student
+    const studentEvalKey = `ielts_evaluation_${currentStudent.id}`;
+    const cached = localStorage.getItem(studentEvalKey);
     if (cached) {
       try {
         const parsed = JSON.parse(cached);
-        if (parsed && parsed.essay && parsed.feedback) {
+        if (parsed && parsed.essay && parsed.feedback && parsed.essay.student_id === currentStudent.id) {
           renderFeedbackReport(parsed.essay, parsed.feedback);
-          rendered = true;
+          return;
         }
       } catch (_) {}
     }
-    if (!rendered && reportContainer) {
-      reportContainer.innerHTML = `
-        <div style="text-align:center; padding:5rem 2rem; background:var(--bg-card); border-radius:var(--radius-lg); border:1px solid var(--border-color);">
-          <div style="font-size:3rem; margin-bottom:1rem;">📝</div>
-          <h3 style="font-size:1.35rem; font-weight:800; margin-bottom:0.5rem;">لم يتم تقييم أي مقال في هذه الجلسة بعد</h3>
-          <p style="color:var(--text-muted); font-size:0.92rem; max-width:500px; margin:0 auto 1.5rem;">
-            انتقل إلى شاشة "محاكي وكتابة المقال"، اكتب مقالك واضغط على "إرسال المقال للتقييم" لعرض تقرير الفاحص الشامل والدرجات التفصيلية.
-          </p>
-        </div>
-      `;
-    }
+
+    // Check student's cached essays history
+    try {
+      const cachedEssays = JSON.parse(localStorage.getItem(`ielts_cache_essays_${currentStudent.id}`) || '[]');
+      if (cachedEssays.length > 0 && cachedEssays[0].feedback) {
+        renderFeedbackReport(cachedEssays[0], cachedEssays[0].feedback);
+        return;
+      }
+    } catch (_) {}
+
+    // No evaluation yet for this specific student
+    reportContainer.innerHTML = `
+      <div style="text-align:center; padding:5rem 2rem; background:var(--bg-card); border-radius:var(--radius-lg); border:1px solid var(--border-color);">
+        <div style="font-size:3.2rem; margin-bottom:1rem;">🎓</div>
+        <h3 style="font-size:1.35rem; font-weight:800; margin-bottom:0.5rem; color:var(--text-main);">مرحباً ${currentStudent.name}، لا يوجد مقال تم تقييمه بعد</h3>
+        <p style="color:var(--text-muted); font-size:0.95rem; max-width:520px; margin:0 auto 1.5rem; line-height:1.6;">
+          لم تقم بإرسال أي مقال للتقييم في هذا الحساب حتى الآن. انتقل إلى <strong>محاكي وكتابة المقال</strong> واختر المهمة واكتب مقالك لتحصل على تقييم فاحص الآيلتس المعتمد وبصمة أخطائك.
+        </p>
+        <button class="btn btn-primary" onclick="window.switchAppTab('editor')" style="padding:0.65rem 1.5rem; font-weight:700;">
+          الانتقال إلى محاكي المقال ✍️
+        </button>
+      </div>
+    `;
+    return;
   }
+
+  // 2. If GUEST (logged out / no student account):
+  // Never show any registered student's evaluation!
+  const guestCached = localStorage.getItem('ielts_guest_evaluation');
+  if (guestCached) {
+    try {
+      const parsed = JSON.parse(guestCached);
+      if (parsed && parsed.essay && parsed.feedback && (!parsed.essay.student_id || parsed.essay.student_id === 'guest')) {
+        renderFeedbackReport(parsed.essay, parsed.feedback);
+        return;
+      }
+    } catch (_) {}
+  }
+
+  // Clean empty state for logged-out users with NO evaluation:
+  reportContainer.innerHTML = `
+    <div style="text-align:center; padding:5rem 2rem; background:var(--bg-card); border-radius:var(--radius-lg); border:1px solid var(--border-color);">
+      <div style="font-size:3.2rem; margin-bottom:1rem;">📝</div>
+      <h3 style="font-size:1.35rem; font-weight:800; margin-bottom:0.5rem; color:var(--text-main);">لم يتم تقييم أي مقال في هذه الجلسة بعد</h3>
+      <p style="color:var(--text-muted); font-size:0.95rem; max-width:520px; margin:0 auto 1.5rem; line-height:1.6;">
+        يرجى تسجيل الدخول بحساب الطالب الخاص بك، أو الانتقال إلى <strong>محاكي وكتابة المقال</strong> لكتابة مقالك وإرساله للتقييم.
+      </p>
+      <div style="display:flex; justify-content:center; gap:0.75rem; flex-wrap:wrap;">
+        <button class="btn btn-primary" onclick="window.switchAppTab('editor')" style="padding:0.65rem 1.5rem; font-weight:700;">
+          الانتقال إلى محاكي المقال ✍️
+        </button>
+        <button class="btn btn-secondary" onclick="document.getElementById('header-login-btn')?.click()" style="padding:0.65rem 1.5rem; font-weight:700;">
+          دخول حساب الطالب 👤
+        </button>
+      </div>
+    </div>
+  `;
 }
 
 function setupModals() {
@@ -420,13 +488,15 @@ async function updateProviderStatusBadge() {
 function setupAppEvents() {
   window.addEventListener('evaluation-completed', (e) => {
     const { essay, feedback } = e.detail;
-    try {
-      localStorage.setItem('ielts_latest_evaluation', JSON.stringify({ essay, feedback }));
-    } catch (_) {}
-    // Client-side cache persistence
-    if (essay && essay.student_id) {
+    localStorage.removeItem('ielts_latest_evaluation'); // Purge legacy key
+    
+    const currentStudent = getActiveStudent();
+    if (currentStudent && currentStudent.id) {
       try {
-        const key = `ielts_cache_essays_${essay.student_id}`;
+        localStorage.setItem(`ielts_evaluation_${currentStudent.id}`, JSON.stringify({ essay, feedback }));
+      } catch (_) {}
+      try {
+        const key = `ielts_cache_essays_${currentStudent.id}`;
         const existing = JSON.parse(localStorage.getItem(key) || '[]');
         if (!existing.some(x => x.id === essay.id)) {
           existing.unshift(essay);
@@ -435,7 +505,12 @@ function setupAppEvents() {
       } catch (err) {
         console.warn('LocalStorage cache error:', err);
       }
+    } else {
+      try {
+        localStorage.setItem('ielts_guest_evaluation', JSON.stringify({ essay, feedback }));
+      } catch (_) {}
     }
+
     renderFeedbackReport(essay, feedback);
     switchTab('report');
   });
@@ -445,6 +520,12 @@ function setupAppEvents() {
     try {
       const essay = await fetchEssay(essayId);
       if (essay && essay.feedback) {
+        const currentStudent = getActiveStudent();
+        if (currentStudent && currentStudent.id) {
+          try {
+            localStorage.setItem(`ielts_evaluation_${currentStudent.id}`, JSON.stringify({ essay, feedback: essay.feedback }));
+          } catch (_) {}
+        }
         renderFeedbackReport(essay, essay.feedback);
         switchTab('report');
       }
@@ -454,9 +535,12 @@ function setupAppEvents() {
   });
 
   window.addEventListener('student-changed', () => {
+    localStorage.removeItem('ielts_latest_evaluation');
     if (activeTab === 'profile') {
       renderStudentDashboard();
     }
+    // Always sync report view with the current student state
+    syncReportView();
   });
 
   window.addEventListener('admin-inspect-student', async (e) => {
