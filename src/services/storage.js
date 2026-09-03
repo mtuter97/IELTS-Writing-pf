@@ -15,12 +15,31 @@ const memoryStudents = new Map();
 const memoryEssays = new Map();
 let memorySettings = null;
 
-// Ensure base directories exist safely
+const SEED_DATA_DIR = path.resolve(__dirname, '../../data');
+const SEED_STUDENTS_DIR = path.join(SEED_DATA_DIR, 'students');
+const SEED_SETTINGS_FILE = path.join(SEED_DATA_DIR, 'settings.json');
+
+// Ensure base directories exist safely & seed Vercel ephemeral storage
 function ensureDirs() {
   try {
     if (!fs.existsSync(DATA_DIR)) fs.mkdirSync(DATA_DIR, { recursive: true });
     if (!fs.existsSync(STUDENTS_DIR)) fs.mkdirSync(STUDENTS_DIR, { recursive: true });
     if (!fs.existsSync(ESSAYS_DIR)) fs.mkdirSync(ESSAYS_DIR, { recursive: true });
+
+    if (isVercel) {
+      if (fs.existsSync(SEED_STUDENTS_DIR)) {
+        const seedFiles = fs.readdirSync(SEED_STUDENTS_DIR).filter(f => f.endsWith('.json'));
+        for (const file of seedFiles) {
+          const dest = path.join(STUDENTS_DIR, file);
+          if (!fs.existsSync(dest)) {
+            try { fs.copyFileSync(path.join(SEED_STUDENTS_DIR, file), dest); } catch (_) {}
+          }
+        }
+      }
+      if (fs.existsSync(SEED_SETTINGS_FILE) && !fs.existsSync(SETTINGS_FILE)) {
+        try { fs.copyFileSync(SEED_SETTINGS_FILE, SETTINGS_FILE); } catch (_) {}
+      }
+    }
   } catch (e) {
     // Silently continue if filesystem is read-only
   }
