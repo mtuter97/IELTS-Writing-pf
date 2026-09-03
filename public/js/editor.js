@@ -80,7 +80,11 @@ export function initEditor() {
   const timerDisplay = document.getElementById('timer-digits');
   const timerToggleBtn = document.getElementById('timer-toggle-btn');
   const timerResetBtn = document.getElementById('timer-reset-btn');
+  const timerPresetBtns = document.querySelectorAll('.timer-preset-btn');
   const submitBtn = document.getElementById('submit-essay-btn');
+
+  const playIconSvg = '<svg class="svg-icon svg-icon-xs" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>';
+  const pauseIconSvg = '<svg class="svg-icon svg-icon-xs" viewBox="0 0 24 24"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>';
 
   // Task type selection with persistence
   const savedTaskType = localStorage.getItem('ielts_draft_task_type');
@@ -146,8 +150,34 @@ export function initEditor() {
     populatePromptPicker();
     const isFree = currentTaskType === 'free_text';
     const minWords = isFree ? 0 : (currentTaskType === 'task_2' ? 250 : 150);
-    const minutes = isFree ? 0 : (currentTaskType === 'task_2' ? 40 : 20);
-    secondsRemaining = minutes * 60;
+    
+    // Determine standard duration according to IELTS task guidelines
+    let defaultMins = 40;
+    if (currentTaskType === 'task_1_academic' || currentTaskType === 'task_1_general') {
+      defaultMins = 20;
+    } else if (isFree) {
+      // For free paragraph / text, match active preset or default to 40 (or 20)
+      const activePill = document.querySelector('.timer-preset-btn.active');
+      defaultMins = activePill ? (parseInt(activePill.getAttribute('data-mins'), 10) || 40) : 40;
+    } else {
+      defaultMins = 40;
+    }
+
+    if (timerPresetBtns && timerPresetBtns.length > 0) {
+      timerPresetBtns.forEach(btn => {
+        const mins = parseInt(btn.getAttribute('data-mins'), 10);
+        btn.classList.toggle('active', mins === defaultMins);
+      });
+    }
+
+    // Stop and reset timer cleanly if running
+    if (isTimerRunning) {
+      clearInterval(timerInterval);
+      isTimerRunning = false;
+      if (timerToggleBtn) timerToggleBtn.innerHTML = playIconSvg;
+    }
+
+    secondsRemaining = defaultMins * 60;
     updateTimerDisplay();
     updateWordCount();
 
@@ -195,16 +225,38 @@ export function initEditor() {
     });
   }
 
+  // Gentle Web Audio chime on timer completion
+  function playTimerChime() {
+    try {
+      const AudioCtx = window.AudioContext || window.webkitAudioContext;
+      if (!AudioCtx) return;
+      const ctx = new AudioCtx();
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(587.33, ctx.currentTime);
+      osc.frequency.exponentialRampToValueAtTime(880, ctx.currentTime + 0.25);
+      gain.gain.setValueAtTime(0.25, ctx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.5);
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.start();
+      osc.stop(ctx.currentTime + 0.5);
+    } catch (e) {
+      // Audio context restricted or unavailable
+    }
+  }
+
   // Timer logic
   function updateTimerDisplay() {
     if (!timerDisplay) return;
-    const mins = Math.floor(secondsRemaining / 60);
-    const secs = secondsRemaining % 60;
+    const mins = Math.max(0, Math.floor(secondsRemaining / 60));
+    const secs = Math.max(0, secondsRemaining % 60);
     timerDisplay.textContent = `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
     
     const timerBox = document.getElementById('timer-box');
     if (timerBox) {
-      if (secondsRemaining <= 300) { // 5 mins left
+      if ((isTimerRunning && secondsRemaining <= 300) || secondsRemaining === 0) {
         timerBox.classList.add('warning');
       } else {
         timerBox.classList.remove('warning');
@@ -212,26 +264,44 @@ export function initEditor() {
     }
   }
 
-  const playIconSvg = '<svg class="svg-icon svg-icon-xs" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>';
-  const pauseIconSvg = '<svg class="svg-icon svg-icon-xs" viewBox="0 0 24 24"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>';
-
   function toggleTimer() {
     if (isTimerRunning) {
       clearInterval(timerInterval);
       isTimerRunning = false;
       if (timerToggleBtn) timerToggleBtn.innerHTML = playIconSvg;
+      updateTimerDisplay();
     } else {
+      // Safety guard: if timer is at 00:00 (or less), reset to selected preset before starting
+      if (secondsRemaining <= 0) {
+        const activePill = document.querySelector('.timer-preset-btn.active');
+        const defaultMins = activePill ? (parseInt(activePill.getAttribute('data-mins'), 10) || 40) : (currentTaskType === 'task_2' ? 40 : 20);
+        secondsRemaining = defaultMins * 60;
+        const timerBox = document.getElementById('timer-box');
+        if (timerBox) timerBox.classList.remove('warning');
+      }
+
       isTimerRunning = true;
       if (timerToggleBtn) timerToggleBtn.innerHTML = pauseIconSvg;
+      updateTimerDisplay();
+
       timerInterval = setInterval(() => {
-        if (secondsRemaining > 0) {
+        if (secondsRemaining > 1) {
           secondsRemaining--;
           updateTimerDisplay();
+        } else if (secondsRemaining === 1) {
+          secondsRemaining = 0;
+          updateTimerDisplay();
+          clearInterval(timerInterval);
+          isTimerRunning = false;
+          if (timerToggleBtn) timerToggleBtn.innerHTML = playIconSvg;
+          const timerBox = document.getElementById('timer-box');
+          if (timerBox) timerBox.classList.add('warning');
+          playTimerChime();
+          triggerToast('⏰ انتهى الوقت المحدد للمهمة! يمكنك مراجعة مقالك وتسليمه للتقييم.', 'warning');
         } else {
           clearInterval(timerInterval);
           isTimerRunning = false;
           if (timerToggleBtn) timerToggleBtn.innerHTML = playIconSvg;
-          alert('⏰ انتهى الوقت المحدد للمهمة!');
         }
       }, 1000);
     }
@@ -242,13 +312,15 @@ export function initEditor() {
     isTimerRunning = false;
     if (timerToggleBtn) timerToggleBtn.innerHTML = playIconSvg;
     const activePill = document.querySelector('.timer-preset-btn.active');
-    const minutes = activePill ? (parseInt(activePill.getAttribute('data-mins'), 10) || 40) : (currentTaskType === 'task_2' ? 40 : 20);
-    secondsRemaining = minutes * 60;
+    const defaultMins = activePill ? (parseInt(activePill.getAttribute('data-mins'), 10) || 40) : (currentTaskType === 'task_2' ? 40 : 20);
+    secondsRemaining = defaultMins * 60;
     updateTimerDisplay();
+    const timerBox = document.getElementById('timer-box');
+    if (timerBox) timerBox.classList.remove('warning');
+    triggerToast('تمت إعادة ضبط المؤقت بنجاح.', 'info');
   }
 
   // Duration Slider Preset Pills
-  const timerPresetBtns = document.querySelectorAll('.timer-preset-btn');
   timerPresetBtns.forEach(btn => {
     btn.addEventListener('click', () => {
       timerPresetBtns.forEach(b => b.classList.remove('active'));
@@ -259,6 +331,8 @@ export function initEditor() {
       if (timerToggleBtn) timerToggleBtn.innerHTML = playIconSvg;
       secondsRemaining = mins * 60;
       updateTimerDisplay();
+      const timerBox = document.getElementById('timer-box');
+      if (timerBox) timerBox.classList.remove('warning');
     });
   });
 
