@@ -279,29 +279,35 @@ export async function evaluateEssayHandler(req, res) {
 
     const mistakeHistory = getStudentMistakeHistory(student_id);
 
-    // Active AI Provider & Key resolution
-    const provider = settings.active_provider || 'gemini';
+    // Active AI Provider & Key resolution with automatic fallback
+    let provider = settings.active_provider || 'you';
     let apiKey = '';
     let model = '';
 
-    if (provider === 'gemini') {
-      apiKey = settings.gemini_api_key;
-      model = settings.gemini_model;
-    } else if (provider === 'groq') {
-      apiKey = settings.groq_api_key;
-      model = settings.groq_model;
-    } else if (provider === 'openrouter') {
-      apiKey = settings.openrouter_api_key;
-      model = settings.openrouter_model;
-    } else if (provider === 'you' || provider === 'youcom') {
-      apiKey = settings.you_api_key;
-      model = settings.you_model;
+    const providerMap = {
+      you: { key: settings.you_api_key, model: settings.you_model || 'you-smart' },
+      groq: { key: settings.groq_api_key, model: settings.groq_model || 'llama-3.3-70b-versatile' },
+      gemini: { key: settings.gemini_api_key, model: settings.gemini_model || 'gemini-2.5-flash' },
+      openrouter: { key: settings.openrouter_api_key, model: settings.openrouter_model || 'google/gemini-2.5-flash' }
+    };
+
+    if (providerMap[provider]?.key) {
+      apiKey = providerMap[provider].key;
+      model = providerMap[provider].model;
+    } else {
+      // Automatic fallback to any provider that has a configured key
+      const fallback = Object.keys(providerMap).find(p => Boolean(providerMap[p]?.key));
+      if (fallback) {
+        provider = fallback;
+        apiKey = providerMap[fallback].key;
+        model = providerMap[fallback].model;
+      }
     }
 
     if (!apiKey) {
       return res.status(400).json({
         success: false,
-        error: `No API key configured for provider '${provider}'. Please add your API key in Settings.`
+        error: `لم يتم العثور على مفتاح API صالح للذكاء الاصطناعي على السيرفر (مزود الخدمة: '${provider}'). يرجى إضافة مفتاح ${provider.toUpperCase()}_API_KEY في إعدادات Vercel Environment Variables أو من لوحة تحكم المعلم.`
       });
     }
 

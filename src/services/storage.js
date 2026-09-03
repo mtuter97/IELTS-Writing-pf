@@ -320,6 +320,13 @@ export function getSettings() {
     subscription_price: 100
   };
 
+  if (memorySettings) {
+    return {
+      ...defaults,
+      ...memorySettings
+    };
+  }
+
   if (!fs.existsSync(SETTINGS_FILE)) {
     try {
       fs.writeFileSync(SETTINGS_FILE, JSON.stringify(defaults, null, 2), 'utf-8');
@@ -329,6 +336,7 @@ export function getSettings() {
   try {
     const content = fs.readFileSync(SETTINGS_FILE, 'utf-8');
     const parsed = JSON.parse(content);
+    memorySettings = parsed;
     return {
       ...defaults,
       ...parsed
@@ -345,6 +353,9 @@ export function saveSettings(partial) {
     ...current,
     ...partial
   };
-  fs.writeFileSync(SETTINGS_FILE, JSON.stringify(updated, null, 2), 'utf-8');
+  try {
+    fs.writeFileSync(SETTINGS_FILE, JSON.stringify(updated, null, 2), 'utf-8');
+  } catch (e) {}
+  memorySettings = updated;
   return updated;
 }
