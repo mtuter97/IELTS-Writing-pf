@@ -5,6 +5,8 @@ import {
   updateStudent,
   deleteStudent,
   getStudentByCode,
+  findOrCreateGoogleStudent,
+  activateStudentWithCode,
   getStudentMasterFile,
   saveEssay,
   getEssay,
@@ -96,6 +98,68 @@ export async function loginStudentByCodeHandler(req, res) {
       return res.status(404).json({ success: false, error: 'كود الطالب غير صحيح أو غير مسجل في النظام.' });
     }
     res.json({ success: true, student });
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+}
+
+export async function googleAuthHandler(req, res) {
+  try {
+    const { credential, name, email, picture, google_id } = req.body;
+    let profile = { name, email, picture, google_id };
+
+    if (credential) {
+      try {
+        const parts = credential.split('.');
+        if (parts.length === 3) {
+          const payloadJson = Buffer.from(parts[1], 'base64url').toString('utf-8');
+          const payload = JSON.parse(payloadJson);
+          profile = {
+            name: payload.name || profile.name,
+            email: payload.email || profile.email,
+            picture: payload.picture || profile.picture,
+            google_id: payload.sub || profile.google_id
+          };
+        }
+      } catch (e) {
+        console.warn('Error parsing Google credential JWT:', e);
+      }
+    }
+
+    if (!profile.email && !profile.name) {
+      return res.status(400).json({ success: false, error: 'بيانات حساب Google غير مكتملة.' });
+    }
+
+    const student = findOrCreateGoogleStudent(profile);
+    const settings = getSettings();
+
+    res.json({ 
+      success: true, 
+      student,
+      is_pending: student.status === 'pending',
+      teacher_whatsapp: settings.teacher_whatsapp || '966549724510',
+      price: settings.subscription_price || 100
+    });
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+}
+
+export async function activateStudentByCodeHandler(req, res) {
+  try {
+    const { id } = req.params;
+    const { code } = req.body;
+
+    if (!code || !code.trim()) {
+      return res.status(400).json({ success: false, error: 'يرجى إدخال كود التفعيل.' });
+    }
+
+    const result = activateStudentWithCode(id, code);
+    if (!result.success) {
+      return res.status(400).json(result);
+    }
+
+    res.json({ success: true, student: result.student });
   } catch (err) {
     res.status(500).json({ success: false, error: err.message });
   }

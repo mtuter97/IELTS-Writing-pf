@@ -11,6 +11,8 @@ import {
   updateStudentStatusHandler,
   deleteStudentHandler,
   loginStudentByCodeHandler,
+  googleAuthHandler,
+  activateStudentByCodeHandler,
   verifyAdminHandler,
   evaluateEssayHandler,
   getEssayHandler,
@@ -50,6 +52,8 @@ app.get('/api/students/:id/file', getStudentFileHandler);
 app.post('/api/students/:id/status', updateStudentStatusHandler);
 app.delete('/api/students/:id', deleteStudentHandler);
 app.post('/api/students/login-by-code', loginStudentByCodeHandler);
+app.post('/api/auth/google', googleAuthHandler);
+app.post('/api/students/:id/activate-code', activateStudentByCodeHandler);
 
 // Admin
 app.post('/api/admin/verify', verifyAdminHandler);

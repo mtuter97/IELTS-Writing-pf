@@ -86,8 +86,86 @@ export function getStudentByCode(codeOrId) {
   return all.find(s => 
     (s.access_code && s.access_code.toUpperCase() === cleanCode) ||
     s.id === codeOrId.trim() ||
-    (s.phone && s.phone === codeOrId.trim())
+    (s.phone && s.phone === codeOrId.trim()) ||
+    (s.email && s.email.toLowerCase() === codeOrId.trim().toLowerCase())
   ) || null;
+}
+
+export function findOrCreateGoogleStudent({ name, email, picture, google_id }) {
+  ensureDirs();
+  const all = getAllStudents();
+  const cleanEmail = (email || '').trim().toLowerCase();
+  
+  // Look for existing student by email or google_id
+  let existing = all.find(s => 
+    (cleanEmail && s.email && s.email.toLowerCase() === cleanEmail) ||
+    (google_id && s.google_id === google_id)
+  );
+
+  if (existing) {
+    const partial = {};
+    if (picture && existing.picture !== picture) partial.picture = picture;
+    if (google_id && !existing.google_id) partial.google_id = google_id;
+    if (name && (!existing.name || existing.name.startsWith('طالب'))) partial.name = name;
+    if (Object.keys(partial).length > 0) {
+      existing = updateStudent(existing.id, partial);
+    }
+    return existing;
+  }
+
+  // Create new pending student awaiting WhatsApp activation code
+  const id = 'stu_' + Date.now() + '_' + Math.random().toString(36).substring(2, 7);
+  const access_code = 'IELTS-' + Math.floor(1000 + Math.random() * 9000);
+
+  const newStudent = {
+    id,
+    access_code,
+    name: name ? name.trim() : (cleanEmail ? cleanEmail.split('@')[0] : 'طالب Google'),
+    email: cleanEmail,
+    picture: picture || '',
+    google_id: google_id || '',
+    phone: '',
+    status: 'pending', // Pending by default! Unlocked only after code verification
+    subscription_price: 100,
+    notes: 'تسجيل دخول جديد عبر Google - بانتظار إرسال كود التفعيل بالواتساب',
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString(),
+    essay_count: 0,
+    latest_band: null,
+    highest_band: null
+  };
+
+  memoryStudents.set(id, newStudent);
+  try {
+    fs.writeFileSync(path.join(STUDENTS_DIR, `${id}.json`), JSON.stringify(newStudent, null, 2), 'utf-8');
+  } catch (e) {}
+
+  return newStudent;
+}
+
+export function activateStudentWithCode(studentId, code) {
+  ensureDirs();
+  const student = getStudent(studentId);
+  if (!student) {
+    return { success: false, error: 'حساب الطالب غير موجود في النظام.' };
+  }
+
+  const cleanCode = (code || '').trim().toUpperCase();
+  const validCode = (student.access_code || '').trim().toUpperCase();
+
+  if (!cleanCode || cleanCode !== validCode) {
+    return { 
+      success: false, 
+      error: 'كود التفعيل غير صحيح. يرجى إدخال الكود الذي أرسله لك المعلم عبر الواتساب بدقة (مثال: IELTS-4098).' 
+    };
+  }
+
+  const updated = updateStudent(studentId, {
+    status: 'active',
+    activated_at: new Date().toISOString()
+  });
+
+  return { success: true, student: updated };
 }
 
 export function deleteStudent(id) {

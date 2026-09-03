@@ -78,6 +78,28 @@ export async function loginStudentByCode(code) {
   return data.student;
 }
 
+export async function authWithGoogle(googleData) {
+  const res = await fetch(`${API_BASE}/auth/google`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(googleData)
+  });
+  const data = await res.json();
+  if (!data.success) throw new Error(data.error || 'فشل تسجيل الدخول عبر Google');
+  return data;
+}
+
+export async function activateStudentByCode(studentId, code) {
+  const res = await fetch(`${API_BASE}/students/${studentId}/activate-code`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ code })
+  });
+  const data = await res.json();
+  if (!data.success) throw new Error(data.error || 'كود التفعيل غير صحيح');
+  return data.student;
+}
+
 export async function verifyAdminPin(pin) {
   const res = await fetch(`${API_BASE}/admin/verify`, {
     method: 'POST',
