@@ -28,7 +28,42 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   // 6. Setup Global App Events
   setupAppEvents();
+
+  // 7. Initialize Community Subscriber Metric (Starting at 100+ as requested)
+  updateSubscribersMetric();
+
+  // 8. Handle Direct Admin Route / Secret Hash Access
+  if (window.location.hash === '#admin' || window.location.pathname === '/admin') {
+    switchTab('admin');
+  }
+
+  window.addEventListener('hashchange', () => {
+    if (window.location.hash === '#admin') switchTab('admin');
+  });
+
+  // Secret keyboard shortcut for Admin: Ctrl + Alt + A
+  window.addEventListener('keydown', (e) => {
+    if (e.ctrlKey && (e.altKey || e.shiftKey) && (e.key === 'a' || e.key === 'A' || e.key === 'ش')) {
+      e.preventDefault();
+      switchTab('admin');
+    }
+  });
 });
+
+async function updateSubscribersMetric() {
+  const heroCountEl = document.getElementById('hero-subscribers-count');
+  const footerCountEl = document.getElementById('footer-subscribers-count');
+  try {
+    const res = await fetch('/api/students');
+    const students = await res.json();
+    const count = 100 + (Array.isArray(students) ? students.length : 0);
+    if (heroCountEl) heroCountEl.textContent = `${count}+`;
+    if (footerCountEl) footerCountEl.textContent = `${count}+`;
+  } catch (e) {
+    if (heroCountEl) heroCountEl.textContent = '100+';
+    if (footerCountEl) footerCountEl.textContent = '100+';
+  }
+}
 
 function setupTabs() {
   const tabButtons = document.querySelectorAll('.tab-btn');
@@ -74,10 +109,11 @@ function setupModals() {
   const loginCodeInput = document.getElementById('login-code-input');
   const loginErrorDiv = document.getElementById('login-modal-error');
 
-  // Teacher Suite Dedicated Trigger
-  const headerTeacherBtn = document.getElementById('header-teacher-btn');
-  if (headerTeacherBtn) {
-    headerTeacherBtn.addEventListener('click', () => {
+  // Secret Teacher / Admin Link in footer
+  const footerAdminLink = document.getElementById('footer-admin-link');
+  if (footerAdminLink) {
+    footerAdminLink.addEventListener('click', (e) => {
+      e.preventDefault();
       switchTab('admin');
     });
   }

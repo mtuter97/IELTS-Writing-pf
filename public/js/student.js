@@ -202,10 +202,10 @@ export async function renderStudentDashboard() {
         <div style="background:var(--bg-card-subtle); border:1px solid var(--border-color); border-radius:var(--radius-md); padding:1.25rem; text-align:right; max-width:620px; margin:0 auto; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:1rem;">
           <div>
             <strong style="display:block; color:var(--text-main); font-size:0.95rem; margin-bottom:0.25rem;">
-              هل ترغب في الاشتراك؟ (رسوم التفعيل: 100 دولار)
+              هل ترغب في الاشتراك؟ انضم لأكثر من 100+ طالب مشترك ومفعل
             </strong>
             <p style="font-size:0.82rem; color:var(--text-muted); margin:0;">
-              يتم تفعيل الحسابات وتوليد أكواد الدخول حصرياً عبر المعلم بعد سداد الرسوم.
+              يتم تفعيل الحسابات وتوليد أكواد الدخول المعتمدة حصرياً من خلال المعلم عبر الواتساب.
             </p>
           </div>
           <a href="https://wa.me/966549724510?text=%D9%85%D8%B1%D8%AD%D8%A8%D8%A7%D9%8B%20%D8%A3%D8%B3%D8%AA%D8%A7%D8%B0%D9%8A%D8%8C%20%D8%A3%D9%88%D8%AF%20%D8%A7%D9%84%D8%A7%D8%B4%D8%AA%D8%B1%D8%A7%D9%83%20%D9%88%D8%AA%D9%81%D8%B9%D9%8A%D9%84%20%D8%AD%D8%B3%D8%A7%D8%A8%D9%8A%20%D9%81%D9%8A%20%D9%85%D9%86%D8%B8%D9%88%D9%85%D8%A9%20%D8%A7%D9%84%D8%A2%D9%8A%D9%84%D8%AA%D8%B3." target="_blank" class="btn btn-whatsapp" style="padding:0.6rem 1.25rem;">
@@ -518,7 +518,7 @@ export async function renderStudentDashboard() {
               <div style="display:flex; align-items:center; gap:0.5rem;">
                 <h2 style="font-size:1.35rem; font-weight:800; color:var(--text-main);">${student.name}</h2>
                 <span class="badge ${student.status === 'active' ? 'badge-success' : 'badge-danger'}" style="font-size:0.75rem;">
-                  ${student.status === 'active' ? '✅ حساب مفعل' : '⏳ معلق (100$)'}
+                  ${student.status === 'active' ? '✅ حساب مفعل' : '⏳ بانتظار التفعيل'}
                 </span>
               </div>
               <p style="font-size:0.85rem; color:var(--text-muted);">

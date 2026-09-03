@@ -1,4 +1,4 @@
-import { fetchStudents, createStudent, updateStudentStatus, deleteStudent, verifyAdminPin, fetchSettings, saveSettings } from './api.js';
+import { fetchStudents, createStudent, updateStudentStatus, deleteStudent, verifyAdminPin, fetchSettings, saveSettings, setStoredAdminPin } from './api.js';
 import { icons } from './icons.js';
 
 let isAdminAuthenticated = false;
@@ -11,8 +11,12 @@ export function getIsAdminAuthenticated() {
 }
 
 export function checkAdminSession() {
-  if (sessionStorage.getItem('ielts_admin_auth') === 'true') {
+  const pin = sessionStorage.getItem('ielts_admin_pin');
+  const auth = sessionStorage.getItem('ielts_admin_auth');
+  if (auth === 'true' && pin) {
     isAdminAuthenticated = true;
+  } else {
+    isAdminAuthenticated = false;
   }
   return isAdminAuthenticated;
 }
@@ -29,7 +33,7 @@ export async function renderAdminDashboard() {
         </div>
         <h3 style="font-size:1.45rem; font-weight:800; margin-bottom:0.5rem; color:var(--text-main);">لوحة تحكم المعلم والمشرف</h3>
         <p style="color:var(--text-muted); font-size:0.92rem; margin-bottom:1.75rem; line-height:1.6;">
-          منطقة آمنة مخصصة للمعلم لإدارة حسابات الطلاب، استخراج الأكواد، ضبط معايير الذكاء الاصطناعي، ومتابعة الاشتراكات (100$).
+          منطقة آمنة مخصصة للمعلم لإدارة وتفعيل حسابات الطلاب، استخراج الأكواد، وضبط محركات الذكاء الاصطناعي.
         </p>
         
         <div style="display:flex; gap:0.5rem; max-width:340px; margin:0 auto 1rem;">
@@ -60,6 +64,7 @@ export async function renderAdminDashboard() {
           isAdminAuthenticated = true;
           sessionStorage.setItem('ielts_admin_auth', 'true');
           sessionStorage.setItem('ielts_admin_pin', pin);
+          setStoredAdminPin(pin);
           renderAdminDashboard();
         }
       } catch (err) {
@@ -144,7 +149,7 @@ export async function renderAdminDashboard() {
           </td>
           <td style="padding:0.9rem 0.6rem;">
             <span class="badge ${isActive ? 'badge-success' : 'badge-danger'}" style="font-size:0.75rem; padding:0.25rem 0.6rem;">
-              ${isActive ? '✅ مفعل نشط' : '⏳ معلق (100$)'}
+              ${isActive ? '✅ مفعل نشط' : '⏳ بانتظار التفعيل'}
             </span>
           </td>
           <td style="padding:0.9rem 0.6rem; font-weight:600;">
@@ -239,7 +244,7 @@ export async function renderAdminDashboard() {
                 مفعل (${activeCount})
               </button>
               <button class="admin-filter-pill ${studentStatusFilter === 'pending' ? 'active' : ''}" data-filter="pending" style="padding:0.35rem 0.85rem; border-radius:var(--radius-full); border:1px solid var(--border-color); font-size:0.8rem; font-weight:700; cursor:pointer; background:${studentStatusFilter === 'pending' ? 'var(--danger)' : 'var(--bg-card-subtle)'}; color:${studentStatusFilter === 'pending' ? '#fff' : 'var(--text-main)'};">
-                معلق 100$ (${pendingCount})
+                بانتظار التفعيل (${pendingCount})
               </button>
             </div>
           </div>
@@ -492,6 +497,9 @@ export async function renderAdminDashboard() {
 
     // Attach Back to App Button
     document.getElementById('admin-back-to-app-btn')?.addEventListener('click', () => {
+      if (window.location.hash === '#admin') {
+        history.replaceState(null, '', window.location.pathname);
+      }
       const editorTabBtn = document.querySelector('.tab-btn[data-tab="editor"]');
       if (editorTabBtn) editorTabBtn.click();
     });
@@ -546,6 +554,10 @@ export async function renderAdminDashboard() {
     }
 
   } catch (err) {
-    container.innerHTML = `<div class="toast toast-error" style="position:static;">خطأ في تحميل لوحة تحكم المعلم: ${err.message}</div>`;
+    sessionStorage.removeItem('ielts_admin_auth');
+    sessionStorage.removeItem('ielts_admin_pin');
+    setStoredAdminPin('');
+    isAdminAuthenticated = false;
+    renderAdminDashboard();
   }
 }
