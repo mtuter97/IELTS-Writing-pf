@@ -1,0 +1,114 @@
+{
+  "student_id": "stu_1788448351510_etpw9",
+  "student_name": "Ahmed",
+  "task_type": "free_text",
+  "prompt_question": "Technology & Society",
+  "essay_content": "Although rapid technological progress connects people globally, many individuals still experience isolation in their personal relationships. In this essay, I will discuss both perspectives and provide my conclusion.",
+  "word_count": 28,
+  "feedback": {
+    "scores": {
+      "task_achievement_or_response": {
+        "band": 4,
+        "criterion_name": "Topic Focus & Ideas (تطوير الفكرة والمضمون)",
+        "justification": "Because the prompt is only the broad topic “Technology & Society,” there is no specific question to answer. The excerpt introduces a relevant contrast between technological connectivity and personal isolation, but it presents no developed position, explanation, examples, or conclusion. Under the official descriptors, this is a minimal response with very limited development rather than a sufficiently addressed task. [[1]]"
+      },
+      "coherence_cohesion": {
+        "band": 6,
+        "criterion_name": "Coherence and Cohesion",
+        "justification": "The two sentences are logically connected: the first introduces the central contrast and the second states the intended essay purpose. The concessive linker “Although” is appropriate, and the ideas are easy to follow. However, the sample is too short to demonstrate paragraphing, progression, referencing, or flexible cohesion; the metadiscourse is also formulaic. The evidence supports an underlying coherent structure, but not Band 7 or above. [[1]]"
+      },
+      "lexical_resource": {
+        "band": 7,
+        "criterion_name": "Lexical Resource",
+        "justification": "The vocabulary is accurate, relevant, and reasonably precise: “rapid technological progress,” “connects people globally,” and “experience isolation” communicate the intended meaning clearly. There are no spelling or word-formation errors. Nevertheless, the short excerpt offers limited evidence of a wide range or skilful use of uncommon lexical items, so Band 7 is a cautious ceiling rather than evidence of Band 8 performance. [[1]]"
+      },
+      "grammatical_range_accuracy": {
+        "band": 7,
+        "criterion_name": "Grammatical Range and Accuracy",
+        "justification": "The first sentence uses an accurate complex concessive structure with “Although,” and both sentences are grammatically error-free. Subject-verb agreement, tense, articles, prepositions, and punctuation are correct. However, only a narrow sample of structures is provided, so the text does not demonstrate the wide range and flexible control required for Band 8. None of the historical weaknesses—subject-verb agreement, preposition choice, verb pattern, spelling, habitual present simple, missing verb, modal structure, or quantifier misuse—recurs here. [[1]]"
+      },
+      "overall_band": 6
+    },
+    "executive_summary": {
+      "examiner_verdict": "This is a clear, accurate, and appropriately academic introduction with a strong opening contrast. Its principal limitation is not language accuracy but underdevelopment: it announces an essay without presenting a specific position or outlining the two perspectives, so it cannot demonstrate Band 8-level task fulfilment.",
+      "key_strengths": [
+        "Accurate complex concessive sentence",
+        "Clear contrast between technological connection and social isolation",
+        "Appropriate academic register",
+        "No identifiable grammatical, spelling, or punctuation errors"
+      ],
+      "primary_weaknesses": [
+        "No specific IELTS question is provided or answered",
+        "The position remains unclear",
+        "The phrase “both perspectives” is vague",
+        "The conclusion is announced rather than stated",
+        "Limited evidence of lexical and grammatical range"
+      ],
+      "word_count_analysis": {
+        "count": 28,
+        "min_required": 0,
+        "status": "sufficient",
+        "comment": "Word count is 28, satisfying the 0-word minimum requirement."
+      }
+    },
+    "detailed_mistakes": [
+      {
+        "id": "err_1",
+        "category": "TR",
+        "severity": "moderate",
+        "rule_tag": "UNCLEAR_POSITION",
+        "rule_friendly_name": "State a Direct Position (وضوح الموقف)",
+        "original_snippet": "In this essay, I will discuss both perspectives and provide my conclusion.",
+        "suggested_correction": "Although technology has made global communication easier, I believe that excessive reliance on digital interaction can weaken the quality of people’s personal relationships.",
+        "explanation": "The sentence describes the essay’s plan but does not reveal the writer’s actual opinion. For a discussion or opinion essay, a clear position should be stated directly rather than postponed to an unspecified conclusion.",
+        "rule_micro_lesson": "A thesis statement should answer the question, not merely announce what the essay will do. Replace vague planning language with a precise claim that expresses your position.",
+        "is_recurring": false,
+        "history_count": 1,
+        "recurrence_alert": null
+      },
+      {
+        "id": "err_2",
+        "category": "TR",
+        "severity": "moderate",
+        "rule_tag": "VAGUE_REFERENCE",
+        "rule_friendly_name": "Specify Referenced Ideas (تحديد الأفكار المشار إليها)",
+        "original_snippet": "both perspectives",
+        "suggested_correction": "both the benefits of technology for maintaining long-distance relationships and its potential to reduce meaningful face-to-face interaction",
+        "explanation": "The phrase is grammatically correct but gives the reader no information about what the two perspectives are. Band 8 writing conveys precise meanings and develops the relevant ideas explicitly.",
+        "rule_micro_lesson": "Avoid empty references such as “both perspectives” or “these issues.” Name the exact viewpoints, causes, effects, or groups being discussed.",
+        "is_recurring": false,
+        "history_count": 1,
+        "recurrence_alert": null
+      },
+      {
+        "id": "err_3",
+        "category": "TR",
+        "severity": "minor",
+        "rule_tag": "FORMULAIC_METADISCOURSE",
+        "rule_friendly_name": "Use Purposeful Academic Signposting (استخدام الإشارات الأكاديمية بفاعلية)",
+        "original_snippet": "In this essay, I will discuss",
+        "suggested_correction": "This essay examines how technological connectivity can coexist with—and sometimes contribute to—social isolation.",
+        "explanation": "The original expression is acceptable but formulaic and contributes little substantive meaning. Higher-band introductions normally use the thesis to frame the issue and position directly.",
+        "rule_micro_lesson": "Prefer content-based signposting over stock phrases. Tell the reader the central argument or analytical focus instead of simply describing the essay’s structure.",
+        "is_recurring": false,
+        "history_count": 1,
+        "recurrence_alert": null
+      }
+    ],
+    "paragraph_by_paragraph_review": [
+      {
+        "paragraph_number": 1,
+        "type": "Introduction",
+        "feedback": "The introduction effectively paraphrases a general issue and uses an accurate concessive structure. However, it does not contain a clear thesis, does not identify the two perspectives, and does not indicate the main reasons that will be developed. Since the supplied prompt is only a topic rather than a complete IELTS question, task achievement cannot be assessed beyond this limited framing.",
+        "improved_version": "Although rapid technological progress has enabled people to maintain contact across geographical boundaries, it has not necessarily strengthened their personal relationships. Digital communication can preserve valuable connections, particularly over long distances; however, excessive dependence on it may reduce meaningful face-to-face interaction and leave individuals feeling socially isolated. Overall, technology is beneficial when it complements, rather than replaces, direct human contact."
+      }
+    ],
+    "action_plan": [
+      "Step 1: Replace “I will discuss both perspectives and provide my conclusion” with a direct, specific thesis that states your position and names the two sides of the issue.",
+      "Step 2: Extend each central idea with a clear explanation, a precise example, and an explicit link to the question; this is essential for moving Task Response beyond Band 4.",
+      "Step 3: Continue monitoring your historical weaknesses—especially subject-verb agreement and preposition choice—while practising varied structures such as concessive clauses, relative clauses, and participle clauses; no historical weakness recurs in this excerpt."
+    ]
+  },
+  "id": "ess_1788462382867_2btol",
+  "created_at": "2026-09-03T19:06:22.867Z"
+}

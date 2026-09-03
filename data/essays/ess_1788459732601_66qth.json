@@ -1,0 +1,66 @@
+{
+  "student_id": "stu_1788448351510_etpw9",
+  "student_name": "Ahmed",
+  "task_type": "free_text",
+  "prompt_question": "Free text test",
+  "essay_content": "Although rapid urbanisation brings notable economic advancements, it simultaneously accelerates environmental degradation and puts immense pressure on public infrastructure.",
+  "word_count": 19,
+  "feedback": {
+    "scores": {
+      "task_achievement_or_response": {
+        "band": 3,
+        "criterion_name": "Task Achievement (TA)",
+        "justification": "The submission consists of only a single sentence (22 words), far below the minimum requirement of 250 words for Task 2 or 150 words for Task 1. As a result, the candidate fails to address the prompt, develop ideas, or provide an overall response."
+      },
+      "coherence_cohesion": {
+        "band": 3.5,
+        "criterion_name": "Coherence and Cohesion",
+        "justification": "While the single sentence uses a complex subordinate clause appropriately ('Although...'), no essay structure or paragraphing is present. Logical progression and cohesive linking cannot be demonstrated across a single sentence."
+      },
+      "lexical_resource": {
+        "band": 6,
+        "criterion_name": "Lexical Resource",
+        "justification": "The vocabulary used within the single sentence is sophisticated and accurate ('rapid urbanisation', 'economic advancements', 'environmental degradation', 'immense pressure'). However, the extremely limited sample size prevents awarding a higher band score."
+      },
+      "grammatical_range_accuracy": {
+        "band": 6,
+        "criterion_name": "Grammatical Range and Accuracy",
+        "justification": "The single sentence is a fully correct complex sentence structure. However, because the sample is so minimal, full flexibility and range across an entire essay cannot be demonstrated."
+      },
+      "overall_band": 4.5
+    },
+    "executive_summary": {
+      "examiner_verdict": "The candidate has produced an impressive single complex sentence with accurate academic vocabulary. However, due to its extreme brevity (22 words), it severely breaches the length requirement and receives heavy band penalties in Task Achievement and Coherence & Cohesion.",
+      "key_strengths": [
+        "Excellent academic vocabulary and collocation choices",
+        "Accurate complex sentence structure using subordinate clauses"
+      ],
+      "primary_weaknesses": [
+        "Severe word count deficit (only 22 words submitted)",
+        "Complete lack of essay development, body paragraphs, and conclusion"
+      ],
+      "word_count_analysis": {
+        "count": 19,
+        "min_required": 250,
+        "status": "penalty_risk",
+        "comment": "Word count is 19, below the 250-word minimum. Examiners will apply a Task Response penalty."
+      }
+    },
+    "detailed_mistakes": [],
+    "paragraph_by_paragraph_review": [
+      {
+        "paragraph_number": 1,
+        "type": "Introduction / Incomplete Text",
+        "feedback": "This sentence serves well as a thesis statement or introduction outline, but it lacks a complete introduction paragraph and full essay structure.",
+        "improved_version": "Although rapid urbanisation brings notable economic advancements, it simultaneously accelerates environmental degradation and puts immense pressure on public infrastructure. This essay will examine both the benefits and drawbacks of urban growth before concluding that sustainable city planning is vital to mitigate its environmental toll."
+      }
+    ],
+    "action_plan": [
+      "Step 1: Write full-length essays meeting the standard word count of 250-300 words for Task 2.",
+      "Step 2: Follow a standard 4-paragraph essay structure: Introduction, Body Paragraph 1, Body Paragraph 2, and Conclusion.",
+      "Step 3: Maintain the strong academic vocabulary and sentence structures shown in this sentence across a complete response."
+    ]
+  },
+  "id": "ess_1788459732601_66qth",
+  "created_at": "2026-09-03T18:22:12.602Z"
+}

@@ -1,0 +1,128 @@
+{
+  "student_id": "stu_1788375912455_yu1ws",
+  "student_name": "Mohammed Tarek",
+  "task_type": "task_2",
+  "prompt_question": "Some people think that university education should be free for all students. Others believe that students should pay for their higher education. Discuss both views and give your own opinion.",
+  "essay_content": "The question of whether tertiary education should be entirely funded by the state or paid for by students is a matter of significant debate. While proponents of free education argue that it fosters equal opportunities, opponents maintain that private contributions ensure better university facilities and personal commitment.\n\nOn the one hand, eliminating tuition fees ensures that higher education is accessible to all individuals regardless of their socio-economic background. When financial barriers are removed, talented students from low-income families can pursue degrees in vital fields such as medicine, engineering, and education. For example, in countries like Germany and Norway, free university tuition has contributed to high social mobility and an educated workforce.\n\nOn the other hand, funding universities entirely through public taxes places a heavy burden on national budgets. If governments face economic downturns, universities may suffer from underfunded research facilities and lower faculty salaries. Furthermore, when students pay for their tuition, they often demonstrate greater academic seriousness and dedication to their studies.\n\nIn conclusion, while free higher education promotes equality, financial constraints can diminish educational quality. Therefore, I believe a balanced approach, where governments offer subsidized tuition alongside income-contingent loans and scholarships, is the most practical solution.",
+  "word_count": 197,
+  "feedback": {
+    "scores": {
+      "task_achievement_or_response": {
+        "band": 7,
+        "criterion_name": "Task Response (TR)",
+        "justification": "The essay addresses all parts of the prompt, presenting a clear position throughout and discussing both perspectives with relevant main ideas. However, at 197 words, it falls short of the recommended 250-word target, resulting in underdeveloped supporting arguments that prevent it from reaching Band 8.0."
+      },
+      "coherence_cohesion": {
+        "band": 8,
+        "criterion_name": "Coherence and Cohesion",
+        "justification": "Information and ideas are sequenced logically with a smooth, natural flow. Paragraphing is clear, each focused on a distinct central topic. Cohesive devices ('While', 'On the one hand', 'On the other hand', 'Furthermore', 'Therefore') are used skillfully without sounding mechanical."
+      },
+      "lexical_resource": {
+        "band": 8,
+        "criterion_name": "Lexical Resource",
+        "justification": "Demonstrates a wide range of sophisticated, task-appropriate academic vocabulary used with flexibility and precision ('tertiary education', 'socio-economic background', 'social mobility', 'underfunded research facilities', 'income-contingent loans'). Only minor stylistic slips are present."
+      },
+      "grammatical_range_accuracy": {
+        "band": 8.5,
+        "criterion_name": "Grammatical Range and Accuracy",
+        "justification": "Employs a wide variety of complex structural forms (conditional sentences, complex relative clauses, passive voice, nominalized subjects) with near-flawless accuracy. Sentences are almost entirely error-free."
+      },
+      "overall_band": 8
+    },
+    "executive_summary": {
+      "examiner_verdict": "This is an exceptionally well-written essay featuring sophisticated vocabulary and near-flawless grammatical precision. However, its brevity (197 words) restricts full idea extension in Task Response. Expanding the body paragraphs with deeper commentary will easily elevate this response to Band 8.5+.",
+      "key_strengths": [
+        "Advanced academic vocabulary and collocations (e.g., 'income-contingent loans', 'social mobility')",
+        "Flawless sentence structure with high grammatical variety and zero major errors",
+        "Clear, logical paragraph progression and effective cohesion"
+      ],
+      "primary_weaknesses": [
+        "Under 250 words, leading to slightly compressed argument extension",
+        "Minor informal exemplification choice ('like' instead of 'such as')"
+      ],
+      "word_count_analysis": {
+        "count": 197,
+        "min_required": 250,
+        "status": "penalty_risk",
+        "comment": "Word count is 197, below the 250-word minimum. Examiners will apply a Task Response penalty."
+      }
+    },
+    "detailed_mistakes": [
+      {
+        "id": "err_1",
+        "category": "LR",
+        "severity": "minor",
+        "rule_tag": "INFORMAL_REGISTER",
+        "rule_friendly_name": "Informal Exemplification Preposition (أمثلة غير رسمية)",
+        "original_snippet": "in countries like Germany and Norway",
+        "suggested_correction": "in countries such as Germany and Norway",
+        "explanation": "In formal academic IELTS writing, 'such as' or 'including' is preferred over 'like' when introducing illustrative examples.",
+        "rule_micro_lesson": "Use 'such as' or 'including' rather than 'like' when presenting examples in formal writing.",
+        "is_recurring": false,
+        "history_count": 1,
+        "recurrence_alert": null
+      },
+      {
+        "id": "err_2",
+        "category": "LR",
+        "severity": "minor",
+        "rule_tag": "COLLOCATION_ERROR",
+        "rule_friendly_name": "Redundant Preposition Collocation (زيادة حرف الجر مع كلمة Tuition)",
+        "original_snippet": "when students pay for their tuition",
+        "suggested_correction": "when students pay their tuition fees",
+        "explanation": "'Tuition' already denotes payment for instruction; using 'pay for their tuition' is slightly redundant. 'Pay tuition' or 'pay tuition fees' is more natural academic collocation.",
+        "rule_micro_lesson": "Pair 'pay' directly with 'tuition' or 'tuition fees' without adding 'for'.",
+        "is_recurring": false,
+        "history_count": 1,
+        "recurrence_alert": null
+      },
+      {
+        "id": "err_3",
+        "category": "TR",
+        "severity": "moderate",
+        "rule_tag": "UNDERLENGTH_RESPONSE",
+        "rule_friendly_name": "Insufficient Essay Length (عدم كفاية طول المقال)",
+        "original_snippet": "[Entire response total count: 197 words]",
+        "suggested_correction": "Expand each body paragraph by 25-30 words with further analysis or secondary supporting points.",
+        "explanation": "Writing under 250 words limits your ability to fully develop, support, and extend main ideas as required for the highest Task Response bands.",
+        "rule_micro_lesson": "Target 260–280 words for Task 2 to ensure comprehensive argument development.",
+        "is_recurring": false,
+        "history_count": 1,
+        "recurrence_alert": null
+      }
+    ],
+    "paragraph_by_paragraph_review": [
+      {
+        "paragraph_number": 1,
+        "type": "Introduction",
+        "feedback": "An exemplary introduction that paraphrases the prompt smoothly and outlines both perspectives while setting up a sophisticated tone.",
+        "improved_version": "The question of whether tertiary education should be fully state-funded or financed directly by students remains a subject of intense debate. While proponents of free higher education contend that it guarantees equal opportunity, opponents maintain that private financial contributions safeguard educational quality and foster personal commitment."
+      },
+      {
+        "paragraph_number": 2,
+        "type": "Body Paragraph 1 (Pro-Free Education)",
+        "feedback": "Strong focus and logical progression. Exemplification is effective, but expanding on the broader economic returns of free university education would strengthen Task Response.",
+        "improved_version": "On the one hand, eliminating tuition fees ensures that higher education is accessible to all individuals regardless of their socio-economic background. When financial barriers are removed, talented students from low-income households can pursue higher degrees in critical sectors such as medicine and engineering. For instance, in nations such as Germany and Norway, state-funded higher education has directly stimulated social mobility and sustained a highly skilled, innovative workforce, ultimately boosting national productivity."
+      },
+      {
+        "paragraph_number": 3,
+        "type": "Body Paragraph 2 (Pro-Paid Education)",
+        "feedback": "Presents convincing counterarguments regarding fiscal pressure and student motivation. Slightly expanding the point on academic motivation would add depth.",
+        "improved_version": "On the other hand, funding tertiary institutions entirely through public taxation imposes significant strain on national budgets. During economic downturns, state-dependent universities frequently suffer from underfunded research facilities and diminished faculty remuneration. Furthermore, when students contribute financially to their tuition fees, they often demonstrate greater academic accountability and dedication, as direct financial investment encourages them to maximize their learning outcomes."
+      },
+      {
+        "paragraph_number": 4,
+        "type": "Conclusion",
+        "feedback": "Concise, precise, and presents a clear personal opinion incorporating a pragmatic middle-ground solution.",
+        "improved_version": "In conclusion, while state-funded tertiary education advances social equity, total reliance on public revenue can jeopardize academic standards. Therefore, I believe a hybrid model—wherein governments offer subsidized tuition fees alongside income-contingent loans and merit-based scholarships—represents the most sustainable solution."
+      }
+    ],
+    "action_plan": [
+      "Step 1: Increase essay word count to 260–280 words by adding an extra analytical sentence to elaborate on every example provided.",
+      "Step 2: Replace informal connectors like 'like' with formal exemplification phrases such as 'such as', 'as evidenced by', or 'including'.",
+      "Step 3: Refine verb-noun collocations surrounding financial and academic terms (e.g., 'pay tuition fees', 'incur financial obligations')."
+    ]
+  },
+  "id": "ess_1788376725566_l75at",
+  "created_at": "2026-09-02T19:18:45.566Z"
+}

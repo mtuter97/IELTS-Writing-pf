@@ -2,5 +2,6 @@ node_modules/
 .env
 .env.local
 .vercel/
-data/
 tests/
+data/settings.json
+

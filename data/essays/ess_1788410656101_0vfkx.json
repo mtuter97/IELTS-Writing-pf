@@ -1,0 +1,81 @@
+{
+  "student_id": null,
+  "student_name": "Guest Student",
+  "task_type": "task_2",
+  "prompt_question": "",
+  "essay_content": "Some essay content here with enough words to trigger evaluation check",
+  "word_count": 11,
+  "feedback": {
+    "scores": {
+      "task_achievement_or_response": {
+        "band": 4,
+        "criterion_name": "Task Response (TR)",
+        "justification": "The response is a minimal placeholder sentence that fails to address an actual essay prompt. There is no developed position, main ideas, or supporting arguments present."
+      },
+      "coherence_cohesion": {
+        "band": 4,
+        "criterion_name": "Coherence and Cohesion",
+        "justification": "The submission consists of a single sentence without structural organisation, logical paragraphing, or cohesive progression."
+      },
+      "lexical_resource": {
+        "band": 5,
+        "criterion_name": "Lexical Resource",
+        "justification": "The vocabulary used is extremely limited and minimally adequate to form a simple descriptive statement, lacking academic range or precision."
+      },
+      "grammatical_range_accuracy": {
+        "band": 5,
+        "criterion_name": "Grammatical Range and Accuracy",
+        "justification": "The text demonstrates a single simple sentence structure with basic grammar. While error-free, it exhibits no grammatical range or complex structures."
+      },
+      "overall_band": 4.5
+    },
+    "executive_summary": {
+      "examiner_verdict": "The submitted response is a placeholder snippet rather than a complete academic essay. To achieve a band score above 6.0, a complete essay of at least 250 words responding directly to a specific prompt must be provided.",
+      "key_strengths": [
+        "Basic grammatical structure is accurate",
+        "Spelling in the single sentence is correct"
+      ],
+      "primary_weaknesses": [
+        "Severe underlength submission failing basic task requirements",
+        "Absence of essay structure, thesis, and paragraph development",
+        "Lack of academic vocabulary and varied sentence structures"
+      ],
+      "word_count_analysis": {
+        "count": 11,
+        "min_required": 250,
+        "status": "penalty_risk",
+        "comment": "Word count is 11, below the 250-word minimum. Examiners will apply a Task Response penalty."
+      }
+    },
+    "detailed_mistakes": [
+      {
+        "id": "err_1",
+        "category": "TR",
+        "severity": "severe",
+        "rule_tag": "INCOMPLETE_RESPONSE",
+        "rule_friendly_name": "Incomplete Response (إجابة غير مكتملة)",
+        "original_snippet": "Some essay content here with enough words to trigger evaluation check",
+        "suggested_correction": "A full 250+ word structured essay addressing all parts of a specific Task 2 prompt.",
+        "explanation": "The submission does not contain actual essay content or address a specific prompt.",
+        "rule_micro_lesson": "Always write a complete response containing an Introduction, two Body Paragraphs, and a Conclusion addressing all parts of the prompt.",
+        "is_recurring": false,
+        "history_count": 1
+      }
+    ],
+    "paragraph_by_paragraph_review": [
+      {
+        "paragraph_number": 1,
+        "type": "Introduction",
+        "feedback": "The text provided is a placeholder statement rather than a functional introduction. A full Task 2 introduction requires a context paraphrase and a clear thesis statement.",
+        "improved_version": "It is widely argued that academic writing proficiency requires structured practice and detailed diagnostic feedback. This essay will examine the key factors contributing to effective essay construction and discuss how targeted instruction enhances student performance."
+      }
+    ],
+    "action_plan": [
+      "Step 1: Submit a full 250+ word essay responding to a complete IELTS Task 2 prompt.",
+      "Step 2: Follow a standard four-paragraph structure: Introduction, Body Paragraph 1, Body Paragraph 2, and Conclusion.",
+      "Step 3: Ensure each body paragraph contains a clear topic sentence, extended explanation, and concrete example."
+    ]
+  },
+  "id": "ess_1788410656101_0vfkx",
+  "created_at": "2026-09-03T04:44:16.101Z"
+}

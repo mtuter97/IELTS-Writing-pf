@@ -1,0 +1,114 @@
+{
+  "student_id": "stu_1788371131241_bnfdi",
+  "student_name": "Ali Testing",
+  "task_type": "task_2",
+  "prompt_question": "Some people think that university education should be free for all students. Others believe that students should pay for their higher education. Discuss both views and give your own opinion.",
+  "essay_content": "The question of whether tertiary education should be entirely funded by the state or paid for by students is a matter of significant debate. While proponents of free education argue that it fosters equal opportunities, opponents maintain that private contributions ensure better university facilities and personal commitment.\n\nOn the one hand, eliminating tuition fees ensures that higher education is accessible to all individuals regardless of their socio-economic background. When financial barriers are removed, talented students from low-income families can pursue degrees in vital fields such as medicine, engineering, and education. For example, in countries like Germany and Norway, free university tuition has contributed to high social mobility and an educated workforce.\n\nOn the other hand, funding universities entirely through public taxes places a heavy burden on national budgets. If governments face economic downturns, universities may suffer from underfunded research facilities and lower faculty salaries. Furthermore, when students pay for their tuition, they often demonstrate greater academic seriousness and dedication to their studies.\n\nIn conclusion, while free higher education promotes equality, financial constraints can diminish educational quality. Therefore, I believe a balanced approach, where governments offer subsidized tuition alongside income-contingent loans and scholarships, is the most practical solution.",
+  "word_count": 197,
+  "feedback": {
+    "scores": {
+      "task_achievement_or_response": {
+        "band": 6.5,
+        "criterion_name": "Task Response (TR)",
+        "justification": "The essay addresses all parts of the prompt, discussing both viewpoints and presenting a clear position in the conclusion. Main ideas are relevant and supported with appropriate examples (e.g., Germany and Norway). However, at 197 words, the response is significantly under the recommended 250-word benchmark, meaning the main arguments are concisely outlined rather than fully developed or extended as required for Band 7+ TR."
+      },
+      "coherence_cohesion": {
+        "band": 8,
+        "criterion_name": "Coherence and Cohesion",
+        "justification": "Information is logically sequenced with clear progression throughout. Transition signals ('On the one hand', 'On the other hand', 'Furthermore', 'In conclusion') are used naturally. Each paragraph presents a clear central topic with appropriate cohesive devices."
+      },
+      "lexical_resource": {
+        "band": 8,
+        "criterion_name": "Lexical Resource",
+        "justification": "Uses a wide range of sophisticated academic vocabulary with precision ('tertiary education', 'fosters equal opportunities', 'socio-economic background', 'social mobility', 'income-contingent loans', 'diminish educational quality'). Occasional minor register choices ('like Germany' instead of 'such as Germany') do not detract from the high quality."
+      },
+      "grammatical_range_accuracy": {
+        "band": 8,
+        "criterion_name": "Grammatical Range and Accuracy",
+        "justification": "Demonstrates a wide range of complex structures (conditionals, gerund clauses, contrast clauses) with a high proportion of error-free sentences. Subject-verb agreement is handled flawlessly throughout, demonstrating complete mastery over past weaknesses."
+      },
+      "overall_band": 7.5
+    },
+    "executive_summary": {
+      "examiner_verdict": "An exceptionally well-written, elegant, and grammatically precise response. The candidate demonstrates native-like control over sentence structures and academic vocabulary. The primary factor holding this script back from an Overall Band 8.0+ is response length (197 words), which limits argument extension for Task Response.",
+      "key_strengths": [
+        "Flawless grammatical accuracy and sophisticated complex structures",
+        "High-level academic collocations and domain-specific vocabulary",
+        "Logical, well-structured paragraphing with seamless cohesion"
+      ],
+      "primary_weaknesses": [
+        "Underlength submission (197 words), preventing full development of ideas",
+        "Slightly informal preposition usage in example framing ('like' instead of 'such as')"
+      ],
+      "word_count_analysis": {
+        "count": 197,
+        "min_required": 250,
+        "status": "penalty_risk",
+        "comment": "Word count is 197, below the 250-word minimum. Examiners will apply a Task Response penalty."
+      }
+    },
+    "detailed_mistakes": [
+      {
+        "id": "err_1",
+        "category": "LR",
+        "severity": "minor",
+        "rule_tag": "INFORMAL_REGISTER",
+        "rule_friendly_name": "Informal Exemplification (أسلوب ضرب الأمثلة غير الرسمي)",
+        "original_snippet": "in countries like Germany and Norway",
+        "suggested_correction": "in countries such as Germany and Norway",
+        "explanation": "In formal academic English, 'such as' or 'as exemplified by' is preferred over 'like' when introducing examples.",
+        "rule_micro_lesson": "Rule: Use 'such as' or 'including' for formal academic exemplification; reserve 'like' for comparative contexts.",
+        "is_recurring": false,
+        "history_count": 1,
+        "recurrence_alert": null
+      },
+      {
+        "id": "err_2",
+        "category": "TR",
+        "severity": "moderate",
+        "rule_tag": "INSUFFICIENT_DEVELOPMENT",
+        "rule_friendly_name": "Underlength Essay / Inadequate Extension (عدم توسيع الأفكار بشكل كافٍ)",
+        "original_snippet": "Total essay length: 197 words",
+        "suggested_correction": "Expand each body paragraph by 25–30 words to reach 260–280 words.",
+        "explanation": "Writing under 250 words limits your ability to fully extend supporting explanations and real-world impacts, capping Task Response at Band 6.5.",
+        "rule_micro_lesson": "Rule: Aim for 260-280 words in Task 2 to ensure every main point is explained, exemplified, and linked back to the thesis.",
+        "is_recurring": false,
+        "history_count": 1,
+        "recurrence_alert": null
+      }
+    ],
+    "paragraph_by_paragraph_review": [
+      {
+        "paragraph_number": 1,
+        "type": "Introduction",
+        "feedback": "Outstanding paraphrasing of the prompt and concise outline of both sides. Clear, sophisticated thesis statement.",
+        "improved_version": "The question of whether tertiary education should be fully state-funded or paid for by students remains a subject of intense debate. While proponents of free higher education argue that it fosters social equality, opponents maintain that tuition fees are essential for sustaining institution quality and student commitment."
+      },
+      {
+        "paragraph_number": 2,
+        "type": "Body Paragraph 1",
+        "feedback": "Strong logical arguments and accurate exemplification. To reach Band 8 in TR, extend the explanation of how societal economic output benefits long-term.",
+        "improved_version": "On the one hand, eliminating tuition fees ensures that higher education is accessible to all individuals regardless of socio-economic status. When financial barriers are removed, talented students from lower-income backgrounds can pursue degrees in vital fields such as medicine, engineering, and technology. For instance, in nations such as Germany and Norway, state-funded higher education has significantly boosted social mobility while supplying the economy with a highly skilled workforce, ultimately generating higher tax revenue for the nation."
+      },
+      {
+        "paragraph_number": 3,
+        "type": "Body Paragraph 2",
+        "feedback": "Well-argued counter-perspective with good cause-and-effect structure. Adding a brief secondary consequence would provide full idea extension.",
+        "improved_version": "On the other hand, funding universities entirely through public taxation places a substantial burden on national budgets. During economic recessions, state-dependent universities risk suffering from underfunded research facilities and diminished faculty remuneration, ultimately compromising educational standards. Furthermore, when students contribute financially to their education, they are generally more motivated to maximize their academic output and complete their studies promptly."
+      },
+      {
+        "paragraph_number": 4,
+        "type": "Conclusion",
+        "feedback": "Excellent balanced stance and practical solution offered in the final sentence.",
+        "improved_version": "In conclusion, while state-funded tertiary education promotes equal opportunity, total financial reliance on the government can jeopardise academic quality. Therefore, I believe a hybrid model—wherein governments subsidise core tuition costs alongside income-contingent loans and merit scholarships—represents the most effective and sustainable path forward."
+      }
+    ],
+    "action_plan": [
+      "Step 1: Expand body paragraph development by adding a follow-up impact sentence to each argument to easily surpass 250 words.",
+      "Step 2: Replace informal exemplar structures like 'countries like X' with academic phrases such as 'nations such as X' or 'as exemplified by X'.",
+      "Step 3: Maintain your current excellent control over grammar and subject-verb agreement while focusing timer management on drafting 260-280 words."
+    ]
+  },
+  "id": "ess_1788409425314_4d87z",
+  "created_at": "2026-09-03T04:23:45.315Z"
+}

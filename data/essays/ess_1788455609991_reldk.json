@@ -1,0 +1,208 @@
+{
+  "student_id": "stu_1788448351510_etpw9",
+  "student_name": "Ahmed",
+  "task_type": "task_1_general",
+  "prompt_question": "Healthy food",
+  "essay_content": "\"Healthy food is very important for our life. I like eat fruits and vegitables every day. In the morning, I always eating a apple and drink milk. Many people likes fast food because it very delicious, but it is bad to your body. Fast food make you fat and sick. You must to drink many water. My mother cook good healthy foods in the dinner.\"\"Healthy food is very important for our life. I like eat fruits and vegitables every day. In the morning, I always eating a apple and drink milk. Many people likes fast food because it very delicious, but it is bad to your body. Fast food make you fat and sick. You must to drink many water. My mother cook good healthy foods in the dinner.\"\"Healthy food is very important for our life. I like eat fruits and vegitables every day. In the morning, I always eating a apple and drink milk. Many people likes fast food because it very delicious, but it is bad to your body. Fast food make you fat and sick. You must to drink many water. My mother cook good healthy foods in the dinner.\"",
+  "word_count": 193,
+  "feedback": {
+    "scores": {
+      "task_achievement_or_response": {
+        "band": 4,
+        "criterion_name": "Task Achievement (TA)",
+        "justification": "The response fails to follow standard IELTS General Training Task 1 format (which requires a formal/semi-formal/informal letter with specific bullet points). Instead, it presents a short personal paragraph repeated verbatim three times. The response lacks focus, complete coverage, and appropriate format."
+      },
+      "coherence_cohesion": {
+        "band": 4,
+        "criterion_name": "Coherence and Cohesion",
+        "justification": "Information is presented as a disorganised series of simple statements with repetitive content. There is no logical paragraphing or progression of ideas, and cohesive devices are either absent or improperly used."
+      },
+      "lexical_resource": {
+        "band": 4,
+        "criterion_name": "Lexical Resource",
+        "justification": "Uses a very limited vocabulary range, barely adequate for basic daily communication. There are spelling errors ('vegitables'), incorrect word choices ('many water', 'bad to your body'), and significant repetition."
+      },
+      "grammatical_range_accuracy": {
+        "band": 3.5,
+        "criterion_name": "Grammatical Range and Accuracy",
+        "justification": "Demonstrates a very limited range of structures. Almost every sentence contains grammatical errors, including subject-verb agreement, verb form errors, article misuse, modal verb misuse, and preposition errors."
+      },
+      "overall_band": 4
+    },
+    "executive_summary": {
+      "examiner_verdict": "The submission does not fulfill the structural requirements of an IELTS General Writing task and consists of a basic paragraph repeated three times. It exhibits persistent grammatical, lexical, and mechanical errors in nearly every sentence.",
+      "key_strengths": [
+        "Attempts to address the general topic of healthy food",
+        "Underlying message is basic but understandable in places"
+      ],
+      "primary_weaknesses": [
+        "Failure to write in the correct task format (IELTS letter structure)",
+        "Verbatim triplication of the text to pad word count",
+        "Frequent fundamental errors in subject-verb agreement, articles, prepositions, and modal verbs"
+      ],
+      "word_count_analysis": {
+        "count": 193,
+        "min_required": 150,
+        "status": "sufficient",
+        "comment": "Word count is 193, satisfying the 150-word minimum requirement."
+      }
+    },
+    "detailed_mistakes": [
+      {
+        "id": "err_1",
+        "category": "GRA",
+        "severity": "severe",
+        "rule_tag": "VERB_PATTERN_ERROR",
+        "rule_friendly_name": "Verb + Infinitive Pattern (نمط الفعل + المصدر)",
+        "original_snippet": "I like eat fruits",
+        "suggested_correction": "I like to eat fruit",
+        "explanation": "The verb 'like' must be followed by an infinitive with 'to' ('like to eat') or a gerund ('like eating'). Additionally, 'fruit' is typically uncountable in this context.",
+        "rule_micro_lesson": "Rule: Use 'like + to + verb' or 'like + verb-ing' when expressing preferences.",
+        "is_recurring": false,
+        "history_count": 1,
+        "recurrence_alert": null
+      },
+      {
+        "id": "err_2",
+        "category": "LR",
+        "severity": "moderate",
+        "rule_tag": "SPELLING_ERROR",
+        "rule_friendly_name": "Spelling Error (خطأ إملائي)",
+        "original_snippet": "vegitables",
+        "suggested_correction": "vegetables",
+        "explanation": "'Vegetables' is misspelled with an 'i' instead of an 'e'.",
+        "rule_micro_lesson": "Rule: Check vowel spelling in common academic and daily words carefully: v-e-g-e-t-a-b-l-e-s.",
+        "is_recurring": false,
+        "history_count": 1,
+        "recurrence_alert": null
+      },
+      {
+        "id": "err_3",
+        "category": "GRA",
+        "severity": "severe",
+        "rule_tag": "INCORRECT_TENSE_ASPECT",
+        "rule_friendly_name": "Present Simple for Habitual Actions (زمن المضارع البسيط للعادات)",
+        "original_snippet": "I always eating a apple",
+        "suggested_correction": "I always eat an apple",
+        "explanation": "Habitual actions with frequency adverbs like 'always' require the present simple tense ('eat'), not the continuous form ('eating'). Also, 'apple' starts with a vowel sound and requires 'an'.",
+        "rule_micro_lesson": "Rule: Use simple present for daily habits (e.g., 'I always eat'). Use article 'an' before vowel sounds.",
+        "is_recurring": false,
+        "history_count": 1,
+        "recurrence_alert": null
+      },
+      {
+        "id": "err_4",
+        "category": "GRA",
+        "severity": "severe",
+        "rule_tag": "SUBJECT_VERB_AGREEMENT",
+        "rule_friendly_name": "Subject-Verb Agreement (توافق الفاعل والفعل)",
+        "original_snippet": "Many people likes",
+        "suggested_correction": "Many people like",
+        "explanation": "'People' is a plural noun and requires the plural verb form 'like' rather than singular 'likes'.",
+        "rule_micro_lesson": "Rule: Plural subjects ('people', 'they') take bare verbs without '-s' in the present simple tense.",
+        "is_recurring": false,
+        "history_count": 1,
+        "recurrence_alert": null
+      },
+      {
+        "id": "err_5",
+        "category": "GRA",
+        "severity": "severe",
+        "rule_tag": "MISSING_VERB_TO_BE",
+        "rule_friendly_name": "Missing Predicate Verb (غياب فعل الكينونة)",
+        "original_snippet": "because it very delicious",
+        "suggested_correction": "because it is very delicious",
+        "explanation": "English adjectives need a linking verb such as 'is' to form a complete predicate clause.",
+        "rule_micro_lesson": "Rule: Every clause must contain a main verb. Combine subject + 'to be' + adjective (e.g., 'It is delicious').",
+        "is_recurring": false,
+        "history_count": 1,
+        "recurrence_alert": null
+      },
+      {
+        "id": "err_6",
+        "category": "LR",
+        "severity": "moderate",
+        "rule_tag": "PREPOSITION_ERROR",
+        "rule_friendly_name": "Preposition Choice (اختيار حرف الجر)",
+        "original_snippet": "bad to your body",
+        "suggested_correction": "bad for your health",
+        "explanation": "The correct collocation is 'bad for' (or 'harmful to') when describing health impacts.",
+        "rule_micro_lesson": "Rule: Use 'good for' / 'bad for' when discussing effects on health and wellbeing.",
+        "is_recurring": false,
+        "history_count": 1,
+        "recurrence_alert": null
+      },
+      {
+        "id": "err_7",
+        "category": "GRA",
+        "severity": "severe",
+        "rule_tag": "SUBJECT_VERB_AGREEMENT",
+        "rule_friendly_name": "Subject-Verb Agreement (توافق الفاعل والفعل)",
+        "original_snippet": "Fast food make you",
+        "suggested_correction": "Fast food makes you",
+        "explanation": "'Fast food' is an uncountable singular noun phrase and requires the singular verb 'makes'.",
+        "rule_micro_lesson": "Rule: Uncountable nouns take third-person singular verbs ending in '-s' in present simple.",
+        "is_recurring": false,
+        "history_count": 1,
+        "recurrence_alert": null
+      },
+      {
+        "id": "err_8",
+        "category": "GRA",
+        "severity": "severe",
+        "rule_tag": "MODAL_VERB_STRUCTURE",
+        "rule_friendly_name": "Modal Verb Structure (صياغة الأفعال الناقصة)",
+        "original_snippet": "You must to drink",
+        "suggested_correction": "You must drink",
+        "explanation": "Modal verbs such as 'must', 'can', or 'should' are followed by the bare infinitive without 'to'.",
+        "rule_micro_lesson": "Rule: Never put 'to' after modal verbs (must/can/should/will + base verb).",
+        "is_recurring": false,
+        "history_count": 1,
+        "recurrence_alert": null
+      },
+      {
+        "id": "err_9",
+        "category": "LR",
+        "severity": "severe",
+        "rule_tag": "QUANTIFIER_MISUSE",
+        "rule_friendly_name": "Quantifier Usage with Uncountable Nouns (محددات الكمية مع الأسماء غير المعدودة)",
+        "original_snippet": "many water",
+        "suggested_correction": "plenty of water",
+        "explanation": "'Water' is an uncountable noun and cannot be modified by 'many'. Use 'much' or 'plenty of'.",
+        "rule_micro_lesson": "Rule: Use 'many' for countable plural nouns and 'much' / 'a lot of' for uncountable nouns.",
+        "is_recurring": false,
+        "history_count": 1,
+        "recurrence_alert": null
+      },
+      {
+        "id": "err_10",
+        "category": "GRA",
+        "severity": "moderate",
+        "rule_tag": "PREPOSITION_ERROR",
+        "rule_friendly_name": "Preposition with Meals (حروف الجر مع الوجبات)",
+        "original_snippet": "in the dinner",
+        "suggested_correction": "for dinner",
+        "explanation": "When referring to meals, the correct preposition is 'for' without the definite article ('for dinner').",
+        "rule_micro_lesson": "Rule: Say 'for breakfast', 'for lunch', and 'for dinner' without 'the'.",
+        "is_recurring": false,
+        "history_count": 1,
+        "recurrence_alert": null
+      }
+    ],
+    "paragraph_by_paragraph_review": [
+      {
+        "paragraph_number": 1,
+        "type": "Main Body / Paragraph 1",
+        "feedback": "The text lacks formal IELTS structure (e.g. letter format with opening, purpose, body paragraphs, and sign-off). The content relies on extremely basic personal opinions and contains severe grammatical errors.",
+        "improved_version": "Dear Sir or Madam,\n\nI am writing to express my views regarding the importance of healthy eating habits in modern society. Maintaining a balanced diet plays a vital role in overall well-being. Incorporating fresh fruits and vegetables into daily meals provides essential nutrients that strengthen the immune system.\n\nConversely, the frequent consumption of fast food poses significant health risks, including obesity and cardiovascular diseases. Therefore, individuals should be encouraged to drink adequate amounts of water and prioritize home-cooked meals over processed alternatives.\n\nYours faithfully,\nJohn Doe"
+      }
+    ],
+    "action_plan": [
+      "Step 1: Learn the required IELTS task formats (for Task 1 General, master letter writing structure including formal openings, purpose, and standard bullet point responses).",
+      "Step 2: Study basic English grammar fundamentals, focusing specifically on Present Simple tense rules, subject-verb agreement, and modal verb patterns.",
+      "Step 3: Build fundamental vocabulary categories (e.g., health, food, daily routines) alongside correct prepositional phrases and countable/uncountable noun rules."
+    ]
+  },
+  "id": "ess_1788455609991_reldk",
+  "created_at": "2026-09-03T17:13:29.991Z"
+}

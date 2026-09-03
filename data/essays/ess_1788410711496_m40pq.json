@@ -1,0 +1,93 @@
+{
+  "student_id": "stu_1788375912455_yu1ws",
+  "student_name": "Mohammed Tarek",
+  "task_type": "task_2",
+  "prompt_question": "",
+  "essay_content": "Some short text",
+  "word_count": 3,
+  "feedback": {
+    "scores": {
+      "task_achievement_or_response": {
+        "band": 3,
+        "criterion_name": "Task Response (TR)",
+        "justification": "The submission fails to address any prompt topics, containing only 3 words. This represents a severely underlength and undeveloped response that does not express a position or present arguments."
+      },
+      "coherence_cohesion": {
+        "band": 3,
+        "criterion_name": "Coherence and Cohesion",
+        "justification": "There is no paragraphing structure, overall progression, or logical sequencing of ideas present due to the extreme brevity of the text."
+      },
+      "lexical_resource": {
+        "band": 3,
+        "criterion_name": "Lexical Resource",
+        "justification": "The vocabulary range is inadequate for assessment, consisting only of basic placeholder words without academic range or topic specificity."
+      },
+      "grammatical_range_accuracy": {
+        "band": 3,
+        "criterion_name": "Grammatical Range and Accuracy",
+        "justification": "The response lacks full sentence structures or complex clauses, making it impossible to demonstrate grammatical control or sentence variety."
+      },
+      "overall_band": 3
+    },
+    "executive_summary": {
+      "examiner_verdict": "The submission contains only three words ('Some short text') and cannot be assessed as a complete IELTS Task 2 essay. To achieve a band score above 6.0, a candidate must write a full essay of at least 250 words that thoroughly addresses a given prompt.",
+      "key_strengths": [],
+      "primary_weaknesses": [
+        "Severe underlength submission (3 words total)",
+        "Lack of meaningful academic English content",
+        "Complete absence of arguments, paragraphing, or complex sentence structures"
+      ],
+      "word_count_analysis": {
+        "count": 3,
+        "min_required": 250,
+        "status": "penalty_risk",
+        "comment": "Word count is 3, below the 250-word minimum. Examiners will apply a Task Response penalty."
+      }
+    },
+    "detailed_mistakes": [
+      {
+        "id": "err_1",
+        "category": "TR",
+        "severity": "severe",
+        "rule_tag": "UNDERLENGTH_RESPONSE",
+        "rule_friendly_name": "Insufficient Essay Length (عدم كفاية طول المقال)",
+        "original_snippet": "Some short text",
+        "suggested_correction": "A full essay of at least 250 words addressing the specific Task 2 prompt.",
+        "explanation": "The submission is only 3 words long, resulting in a severe penalty across all assessment criteria.",
+        "rule_micro_lesson": "Always ensure your Task 2 essay contains at least 250 words structured into 4 or 5 complete paragraphs.",
+        "is_recurring": true,
+        "history_count": 2,
+        "recurrence_alert": "⚠️ تكرر هذا الخطأ معك (2) مرات في مقالات سابقة!"
+      },
+      {
+        "id": "err_2",
+        "category": "LR",
+        "severity": "severe",
+        "rule_tag": "INFORMAL_REGISTER",
+        "rule_friendly_name": "Meaningful English Content Required (مطلوب محتوى باللغة الإنجليزية)",
+        "original_snippet": "Some short text",
+        "suggested_correction": "Write formal, relevant academic arguments directly responding to an IELTS essay topic.",
+        "explanation": "Placeholder language or non-responsive text cannot be awarded credit for lexical or academic competence.",
+        "rule_micro_lesson": "Use formal academic register and focus entirely on addressing the specific prompt provided.",
+        "is_recurring": true,
+        "history_count": 3,
+        "recurrence_alert": "⚠️ تكرر هذا الخطأ معك (3) مرات في مقالات سابقة!"
+      }
+    ],
+    "paragraph_by_paragraph_review": [
+      {
+        "paragraph_number": 1,
+        "type": "Introduction",
+        "feedback": "No formal introduction was provided. An IELTS Task 2 essay requires a clear introduction that paraphrases the prompt and presents a direct thesis statement.",
+        "improved_version": "Whether [Topic] has a positive or negative impact on modern society is a subject of significant debate. This essay will examine both perspectives before concluding that [Thesis Statement]."
+      }
+    ],
+    "action_plan": [
+      "Step 1: Write a full response of at least 250 words using a standard 4-paragraph structure (Introduction, 2 Body Paragraphs, Conclusion).",
+      "Step 2: Ensure every body paragraph includes a clear main topic sentence, extended explanation, and relevant concrete example.",
+      "Step 3: Practice using formal academic vocabulary and complex grammatical structures such as subordinate and conditional clauses."
+    ]
+  },
+  "id": "ess_1788410711496_m40pq",
+  "created_at": "2026-09-03T04:45:11.496Z"
+}

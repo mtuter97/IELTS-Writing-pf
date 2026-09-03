@@ -1,0 +1,112 @@
+{
+  "student_id": "stu_1788462428134_r3h75",
+  "student_name": "طارق عبد الله (Tariq)",
+  "task_type": "free_text",
+  "prompt_question": "تدريب على كتابة جمل مركبة وفقرة رأي",
+  "essay_content": "In my opinion, universities should provide free education for all citizens because higher education creates productive workforce and decreases unemployment rates across the country.",
+  "word_count": 24,
+  "feedback": {
+    "scores": {
+      "task_achievement_or_response": {
+        "band": 6,
+        "criterion_name": "Topic Focus & Ideas (تطوير الفكرة والمضمون)",
+        "justification": "The sentence presents a clear opinion and gives two relevant reasons: creating a productive workforce and reducing unemployment. However, the ideas are stated rather than developed or supported with explanation or an example. For this free-text exercise, length is not penalised, but the limited development prevents a higher score."
+      },
+      "coherence_cohesion": {
+        "band": 7,
+        "criterion_name": "Coherence and Cohesion",
+        "justification": "The sentence has a clear logical progression: opinion, followed by justification. The linker 'because' is used appropriately to connect the claim and its reasons. However, cohesion cannot be demonstrated fully in a single sentence, and the two reasons could be connected more precisely through parallel structure."
+      },
+      "lexical_resource": {
+        "band": 7,
+        "criterion_name": "Lexical Resource",
+        "justification": "The response uses relevant and reasonably precise academic vocabulary, including 'higher education', 'productive workforce', and 'unemployment rates'. Lexical range is necessarily limited by the one-sentence format, and the missing article before 'productive workforce' creates a minor collocational and grammatical inaccuracy."
+      },
+      "grammatical_range_and_accuracy": {
+        "band": 7,
+        "criterion_name": "Grammatical Range and Accuracy",
+        "justification": "The sentence uses a complex structure containing an opinion clause and a reason clause, and its overall syntax is clear. Most of the sentence is accurate, but 'creates productive workforce' requires an article. This is a minor error, so the sentence demonstrates good control but not the very high accuracy required for Band 8."
+      },
+      "overall_band": 6.5
+    },
+    "executive_summary": {
+      "examiner_verdict": "This is a clear, relevant opinion sentence with an effective complex structure and appropriate academic vocabulary. The main weakness is the missing article in 'creates productive workforce', while the supporting ideas need further explanation and an example to reach Band 8-level development.",
+      "key_strengths": [
+        "Clear and direct position",
+        "Effective use of a complex sentence with 'because'",
+        "Relevant academic vocabulary",
+        "Logical connection between the opinion and its supporting reasons"
+      ],
+      "primary_weaknesses": [
+        "Missing article before the singular countable noun phrase 'productive workforce'",
+        "Ideas are asserted but not developed",
+        "Limited lexical and cohesive range because the response contains only one sentence"
+      ],
+      "word_count_analysis": {
+        "count": 24,
+        "min_required": 0,
+        "status": "sufficient",
+        "comment": "Word count is 24, satisfying the 0-word minimum requirement."
+      }
+    },
+    "detailed_mistakes": [
+      {
+        "id": "err_1",
+        "category": "GRA | LR",
+        "severity": "minor",
+        "rule_tag": "ARTICLE_USAGE",
+        "rule_friendly_name": "Articles with Singular Countable Nouns (استخدام أدوات التعريف والتنكير مع الأسماء المفردة المعدودة)",
+        "original_snippet": "creates productive workforce",
+        "suggested_correction": "creates a productive workforce",
+        "explanation": "'Workforce' is a singular countable noun in this context, so it normally requires a determiner. The indefinite article 'a' is needed because the sentence refers to a workforce in a general, non-specific sense.",
+        "rule_micro_lesson": "Before a singular countable noun, use 'a/an', 'the', or another determiner such as 'this' or 'their'. Check every singular countable noun in academic writing to ensure it has a determiner.",
+        "is_recurring": false,
+        "history_count": 1,
+        "recurrence_alert": null
+      },
+      {
+        "id": "err_2",
+        "category": "LR",
+        "severity": "minor",
+        "rule_tag": "COLLOCATION_PRECISION",
+        "rule_friendly_name": "Precise Academic Collocations (التلازم اللفظي الأكاديمي الدقيق)",
+        "original_snippet": "decreases unemployment rates",
+        "suggested_correction": "reduces unemployment",
+        "explanation": "'Reduces unemployment' is the more concise and natural academic collocation when discussing the general level of unemployment. 'Decreases unemployment rates' is understandable, but it is less precise and slightly heavier than necessary.",
+        "rule_micro_lesson": "Prefer established academic collocations over word-for-word combinations. Common choices include 'reduce unemployment', 'create employment opportunities', and 'strengthen the workforce'.",
+        "is_recurring": false,
+        "history_count": 1,
+        "recurrence_alert": null
+      },
+      {
+        "id": "err_3",
+        "category": "TR",
+        "severity": "moderate",
+        "rule_tag": "INSUFFICIENT_IDEA_DEVELOPMENT",
+        "rule_friendly_name": "Developing and Supporting Ideas (تطوير الأفكار ودعمها)",
+        "original_snippet": "because higher education creates a productive workforce and decreases unemployment rates across the country",
+        "suggested_correction": "because access to higher education equips graduates with specialised skills, enabling them to secure skilled employment and thereby reducing unemployment nationwide",
+        "explanation": "The original reasons are relevant but remain general. A higher-band response should explain the mechanism linking free university education to workforce productivity and lower unemployment.",
+        "rule_micro_lesson": "After stating a reason, explain how or why it produces the claimed result. Add a specific consequence, mechanism, or example rather than stopping at a general assertion.",
+        "is_recurring": false,
+        "history_count": 1,
+        "recurrence_alert": null
+      }
+    ],
+    "paragraph_by_paragraph_review": [
+      {
+        "paragraph_number": 1,
+        "type": "Opinion sentence / short paragraph",
+        "feedback": "The opening is direct and clearly states the writer's position. 'In my opinion' is acceptable, although 'I believe' is slightly more concise. The sentence contains a well-controlled reason clause, but the supporting claims are broad and would benefit from a clear explanation of how university education improves employability and productivity.",
+        "improved_version": "I believe that universities should offer tuition-free education to all citizens because broad access to higher education equips graduates with specialised skills, strengthens the national workforce, and ultimately reduces unemployment."
+      }
+    ],
+    "action_plan": [
+      "Step 1: Check every singular countable noun and add the correct determiner, as in 'a productive workforce'.",
+      "Step 2: Replace understandable but heavy combinations with natural academic collocations, such as 'reduce unemployment' and 'strengthen the workforce'.",
+      "Step 3: Extend each main reason by explaining its mechanism or consequence; for example, explain how university skills improve employability and productivity."
+    ]
+  },
+  "id": "ess_1788462454504_lzjjz",
+  "created_at": "2026-09-03T19:07:34.504Z"
+}

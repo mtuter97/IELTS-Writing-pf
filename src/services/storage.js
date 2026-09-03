@@ -17,6 +17,7 @@ let memorySettings = null;
 
 const SEED_DATA_DIR = path.resolve(__dirname, '../../data');
 const SEED_STUDENTS_DIR = path.join(SEED_DATA_DIR, 'students');
+const SEED_ESSAYS_DIR = path.join(SEED_DATA_DIR, 'essays');
 const SEED_SETTINGS_FILE = path.join(SEED_DATA_DIR, 'settings.json');
 
 // Ensure base directories exist safely & seed Vercel ephemeral storage
@@ -33,6 +34,15 @@ function ensureDirs() {
           const dest = path.join(STUDENTS_DIR, file);
           if (!fs.existsSync(dest)) {
             try { fs.copyFileSync(path.join(SEED_STUDENTS_DIR, file), dest); } catch (_) {}
+          }
+        }
+      }
+      if (fs.existsSync(SEED_ESSAYS_DIR)) {
+        const seedEssays = fs.readdirSync(SEED_ESSAYS_DIR).filter(f => f.endsWith('.json'));
+        for (const file of seedEssays) {
+          const dest = path.join(ESSAYS_DIR, file);
+          if (!fs.existsSync(dest)) {
+            try { fs.copyFileSync(path.join(SEED_ESSAYS_DIR, file), dest); } catch (_) {}
           }
         }
       }
@@ -293,12 +303,12 @@ export function getStudentEssays(studentId) {
 export function getSettings() {
   ensureDirs();
   const defaults = {
-    active_provider: process.env.ACTIVE_AI_PROVIDER || 'gemini',
+    active_provider: process.env.ACTIVE_AI_PROVIDER || 'you',
     gemini_api_key: process.env.GEMINI_API_KEY || '',
     groq_api_key: process.env.GROQ_API_KEY || '',
     openrouter_api_key: process.env.OPENROUTER_API_KEY || '',
     you_api_key: process.env.YOU_API_KEY || '',
-    gemini_model: process.env.GEMINI_MODEL || 'gemini-3.6-flash',
+    gemini_model: process.env.GEMINI_MODEL || 'gemini-2.5-flash',
     groq_model: process.env.GROQ_MODEL || 'llama-3.3-70b-versatile',
     openrouter_model: process.env.OPENROUTER_MODEL || 'google/gemini-2.5-flash',
     you_model: process.env.YOU_MODEL || 'you-smart',

@@ -1,0 +1,79 @@
+{
+  "student_id": "stu_1788375912455_yu1ws",
+  "student_name": "Mohammed Tarek",
+  "task_type": "task_2",
+  "prompt_question": "",
+  "essay_content": "afddsf asffqasdf sdf sdfasdf asdfas dfasd fasdfasfd afddsf asffqasdf sdf sdfasdf asdfas dfasd fasdfasfd afddsf asffqasdf sdf sdfasdf asdfas dfasd fasdfasfd afddsf asffqasdf sdf sdfasdf asdfas dfasd fasdfasfd afddsf asffqasdf sdf sdfasdf asdfas dfasd fasdfasfd afddsf asffqasdf sdf sdfasdf asdfas dfasd fasdfasfd afddsf asffqasdf sdf sdfasdf asdfas dfasd fasdfasfd afddsf asffqasdf sdf sdfasdf asdfas dfasd fasdfasfd afddsf asffqasdf sdf sdfasdf asdfas dfasd fasdfasfd afddsf asffqasdf sdf sdfasdf asdfas dfasd fasdfasfd afddsf asffqasdf sdf sdfasdf asdfas dfasd fasdfasfd afdafddsf asffqasdf sdf sdfasdf asdfas dfasd fasdfasfd afddsf asffqasdf sdf sdfasdf asdfas dfasd fasdfasfd afddsf asffqasdf sdf sdfasdf asdfas dfasd fasdfasfd afddsf asffqasdf sdf sdfasdf asdfas dfasd fasdfasfd afddsf asffqasdf sdf sdfasdf asdfas dfasd fasdfasfd afddsf asffqasdf sdf sdfasdf asdfas dfasd fasdfasfd afddsf asffqasdf sdf sdfasdf asdfas dfasd fasdfasfd afddsf asffqasdf sdf sdfasdf asdfas dfasd fasdfasfd afddsf asffqasdf sdf sdfasdf asdfas dfasd fasdfasfd afddsf asffqasdf sdf sdfasdf asdfas dfasd fasdfasfd afddsf asffqasdf sdf sdfasdf asdfas dfasd fasdfasfd afddsf asffqasdf sdf sdfasdf asdfas dfasd fasdfasfd dsf asffqasdf sdf sdfasdf asdfas dfasd fasdfasfd afddsf asffqasdf sdf sdfasdf asdfas dfasd fasdfasfd afddsf asffqasdf sdf sdfasdf asdfas dfasd fasdfasfd afddsf asffqasdf sdf sdfasdf asdfas dfasd fasdfasfd afddsf asffqasdf sdf sdfasdf asdfas dfasd fasdfasfd afddsf asffqasdf sdf sdfasdf asdfas dfasd fasdfasfd afddsf asffqasdf sdf sdfasdf asdfas dfasd fasdfasfd afddsf asffqasdf sdf sdfasdf asdfas dfasd fasdfasfd afddsf asffqasdf sdf sdfasdf asdfas dfasd fasdfasfd afddsf asffqasdf sdf sdfasdf asdfas dfasd fasdfasfd afddsf asffqasdf sdf sdfasdf asdfas dfasd fasdfasfd afddsf asffqasdf sdf sdfasdf asdfas dfasd fasdfasfd afddsf asffqasdf sdf sdfasdf asdfas dfasd fasdfasfd afddsf asffqasdf sdf sdfasdf asdfas dfasd fasdfasfd",
+  "word_count": 259,
+  "feedback": {
+    "scores": {
+      "task_achievement_or_response": {
+        "band": 1,
+        "criterion_name": "Task Response (TR)",
+        "justification": "The response consists entirely of random character sequences and non-words. It fails to address any task, present a position, or convey any meaningful ideas."
+      },
+      "coherence_cohesion": {
+        "band": 1,
+        "criterion_name": "Coherence and Cohesion",
+        "justification": "There is no logical organisation, progression, or cohesive devices present, as the submission contains no actual English words or sentence structure."
+      },
+      "lexical_resource": {
+        "band": 1,
+        "criterion_name": "Lexical Resource",
+        "justification": "No recognizable English vocabulary is used. The text consists of arbitrary key combinations."
+      },
+      "grammatical_range_accuracy": {
+        "band": 1,
+        "criterion_name": "Grammatical Range and Accuracy",
+        "justification": "There is no evidence of grammatical structure, sentence formation, or punctuation control."
+      },
+      "overall_band": 1
+    },
+    "executive_summary": {
+      "examiner_verdict": "The submitted text consists entirely of repetitive gibberish and non-words. As a result, no assessment of academic writing capability or task response can be conducted, yielding a Band 1.0 score.",
+      "key_strengths": [],
+      "primary_weaknesses": [
+        "Submission consists of non-meaningful random letters rather than English text",
+        "No task response, thesis statement, or ideas present",
+        "Absence of grammar, vocabulary, and paragraph organisation"
+      ],
+      "word_count_analysis": {
+        "count": 259,
+        "min_required": 250,
+        "status": "sufficient",
+        "comment": "Word count is 259, satisfying the 250-word minimum requirement."
+      }
+    },
+    "detailed_mistakes": [
+      {
+        "id": "err_1",
+        "category": "TR",
+        "severity": "severe",
+        "rule_tag": "INFORMAL_REGISTER",
+        "rule_friendly_name": "Meaningful English Content Required (مطلوب محتوى باللغة الإنجليزية)",
+        "original_snippet": "afddsf asffqasdf sdf sdfasdf",
+        "suggested_correction": "Provide a complete, cohesive essay written in formal academic English addressing a specific IELTS prompt.",
+        "explanation": "The submission contains unreadable gibberish instead of English sentences.",
+        "rule_micro_lesson": "Ensure you write clear, meaningful sentences in standard academic English to receive an assessment score.",
+        "is_recurring": true,
+        "history_count": 2,
+        "recurrence_alert": "⚠️ تكرر هذا الخطأ معك (2) مرات في مقالات سابقة!"
+      }
+    ],
+    "paragraph_by_paragraph_review": [
+      {
+        "paragraph_number": 1,
+        "type": "Entire Submission",
+        "feedback": "The text contains only repeated random characters and no readable English words or sentences.",
+        "improved_version": "To achieve a Band 7+ score, you must write a complete essay containing an Introduction (paraphrase + thesis), two Body Paragraphs (topic sentences, main ideas, explanations, real-world examples), and a clear Conclusion."
+      }
+    ],
+    "action_plan": [
+      "Step 1: Write a complete response in clear, standard academic English based on a valid IELTS Task 2 prompt.",
+      "Step 2: Follow a standard four-paragraph structure: Introduction, Body Paragraph 1, Body Paragraph 2, and Conclusion.",
+      "Step 3: Ensure all words are spelled correctly and form complete, grammatically sound sentences."
+    ]
+  },
+  "id": "ess_1788410557515_nmoju",
+  "created_at": "2026-09-03T04:42:37.515Z"
+}
