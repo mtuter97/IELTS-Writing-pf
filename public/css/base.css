@@ -280,6 +280,28 @@ body {
   background: var(--danger-bg);
 }
 
+.student-header-logout-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  background: var(--danger-bg);
+  color: var(--danger);
+  border: 1px solid var(--danger-border);
+  padding: 0.25rem 0.65rem;
+  border-radius: var(--radius-full);
+  font-size: 0.78rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin-right: 0.35rem;
+}
+
+.student-header-logout-btn:hover {
+  background: var(--danger);
+  color: #ffffff;
+  border-color: var(--danger);
+}
+
 /* Student Portal Landing Card */
 .student-portal-login-card {
   max-width: 680px;
