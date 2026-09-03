@@ -321,10 +321,16 @@ export async function evaluateEssayHandler(req, res) {
 
     // Enforce official Band Score calculation & Rounding
     const scores = rawAiResult.scores || {};
-    const trScore = scores.task_achievement_or_response?.band || 6.0;
-    const ccScore = scores.coherence_cohesion?.band || 6.0;
-    const lrScore = scores.lexical_resource?.band || 6.0;
-    const graScore = scores.grammatical_range_accuracy?.band || 6.0;
+    const trScore = Number(scores.task_achievement_or_response?.band || scores.task_response?.band || scores.task_achievement?.band || 6.0);
+    const ccScore = Number(scores.coherence_cohesion?.band || scores.coherence?.band || 6.0);
+    const lrScore = Number(scores.lexical_resource?.band || scores.vocabulary?.band || 6.0);
+    const graScore = Number(scores.grammatical_range_accuracy?.band || scores.grammar?.band || 6.0);
+
+    // Normalize nested schema structure for report renderer
+    scores.task_achievement_or_response = scores.task_achievement_or_response || { band: trScore, justification: '' };
+    scores.coherence_cohesion = scores.coherence_cohesion || { band: ccScore, justification: '' };
+    scores.lexical_resource = scores.lexical_resource || { band: lrScore, justification: '' };
+    scores.grammatical_range_accuracy = scores.grammatical_range_accuracy || { band: graScore, justification: '' };
 
     const calculatedOverall = calculateOfficialBand({
       task_response: trScore,
