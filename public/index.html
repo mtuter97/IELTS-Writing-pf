@@ -251,32 +251,38 @@
 
   </main>
 
-  <!-- MODAL: Student Management & Login by Code -->
+  <!-- MODAL: Student Private Login -->
   <div id="student-modal" class="modal-backdrop">
     <div class="modal-card">
       <div class="modal-header">
-        <h3 class="modal-title">👤 حساب الطالب والدخول</h3>
+        <h3 class="modal-title">🔑 تسجيل دخول الطالب (Student Access)</h3>
         <button id="close-student-modal" class="close-btn">&times;</button>
       </div>
 
-      <!-- Login by Student Code -->
-      <div style="background:var(--bg-card-subtle); padding:1rem; border-radius:var(--radius-md); border:1px solid var(--border-color); margin-bottom:1.25rem;">
-        <label class="form-label">🔑 تسجيل دخول سريع بكود الطالب (Access Code):</label>
-        <div style="display:flex; gap:0.5rem;">
-          <input type="text" id="login-code-input" class="form-input" placeholder="مثال: IELTS-1042 أو رقم الهاتف...">
-          <button id="login-by-code-btn" class="btn btn-primary" style="white-space:nowrap;">دخول الحساب</button>
+      <div style="padding:0.5rem 0;">
+        <p style="color:var(--text-secondary); font-size:0.88rem; margin-bottom:1.25rem; line-height:1.6;">
+          أدخل كود الاشتراك الخاص بك (Access Code) لربط جلسة التقييم بملفك الأكاديمي وتتبع بصمة أخطائك المتكررة وتطور درجاتك:
+        </p>
+
+        <div class="form-group" style="margin-bottom:1.25rem;">
+          <label class="form-label">كود الطالب الخاص (Access Code):</label>
+          <div style="display:flex; gap:0.5rem;">
+            <input type="text" id="login-code-input" class="form-input" placeholder="مثال: IELTS-1042 أو رقم الهاتف..." style="font-family:monospace; font-weight:700; font-size:1.05rem;">
+            <button id="login-by-code-btn" class="btn btn-primary" style="white-space:nowrap; padding:0.6rem 1.25rem;">دخول الحساب 🚀</button>
+          </div>
+          <div id="login-modal-error" style="color:var(--danger); font-size:0.85rem; margin-top:0.5rem; display:none; font-weight:600;"></div>
         </div>
-      </div>
 
-      <!-- Important Note for Students -->
-      <div style="background:#fffbeb; border:1px solid #fde68a; border-radius:var(--radius-md); padding:0.85rem 1rem; font-size:0.85rem; color:#92400e; margin-bottom:1.25rem; line-height:1.6;">
-        📌 <strong>تنبيه للطلاب:</strong> يتم إنشاء وتفعيل حسابات الطلاب حصرياً من قِبل المعلم بعد سداد رسوم الاشتراك (100$). إذا لم يكن لديك كود بعد، يرجى التواصل مع المعلم عبر الواتساب لتزويدك بكود الدخول الخاص بك.
-      </div>
-
-      <div class="form-group" style="margin-bottom:0;">
-        <label class="form-label">الطلاب المسجلين على هذا الجهاز:</label>
-        <div id="modal-student-list" style="max-height: 250px; overflow-y: auto;">
-          <!-- Dynamically populated -->
+        <div style="background:var(--bg-card-subtle); border:1px solid var(--border-color); border-radius:var(--radius-md); padding:1rem; font-size:0.85rem; line-height:1.6;">
+          <div style="font-weight:700; color:var(--text-main); margin-bottom:0.35rem; display:flex; align-items:center; gap:0.4rem;">
+            <span>💡</span> ليس لديك كود تفعيل بعد؟
+          </div>
+          <p style="color:var(--text-muted); margin-bottom:0.75rem;">
+            رسوم الاشتراك في المنظومة هي <strong>100 دولار</strong> وتتضمن تقييمات غير محدودة وتتبع الأخطاء المتكررة. تواصل مباشرة مع المعلم لتفعيل حسابك واستلام كودك الخاص:
+          </p>
+          <a href="https://wa.me/966549724510?text=%D9%85%D8%B1%D8%AD%D8%A8%D8%A7%D9%8B%20%D8%A3%D8%B3%D8%AA%D8%A7%D8%B0%D9%8A%D8%8C%20%D8%A3%D9%88%D8%AF%20%D8%A7%D9%84%D8%A7%D8%B4%D8%AA%D8%B1%D8%A7%D9%83%20%D9%88%D8%AA%D9%81%D8%B9%D9%8A%D9%84%20%D8%AD%D8%B3%D8%A7%D8%A8%D9%8A%20%D9%81%D9%8A%20%D9%85%D9%86%D8%B8%D9%88%D9%85%D8%A9%20%D8%A7%D9%84%D8%A2%D9%8A%D9%84%D8%AA%D8%B3." target="_blank" class="btn btn-whatsapp" style="display:inline-flex; width:100%; justify-content:center; gap:0.5rem;">
+            <span>💬</span> تفعيل الحساب عبر الواتساب (966549724510)
+          </a>
         </div>
       </div>
     </div>

@@ -1,5 +1,5 @@
 import { initTheme } from './theme.js';
-import { initStudentState, renderStudentModalList, renderStudentDashboard, loginWithCode } from './student.js';
+import { initStudentState, renderStudentDashboard, loginWithCode, logoutStudent } from './student.js';
 import { initEditor } from './editor.js';
 import { renderFeedbackReport } from './report-renderer.js';
 import { renderAdminDashboard } from './admin.js';
@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   // 0. Initialize Theme (Light / Dark Mode)
   initTheme();
 
-  // 1. Initialize Student State
+  // 1. Initialize Student State (Loads saved session or keeps as guest/unregistered)
   await initStudentState();
 
   // 2. Initialize Editor
@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   // 4. Setup Tabs
   setupTabs();
 
-  // 5. Setup Modals
+  // 5. Setup Modals and Role Navigation
   setupModals();
 
   // 6. Setup Global App Events
@@ -32,14 +32,15 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 function setupTabs() {
   const tabButtons = document.querySelectorAll('.tab-btn');
-  const views = document.querySelectorAll('.view-section');
-
   tabButtons.forEach(btn => {
     btn.addEventListener('click', () => {
       const target = btn.getAttribute('data-tab');
       switchTab(target);
     });
   });
+
+  // Expose switchTab globally for easy in-app cross navigation
+  window.switchAppTab = switchTab;
 }
 
 export function switchTab(tabName) {
@@ -63,19 +64,50 @@ export function switchTab(tabName) {
 }
 
 function setupModals() {
-  // Student Modal
-  const studentPill = document.getElementById('header-student-pill');
+  // Student Modal & Private Login
+  const headerLoginBtn = document.getElementById('header-login-btn');
+  const headerStudentProfile = document.getElementById('header-student-profile');
+  const headerLogoutBtn = document.getElementById('header-student-logout-btn');
   const studentModal = document.getElementById('student-modal');
   const closeStudentModal = document.getElementById('close-student-modal');
-  const addStudentBtn = document.getElementById('add-student-btn');
-  const newStudentInput = document.getElementById('new-student-name-input');
   const loginByCodeBtn = document.getElementById('login-by-code-btn');
   const loginCodeInput = document.getElementById('login-code-input');
+  const loginErrorDiv = document.getElementById('login-modal-error');
 
-  if (studentPill && studentModal) {
-    studentPill.addEventListener('click', () => {
-      renderStudentModalList();
+  // Teacher Suite Dedicated Trigger
+  const headerTeacherBtn = document.getElementById('header-teacher-btn');
+  if (headerTeacherBtn) {
+    headerTeacherBtn.addEventListener('click', () => {
+      switchTab('admin');
+    });
+  }
+
+  // Header Student Login Button
+  if (headerLoginBtn && studentModal) {
+    headerLoginBtn.addEventListener('click', () => {
+      if (loginErrorDiv) loginErrorDiv.style.display = 'none';
       studentModal.classList.add('open');
+      if (loginCodeInput) {
+        loginCodeInput.value = '';
+        setTimeout(() => loginCodeInput.focus(), 100);
+      }
+    });
+  }
+
+  // Header Student Profile Pill click -> Navigate to My Academic DNA
+  if (headerStudentProfile) {
+    headerStudentProfile.addEventListener('click', (e) => {
+      if (e.target.closest('#header-student-logout-btn')) return;
+      switchTab('profile');
+    });
+  }
+
+  // Header Logout Button -> Clear Student Session
+  if (headerLogoutBtn) {
+    headerLogoutBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      logoutStudent();
+      showToast('تم تسجيل الخروج بنجاح. حسابك محمي ومقالاتك محفوظة.', 'info');
     });
   }
 
@@ -85,42 +117,38 @@ function setupModals() {
     });
   }
 
+  // Login By Student Code inside Modal
   if (loginByCodeBtn && loginCodeInput) {
-    loginByCodeBtn.addEventListener('click', async () => {
+    async function doCodeLogin() {
       const code = loginCodeInput.value.trim();
       if (!code) {
-        alert('يرجى إدخال كود الطالب أولاً.');
+        if (loginErrorDiv) {
+          loginErrorDiv.style.display = 'block';
+          loginErrorDiv.textContent = 'يرجى إدخال كود الطالب أولاً.';
+        }
+        loginCodeInput.focus();
         return;
       }
       try {
         loginByCodeBtn.textContent = 'جاري التحقق...';
+        if (loginErrorDiv) loginErrorDiv.style.display = 'none';
         await loginWithCode(code);
-        loginByCodeBtn.textContent = 'دخول الحساب';
-        loginCodeInput.value = '';
+        loginByCodeBtn.textContent = 'دخول الحساب 🚀';
         studentModal.classList.remove('open');
-        showToast('تم تسجيل الدخول بحساب الطالب بنجاح!', 'success');
+        showToast('أهلاً بك! تم تسجيل الدخول إلى حسابك بنجاح.', 'success');
         if (activeTab === 'profile') renderStudentDashboard();
       } catch (err) {
-        loginByCodeBtn.textContent = 'دخول الحساب';
-        alert(err.message || 'كود الدخول غير صحيح.');
+        loginByCodeBtn.textContent = 'دخول الحساب 🚀';
+        if (loginErrorDiv) {
+          loginErrorDiv.style.display = 'block';
+          loginErrorDiv.textContent = err.message || 'كود الطالب غير صحيح أو غير مسجل في المنظومة.';
+        }
       }
-    });
-  }
+    }
 
-  if (addStudentBtn && newStudentInput) {
-    addStudentBtn.addEventListener('click', async () => {
-      const name = newStudentInput.value.trim();
-      if (!name) return;
-      try {
-        await createStudent({ name, status: 'active' });
-        newStudentInput.value = '';
-        await renderStudentModalList();
-        await initStudentState();
-        if (activeTab === 'profile') renderStudentDashboard();
-        showToast('تم تسجيل الطالب بنجاح!', 'success');
-      } catch (err) {
-        alert('فشل إضافة الطالب: ' + err.message);
-      }
+    loginByCodeBtn.addEventListener('click', doCodeLogin);
+    loginCodeInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') doCodeLogin();
     });
   }
 
@@ -143,7 +171,7 @@ function setupModals() {
       const notes = document.getElementById('admin-new-student-notes').value.trim();
 
       if (!name) {
-        alert('يرجى كتابة اسم الطالب.');
+        alert('يرجى كتابة اسم الطالب الكامل.');
         return;
       }
 
@@ -163,87 +191,6 @@ function setupModals() {
       }
     });
   }
-
-  // Settings Modal
-  const settingsBtn = document.getElementById('settings-btn');
-  const settingsModal = document.getElementById('settings-modal');
-  const closeSettingsModal = document.getElementById('close-settings-modal');
-  const saveSettingsBtn = document.getElementById('save-settings-btn');
-
-  if (settingsBtn && settingsModal) {
-    settingsBtn.addEventListener('click', async () => {
-      await loadSettingsIntoModal();
-      settingsModal.classList.add('open');
-    });
-  }
-
-  if (closeSettingsModal && settingsModal) {
-    closeSettingsModal.addEventListener('click', () => {
-      settingsModal.classList.remove('open');
-    });
-  }
-
-  if (saveSettingsBtn) {
-    saveSettingsBtn.addEventListener('click', async () => {
-      const active_provider = document.getElementById('setting-provider-select').value;
-      const gemini_api_key = document.getElementById('setting-gemini-key').value;
-      const groq_api_key = document.getElementById('setting-groq-key').value;
-      const openrouter_api_key = document.getElementById('setting-openrouter-key').value;
-      const teacher_whatsapp = document.getElementById('setting-teacher-whatsapp')?.value;
-      const admin_pin = document.getElementById('setting-admin-pin')?.value;
-
-      try {
-        saveSettingsBtn.textContent = 'جاري الحفظ...';
-        await saveSettings({
-          active_provider,
-          gemini_api_key,
-          groq_api_key,
-          openrouter_api_key,
-          teacher_whatsapp,
-          admin_pin
-        });
-        saveSettingsBtn.textContent = 'حفظ الإعدادات';
-        settingsModal.classList.remove('open');
-        await updateProviderStatusBadge();
-        showToast('تم حفظ الإعدادات بنجاح!', 'success');
-      } catch (err) {
-        saveSettingsBtn.textContent = 'حفظ الإعدادات';
-        alert('فشل حفظ الإعدادات: ' + err.message);
-      }
-    });
-  }
-}
-
-async function loadSettingsIntoModal() {
-  try {
-    const settings = await fetchSettings();
-    const providerSelect = document.getElementById('setting-provider-select');
-    if (providerSelect) providerSelect.value = settings.active_provider || 'gemini';
-
-    const geminiKeyInput = document.getElementById('setting-gemini-key');
-    const groqKeyInput = document.getElementById('setting-groq-key');
-    const openrouterKeyInput = document.getElementById('setting-openrouter-key');
-    const teacherWaInput = document.getElementById('setting-teacher-whatsapp');
-    const adminPinInput = document.getElementById('setting-admin-pin');
-
-    if (geminiKeyInput && settings.gemini_configured) {
-      geminiKeyInput.placeholder = '•••••••••••••••• (تم الضبط مسبقاً)';
-    }
-    if (groqKeyInput && settings.groq_configured) {
-      groqKeyInput.placeholder = '•••••••••••••••• (تم الضبط مسبقاً)';
-    }
-    if (openrouterKeyInput && settings.openrouter_configured) {
-      openrouterKeyInput.placeholder = '•••••••••••••••• (تم الضبط مسبقاً)';
-    }
-    if (teacherWaInput && settings.teacher_whatsapp) {
-      teacherWaInput.value = settings.teacher_whatsapp;
-    }
-    if (adminPinInput && settings.admin_pin_configured) {
-      adminPinInput.placeholder = '•••••••• (تم ضبط رمز المرور مسبقاً)';
-    }
-  } catch (e) {
-    console.error('Failed to load settings:', e);
-  }
 }
 
 async function updateProviderStatusBadge() {
@@ -255,6 +202,7 @@ async function updateProviderStatusBadge() {
     const prov = settings.active_provider || 'gemini';
     const isConfigured = prov === 'gemini' ? settings.gemini_configured :
                          prov === 'groq' ? settings.groq_configured :
+                         prov === 'you' || prov === 'youcom' ? settings.you_configured :
                          settings.openrouter_configured;
 
     if (isConfigured) {
@@ -273,7 +221,7 @@ async function updateProviderStatusBadge() {
 function setupAppEvents() {
   window.addEventListener('evaluation-completed', (e) => {
     const { essay, feedback } = e.detail;
-    // Client-side cache persistence for seamless Vercel serverless experience
+    // Client-side cache persistence
     if (essay && essay.student_id) {
       try {
         const key = `ielts_cache_essays_${essay.student_id}`;
@@ -310,7 +258,6 @@ function setupAppEvents() {
   });
 
   window.addEventListener('admin-inspect-student', async (e) => {
-    const { studentId } = e.detail;
     switchTab('profile');
     renderStudentDashboard();
   });

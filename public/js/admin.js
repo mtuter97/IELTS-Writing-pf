@@ -184,18 +184,21 @@ export async function renderAdminDashboard() {
             <div style="display:flex; align-items:center; gap:0.6rem; margin-bottom:0.25rem;">
               <span style="font-size:1.5rem;">🛡️</span>
               <h2 style="font-size:1.35rem; font-weight:800; color:var(--text-main);">مركز تحكم المعلم الأكاديمي (Teacher Suite)</h2>
-              <span class="badge badge-success" style="font-size:0.75rem;">● متصل بالنظام</span>
+              <span class="badge badge-success" style="font-size:0.75rem;">● جلسة المعلم نشطة</span>
             </div>
             <p style="font-size:0.85rem; color:var(--text-muted);">
               إدارة تفعيل حسابات الطلاب، استخراج الأكواد، مراقبة الاشتراكات (100$)، وضبط محركات الذكاء الاصطناعي
             </p>
           </div>
-          <div style="display:flex; gap:0.6rem; flex-wrap:wrap;">
-            <button id="open-add-student-modal-btn" class="btn btn-primary" style="display:inline-flex; align-items:center; gap:0.4rem;">
+          <div style="display:flex; gap:0.6rem; flex-wrap:wrap; align-items:center;">
+            <button id="admin-back-to-app-btn" class="btn btn-secondary btn-sm" style="display:inline-flex; align-items:center; gap:0.4rem;">
+              <span>🔙</span> العودة لمنصة الطالب ومحاكي الامتحان
+            </button>
+            <button id="open-add-student-modal-btn" class="btn btn-primary btn-sm" style="display:inline-flex; align-items:center; gap:0.4rem;">
               <span>➕</span> تسجيل طالب جديد
             </button>
-            <button id="admin-logout-btn" class="btn btn-secondary btn-sm" style="display:inline-flex; align-items:center; gap:0.3rem;">
-              <span>🚪</span> خروج
+            <button id="admin-logout-btn" class="btn btn-secondary btn-sm" style="display:inline-flex; align-items:center; gap:0.3rem; color:var(--danger); border-color:var(--danger-border);">
+              <span>🚪</span> قفل لوحة المعلم
             </button>
           </div>
         </div>
@@ -480,6 +483,12 @@ export async function renderAdminDashboard() {
         navigator.clipboard.writeText(code);
         alert(`تم نسخ كود الطالب: ${code}`);
       });
+    });
+
+    // Attach Back to App Button
+    document.getElementById('admin-back-to-app-btn')?.addEventListener('click', () => {
+      const editorTabBtn = document.querySelector('.tab-btn[data-tab="editor"]');
+      if (editorTabBtn) editorTabBtn.click();
     });
 
     // Attach Open Add Student Modal
