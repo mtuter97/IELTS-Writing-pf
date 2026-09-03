@@ -1,4 +1,5 @@
 import { fetchStudentDetails, loginStudentByCode, authWithGoogle, activateStudentByCode } from './api.js';
+import { icons } from './icons.js';
 
 let activeStudent = null;
 let activeMistakeFilter = 'all'; // 'all', 'grammar', 'vocabulary', 'coherence', 'task'
@@ -548,44 +549,58 @@ export async function renderStudentDashboard() {
           </div>
         </div>
 
-        <!-- Target Goal Tracker -->
-        <div style="background:var(--bg-card); border:1px solid var(--border-color); border-radius:var(--radius-lg); padding:1.5rem 1.75rem; box-shadow:var(--shadow-sm);">
-          <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:1rem; margin-bottom:1.25rem;">
+        <!-- 2026 Interactive Target Goal Slider -->
+        <div class="target-band-slider-card">
+          <div class="target-band-header">
             <div>
-              <h3 style="font-size:1.15rem; font-weight:800; color:var(--text-main); display:flex; align-items:center; gap:0.4rem;">
-                <span>🎯</span> محدد هدف الباند الذكي (IELTS Target Band Tracker)
-              </h3>
-              <p style="font-size:0.85rem; color:var(--text-muted);">
-                حدد درجتك المستهدفة لمتابعة الفجوة المطلوبة والتوصيات الأكاديمية:
+              <div style="display:flex; align-items:center; gap:0.5rem; margin-bottom:0.25rem;">
+                <span style="color:var(--primary);">${icons.target}</span>
+                <h3 style="font-size:1.15rem; font-weight:800; color:var(--text-main); margin:0;">
+                  اسلايدر تحديد هدف الباند (Interactive Band Target Slider)
+                </h3>
+              </div>
+              <p style="font-size:0.84rem; color:var(--text-muted); margin:0;">
+                حرّك شريط التمرير لاختيار الباند المستهدف وتحديث متطلبات كامبريدج فورياً:
               </p>
             </div>
 
-            <div style="display:flex; gap:0.4rem; align-items:center;">
-              <span style="font-size:0.8rem; color:var(--text-muted); margin-left:0.25rem;">الهدف:</span>
-              ${['6.5', '7.0', '7.5', '8.0', '8.5'].map(b => `
-                <button class="target-band-btn ${targetBand === parseFloat(b) ? 'active' : ''}" data-target="${b}" style="padding:0.35rem 0.85rem; border-radius:var(--radius-full); border:1px solid var(--border-color); font-size:0.82rem; font-weight:700; cursor:pointer; background:${targetBand === parseFloat(b) ? 'var(--primary)' : 'var(--bg-card-subtle)'}; color:${targetBand === parseFloat(b) ? '#fff' : 'var(--text-main)'}; transition:all 0.15s ease;">
-                  Band ${b}
-                </button>
-              `).join('')}
+            <div class="target-band-badge" id="target-band-display-badge">
+              <span style="display:inline-flex; align-items:center; gap:0.35rem;">
+                ${icons.sparkles}
+                <span>الهدف: Band <strong id="target-band-display-val">${targetBand.toFixed(1)}</strong></span>
+              </span>
             </div>
           </div>
 
-          <div style="margin-bottom:0.75rem;">
-            <div style="display:flex; justify-content:space-between; font-size:0.85rem; font-weight:700; margin-bottom:0.35rem;">
-              <span>المستوى الحالي: Band ${currentBand}</span>
-              <span style="color:var(--primary);">الهدف: Band ${targetBand} (${progressPercent}%)</span>
+          <div class="range-slider-wrapper">
+            <input type="range" class="modern-range-slider" id="band-target-range-slider" min="6.0" max="9.0" step="0.5" value="${targetBand}">
+            <div class="range-slider-ticks">
+              <span data-val="6.0" class="${targetBand === 6.0 ? 'active' : ''}">6.0</span>
+              <span data-val="6.5" class="${targetBand === 6.5 ? 'active' : ''}">6.5</span>
+              <span data-val="7.0" class="${targetBand === 7.0 ? 'active' : ''}">7.0</span>
+              <span data-val="7.5" class="${targetBand === 7.5 ? 'active' : ''}">7.5</span>
+              <span data-val="8.0" class="${targetBand === 8.0 ? 'active' : ''}">8.0</span>
+              <span data-val="8.5" class="${targetBand === 8.5 ? 'active' : ''}">8.5</span>
+              <span data-val="9.0" class="${targetBand === 9.0 ? 'active' : ''}">9.0</span>
+            </div>
+          </div>
+
+          <div style="margin:1rem 0 0.75rem;">
+            <div style="display:flex; justify-content:space-between; font-size:0.85rem; font-weight:700; margin-bottom:0.4rem;">
+              <span>المستوى الحالي: <strong style="color:var(--text-main);">Band ${currentBand}</strong></span>
+              <span style="color:var(--primary);" id="target-progress-text">نسبة تحقيق الهدف: <strong>${progressPercent}%</strong></span>
             </div>
             <div style="width:100%; height:12px; background:var(--bg-card-subtle); border-radius:var(--radius-full); overflow:hidden; border:1px solid var(--border-color);">
-              <div style="width:${progressPercent}%; height:100%; background:linear-gradient(90deg, var(--primary), var(--success)); border-radius:var(--radius-full); transition:width 0.4s ease;"></div>
+              <div id="target-progress-bar" style="width:${progressPercent}%; height:100%; background:linear-gradient(90deg, var(--primary), var(--success)); border-radius:var(--radius-full); transition:width 0.3s cubic-bezier(0.16, 1, 0.3, 1);"></div>
             </div>
           </div>
 
-          <div style="background:var(--primary-light); border:1px solid var(--primary-border); padding:0.85rem 1rem; border-radius:var(--radius-md); font-size:0.88rem; color:var(--text-main); display:flex; align-items:center; gap:0.6rem;">
-            <span style="font-size:1.2rem;">💡</span>
-            <div>
+          <div id="target-band-info-box" style="background:var(--primary-light); border:1px solid var(--primary-border); padding:0.85rem 1rem; border-radius:var(--radius-md); font-size:0.88rem; color:var(--text-main); display:flex; align-items:center; gap:0.6rem;">
+            <span style="color:var(--primary);">${icons.brain}</span>
+            <div id="target-band-info-text">
               ${bandGap <= 0 
                 ? '<strong>رائع جداً!</strong> لقد حققت الدرجة المطلوبة أو تجاوزتها! واصل المحافظة على ثباتك في الأداء الأكاديمي.' 
-                : `<strong>الفارق المطلوب: +${bandGap} Band.</strong> للوصول إلى هدفك، ركز على تصحيح الأخطاء المتكررة في قسم بصمة الأخطاء بالأسفل.`}
+                : `<strong>الفارق المطلوب: +${bandGap} Band.</strong> للوصول إلى هذا الباند، ركز على معالجة الأخطاء المتكررة وتطبيق التراكيب المعقدة.`}
             </div>
           </div>
         </div>
@@ -732,12 +747,54 @@ export async function renderStudentDashboard() {
       logoutStudent();
     });
 
-    // Target Band Selector Listener
-    container.querySelectorAll('.target-band-btn').forEach(btn => {
-      btn.addEventListener('click', () => {
-        const target = btn.getAttribute('data-target');
-        localStorage.setItem(`ielts_target_band_${activeStudent.id}`, target);
-        renderStudentDashboard();
+    // 2026 Interactive Target Band Range Slider Listener
+    const bandSlider = container.querySelector('#band-target-range-slider');
+    const displayVal = container.querySelector('#target-band-display-val');
+    const progressBar = container.querySelector('#target-progress-bar');
+    const progressText = container.querySelector('#target-progress-text');
+    const infoText = container.querySelector('#target-band-info-text');
+    const ticks = container.querySelectorAll('.range-slider-ticks span');
+
+    function updateBandSlider(val) {
+      const num = parseFloat(val);
+      localStorage.setItem(`ielts_target_band_${activeStudent.id}`, num.toFixed(1));
+      if (displayVal) displayVal.textContent = num.toFixed(1);
+      
+      const gap = (num - currentBand).toFixed(1);
+      const pct = Math.min(100, Math.max(10, Math.round((currentBand / num) * 100)));
+      if (progressBar) progressBar.style.width = pct + '%';
+      if (progressText) progressText.innerHTML = `نسبة تحقيق الهدف: <strong>${pct}%</strong>`;
+      
+      ticks.forEach(t => {
+        if (parseFloat(t.getAttribute('data-val')) === num) t.classList.add('active');
+        else t.classList.remove('active');
+      });
+
+      const descriptors = {
+        '6.0': 'Band 6.0 (B2): تغطية الفكرة الرئيسية، لغة جيدة مع بعض الأخطاء غير المعيقة للمعنى.',
+        '6.5': 'Band 6.5 (B2+): تماسك منطقي واضح، ثراء لغوي جيد وتنوع في الروابط والجمل المركبة.',
+        '7.0': 'Band 7.0 (C1): متطلب أغلب الجامعات، تنوع مرن في التراكيب النحوية ومفردات أكاديمية دقيقة.',
+        '7.5': 'Band 7.5 (C1+): درجة متقدمة ممتازة، حجج متطورة بتماسك طبيعي وقلة بالغة في الهفوات.',
+        '8.0': 'Band 8.0 (C2): طلاقة شبه أصلية، تنوع استثنائي في التلازم اللفظي والجمل المعقدة.',
+        '8.5': 'Band 8.5 (C2 Expert): تمكن استثنائي يقارب المتحدث الأصلي وخلو المقال من أي أخطاء منهجية.',
+        '9.0': 'Band 9.0 (C2 Native Mastery): الإتقان المطلق للغة الإنجليزية الأكاديمية وفق معايير كامبريدج.'
+      };
+
+      if (infoText) {
+        infoText.innerHTML = `<strong>${descriptors[num.toFixed(1)] || ''}</strong><br><span style="font-size:0.82rem; color:var(--text-secondary);">${gap <= 0 ? '✅ لقد حققت الهدف أو تجاوزته!' : `الفارق المتبقي للوصول لهدفك: +${gap} Band.`}</span>`;
+      }
+    }
+
+    if (bandSlider) {
+      bandSlider.addEventListener('input', (e) => updateBandSlider(e.target.value));
+    }
+    ticks.forEach(t => {
+      t.addEventListener('click', () => {
+        const val = t.getAttribute('data-val');
+        if (bandSlider) {
+          bandSlider.value = val;
+          updateBandSlider(val);
+        }
       });
     });
 

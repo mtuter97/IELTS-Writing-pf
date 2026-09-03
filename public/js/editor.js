@@ -143,14 +143,17 @@ export function initEditor() {
     }
   }
 
+  const playIconSvg = '<svg class="svg-icon svg-icon-xs" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>';
+  const pauseIconSvg = '<svg class="svg-icon svg-icon-xs" viewBox="0 0 24 24"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>';
+
   function toggleTimer() {
     if (isTimerRunning) {
       clearInterval(timerInterval);
       isTimerRunning = false;
-      if (timerToggleBtn) timerToggleBtn.textContent = '▶️';
+      if (timerToggleBtn) timerToggleBtn.innerHTML = playIconSvg;
     } else {
       isTimerRunning = true;
-      if (timerToggleBtn) timerToggleBtn.textContent = '⏸️';
+      if (timerToggleBtn) timerToggleBtn.innerHTML = pauseIconSvg;
       timerInterval = setInterval(() => {
         if (secondsRemaining > 0) {
           secondsRemaining--;
@@ -158,7 +161,7 @@ export function initEditor() {
         } else {
           clearInterval(timerInterval);
           isTimerRunning = false;
-          if (timerToggleBtn) timerToggleBtn.textContent = '▶️';
+          if (timerToggleBtn) timerToggleBtn.innerHTML = playIconSvg;
           alert('⏰ انتهى الوقت المحدد للمهمة!');
         }
       }, 1000);
@@ -168,11 +171,27 @@ export function initEditor() {
   function resetTimer() {
     clearInterval(timerInterval);
     isTimerRunning = false;
-    if (timerToggleBtn) timerToggleBtn.textContent = '▶️';
-    const minutes = currentTaskType === 'task_2' ? 40 : 20;
+    if (timerToggleBtn) timerToggleBtn.innerHTML = playIconSvg;
+    const activePill = document.querySelector('.timer-preset-btn.active');
+    const minutes = activePill ? (parseInt(activePill.getAttribute('data-mins'), 10) || 40) : (currentTaskType === 'task_2' ? 40 : 20);
     secondsRemaining = minutes * 60;
     updateTimerDisplay();
   }
+
+  // Duration Slider Preset Pills
+  const timerPresetBtns = document.querySelectorAll('.timer-preset-btn');
+  timerPresetBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      timerPresetBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const mins = parseInt(btn.getAttribute('data-mins'), 10) || 40;
+      clearInterval(timerInterval);
+      isTimerRunning = false;
+      if (timerToggleBtn) timerToggleBtn.innerHTML = playIconSvg;
+      secondsRemaining = mins * 60;
+      updateTimerDisplay();
+    });
+  });
 
   if (timerToggleBtn) timerToggleBtn.addEventListener('click', toggleTimer);
   if (timerResetBtn) timerResetBtn.addEventListener('click', resetTimer);

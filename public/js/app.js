@@ -277,6 +277,43 @@ function setupModals() {
       }
     });
   }
+  // 2026 Cambridge Criteria Interactive Carousel / Slider
+  const criteriaCarousel = document.getElementById('criteria-carousel');
+  const criteriaPrevBtn = document.getElementById('criteria-prev-btn');
+  const criteriaNextBtn = document.getElementById('criteria-next-btn');
+  const criteriaDots = document.querySelectorAll('#criteria-dots .carousel-dot');
+
+  if (criteriaCarousel) {
+    if (criteriaPrevBtn) {
+      criteriaPrevBtn.addEventListener('click', () => {
+        criteriaCarousel.scrollBy({ left: 340, behavior: 'smooth' });
+      });
+    }
+    if (criteriaNextBtn) {
+      criteriaNextBtn.addEventListener('click', () => {
+        criteriaCarousel.scrollBy({ left: -340, behavior: 'smooth' });
+      });
+    }
+
+    criteriaDots.forEach((dot, idx) => {
+      dot.addEventListener('click', () => {
+        const cardWidth = criteriaCarousel.querySelector('.criteria-card')?.offsetWidth || 340;
+        criteriaCarousel.scrollTo({ left: - (idx * (cardWidth + 20)), behavior: 'smooth' });
+        criteriaDots.forEach(d => d.classList.remove('active'));
+        dot.classList.add('active');
+      });
+    });
+
+    criteriaCarousel.addEventListener('scroll', () => {
+      const cardWidth = criteriaCarousel.querySelector('.criteria-card')?.offsetWidth || 340;
+      const scrollPos = Math.abs(criteriaCarousel.scrollLeft);
+      const activeIdx = Math.min(criteriaDots.length - 1, Math.round(scrollPos / (cardWidth + 20)));
+      criteriaDots.forEach((d, i) => {
+        if (i === activeIdx) d.classList.add('active');
+        else d.classList.remove('active');
+      });
+    });
+  }
 }
 
 async function updateProviderStatusBadge() {

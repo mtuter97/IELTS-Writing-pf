@@ -1,6 +1,4 @@
-/**
- * Theme Manager (Light / Dark Mode)
- */
+import { icons } from './icons.js';
 
 export function initTheme() {
   const savedTheme = localStorage.getItem('ielts_theme');
@@ -28,10 +26,10 @@ export function applyTheme(theme) {
 
   if (icon && text) {
     if (theme === 'dark') {
-      icon.textContent = '☀️';
+      icon.innerHTML = icons.sun;
       text.textContent = 'فاتح';
     } else {
-      icon.textContent = '🌙';
+      icon.innerHTML = icons.moon;
       text.textContent = 'داكن';
     }
   }

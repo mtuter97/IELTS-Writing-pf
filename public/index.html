@@ -9,12 +9,12 @@
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   
   <!-- Styles -->
-  <link rel="stylesheet" href="css/base.css?v=2.3">
-  <link rel="stylesheet" href="css/editor.css?v=2.3">
-  <link rel="stylesheet" href="css/report.css?v=2.3">
+  <link rel="stylesheet" href="css/base.css?v=3.0-ultra2026">
+  <link rel="stylesheet" href="css/editor.css?v=3.0-ultra2026">
+  <link rel="stylesheet" href="css/report.css?v=3.0-ultra2026">
 </head>
 <body>
 
@@ -22,24 +22,29 @@
   <header class="app-header">
     <div class="header-container">
       <div class="brand-wrapper">
-        <div class="brand-icon">IE</div>
+        <div class="brand-icon" style="background:var(--primary-gradient); color:#fff; box-shadow:0 0 20px var(--primary-glow); border:1px solid rgba(255,255,255,0.2);">
+          <svg class="svg-icon svg-icon-md" viewBox="0 0 24 24"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/><path d="m15 5 4 4"/></svg>
+        </div>
         <div class="brand-text">
           <h1>IELTS Writing Examiner</h1>
-          <p>محرك التقييم التشخيصي المعتمد وتتبع الأخطاء المتكررة</p>
+          <p>منظومة الفاحص المعتمد 2026 وتتبع البصمة الأكاديمية</p>
         </div>
       </div>
 
       <div class="header-actions">
         <!-- Theme Toggle Button (Light / Dark) -->
         <button id="theme-toggle-btn" class="theme-toggle-btn" title="تبديل المظهر (فاتح / داكن)">
-          <span id="theme-toggle-icon">🌙</span>
+          <span id="theme-toggle-icon">
+            <svg class="svg-icon svg-icon-sm" viewBox="0 0 24 24"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
+          </span>
           <span id="theme-toggle-text" style="font-size:0.82rem;">داكن</span>
         </button>
 
         <!-- Student Hub (Login / Active Profile) -->
         <div id="header-student-container" class="header-student-container">
           <button id="header-login-btn" class="student-login-trigger-btn" title="تسجيل دخول الطالب">
-            <span>🔑</span> دخول الطالب
+            <svg class="svg-icon svg-icon-sm" viewBox="0 0 24 24"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" x2="3" y1="12" y2="12"/></svg>
+            <span>دخول الطالب</span>
           </button>
           
           <div id="header-student-profile" class="header-student-profile" style="display:none;" title="حساب الطالب النشط">
@@ -49,14 +54,16 @@
               <span id="header-student-status" class="badge badge-success">مفعل</span>
             </div>
             <button id="header-student-logout-btn" class="student-header-logout-btn" title="تسجيل الخروج لحماية حسابك">
-              <span>🚪</span> خروج
+              <svg class="svg-icon svg-icon-xs" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" x2="9" y1="12" y2="12"/></svg>
+              <span>خروج</span>
             </button>
           </div>
         </div>
 
         <!-- Dedicated Teacher Portal Entry Button -->
         <button id="header-teacher-btn" class="teacher-portal-trigger-btn" title="بوابة المعلم والمشرف المحمية">
-          <span>🛡️</span> لوحة المعلم
+          <svg class="svg-icon svg-icon-sm" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>
+          <span>لوحة المعلم</span>
         </button>
       </div>
     </div>
@@ -66,13 +73,16 @@
   <nav class="tabs-nav">
     <div class="tabs-container">
       <button class="tab-btn active" data-tab="editor">
-        <span>✍️</span> محاكي وكتابة المقال (Exam Simulator)
+        <svg class="svg-icon svg-icon-sm" viewBox="0 0 24 24"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/><path d="m15 5 4 4"/></svg>
+        <span>محاكي وكتابة المقال (Exam Simulator)</span>
       </button>
       <button class="tab-btn" data-tab="report">
-        <span>📊</span> تقرير التقييم المعتمد (Diagnostic Report)
+        <svg class="svg-icon svg-icon-sm" viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/></svg>
+        <span>تقرير التقييم المعتمد (Diagnostic Report)</span>
       </button>
       <button class="tab-btn" data-tab="profile">
-        <span>🧬</span> ملفي الأكاديمي وبصمة أخطائي (My Academic DNA)
+        <svg class="svg-icon svg-icon-sm" viewBox="0 0 24 24"><path d="m2 15 5.5-5.5a2.12 2.12 0 0 1 3 0L12 11"/><path d="m12 13 1.5 1.5a2.12 2.12 0 0 0 3 0L22 9"/><path d="m17 4 3 3"/><path d="m4 17 3 3"/><path d="m9 10 6 6"/><path d="m15 8-6 6"/></svg>
+        <span>ملفي الأكاديمي وبصمة أخطائي (My Academic DNA)</span>
       </button>
     </div>
   </nav>
@@ -83,27 +93,130 @@
     <!-- HERO INTRODUCTION SECTION -->
     <section class="hero-section">
       <div class="hero-badge-pill">
-        <span>🏆</span> المنظومة الأكاديمية الأولى المطابقة لمعايير كامبريدج ومجلس الثقافة البريطاني
+        <svg class="svg-icon svg-icon-sm" style="color:var(--accent-amber);" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        <span>المنظومة الأكاديمية الأولى المطابقة لمعايير كامبريدج ومجلس الثقافة البريطاني 2026</span>
       </div>
       <h2 class="hero-title">
         تشخيص جراحي لمقالات الآيلتس مع <span>تقنية بصمة الأخطاء المتكررة</span>
       </h2>
       <p class="hero-subtitle">
-        لا تكتفِ بالحصول على درجة تقديرية مجردة! تحلل هذه المنظومة مقالك بدقة فاحص معتمد عبر المعايير الأربعة الرسمية (TR, CC, LR, GRA)، وتكتشف أخطاءك النحوية والمفردات التي تكررت من مقالات سابقة، مع تقديم إعادة صياغة نموذجية بمستوى Band 8+ وخطة عمل فورية لعلاج نقاط الضعف.
+        تحلل هذه المنظومة مقالك بدقة فاحص معتمد عبر المعايير الأربعة الرسمية (TR, CC, LR, GRA)، وترصد أخطاءك النحوية والمفردات التي تكررت من مقالات سابقة، مع توفير نموذج إعادة صياغة Band 8+ وخطة تدريب فورية.
       </p>
 
-      <div class="hero-features-row">
-        <div class="hero-feature-item">
-          <span>🎯</span> معايير رسمية 100% (Band Descriptors)
+      <!-- 2026 INTERACTIVE CAMBRIDGE CRITERIA CAROUSEL SLIDER -->
+      <div class="criteria-carousel-section">
+        <div class="criteria-carousel-header">
+          <div style="display:flex; align-items:center; gap:0.5rem;">
+            <svg class="svg-icon" style="color:var(--primary);" viewBox="0 0 24 24"><line x1="4" x2="4" y1="21" y2="14"/><line x1="4" x2="4" y1="10" y2="3"/><line x1="12" x2="12" y1="21" y2="12"/><line x1="12" x2="12" y1="8" y2="3"/><line x1="20" x2="20" y1="21" y2="16"/><line x1="20" x2="20" y1="12" y2="3"/><line x1="1" x2="7" y1="14" y2="14"/><line x1="9" x2="15" y1="8" y2="8"/><line x1="17" x2="23" y1="16" y2="16"/></svg>
+            <strong style="font-size:0.95rem; color:var(--text-main);">اسلايدز معايير كامبريدج الأربعة (Cambridge Band Descriptors):</strong>
+          </div>
+          <div class="carousel-nav-controls">
+            <button id="criteria-prev-btn" class="carousel-nav-btn" title="السابق">
+              <svg class="svg-icon svg-icon-xs" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></svg>
+            </button>
+            <button id="criteria-next-btn" class="carousel-nav-btn" title="التالي">
+              <svg class="svg-icon svg-icon-xs" viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></svg>
+            </button>
+          </div>
         </div>
-        <div class="hero-feature-item">
-          <span>🧬</span> رصد الأخطاء المتكررة (Chronic Mistake Alert)
+
+        <div class="criteria-carousel-wrapper">
+          <div id="criteria-carousel" class="criteria-carousel">
+            <!-- Slide 1: Task Response -->
+            <div class="criteria-card">
+              <div>
+                <div class="criteria-card-top">
+                  <div class="criteria-icon-box" style="background:linear-gradient(135deg, #3b82f6, #1d4ed8);">
+                    <svg class="svg-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
+                  </div>
+                  <div>
+                    <h4 style="font-size:1rem; font-weight:800; color:var(--text-main); margin:0;">Task Response (TR)</h4>
+                    <span style="font-size:0.75rem; color:var(--primary); font-weight:700;">تغطية عناصر السؤال والأفكار الرئيسية</span>
+                  </div>
+                </div>
+                <p style="font-size:0.84rem; color:var(--text-secondary); line-height:1.6; margin:0 0 1rem;">
+                  فحص دقيق لتغطية جميع أجزاء الموضوع بموقف واضح، وتطوير الحجج بأمثلة وشروحات منطقية دون استطراد أو خروج عن السياق.
+                </p>
+              </div>
+              <div style="background:var(--bg-card-subtle); padding:0.6rem 0.85rem; border-radius:var(--radius-sm); border:1px solid var(--border-color); font-size:0.75rem; font-weight:700; color:var(--text-muted); display:flex; justify-content:space-between;">
+                <span>شرط Band 8+:</span>
+                <span style="color:var(--success);">أفكار موسعة ومدعومة بإحكام</span>
+              </div>
+            </div>
+
+            <!-- Slide 2: Coherence & Cohesion -->
+            <div class="criteria-card">
+              <div>
+                <div class="criteria-card-top">
+                  <div class="criteria-icon-box" style="background:linear-gradient(135deg, #8b5cf6, #6d28d9);">
+                    <svg class="svg-icon" viewBox="0 0 24 24"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
+                  </div>
+                  <div>
+                    <h4 style="font-size:1rem; font-weight:800; color:var(--text-main); margin:0;">Coherence & Cohesion (CC)</h4>
+                    <span style="font-size:0.75rem; color:var(--accent-violet); font-weight:700;">التماسك والترابط المنطقي والفقرات</span>
+                  </div>
+                </div>
+                <p style="font-size:0.84rem; color:var(--text-secondary); line-height:1.6; margin:0 0 1rem;">
+                  ترتيب الأفكار بتسلسل سلس وتوزيع محكم للفقرات، واستخدام روابط الجمل (Linking Devices) باحترافية وتنوع دون تكرار مفرط.
+                </p>
+              </div>
+              <div style="background:var(--bg-card-subtle); padding:0.6rem 0.85rem; border-radius:var(--radius-sm); border:1px solid var(--border-color); font-size:0.75rem; font-weight:700; color:var(--text-muted); display:flex; justify-content:space-between;">
+                <span>شرط Band 8+:</span>
+                <span style="color:var(--success);">انتقال طبيعي وجمل موضوعية حاسمة</span>
+              </div>
+            </div>
+
+            <!-- Slide 3: Lexical Resource -->
+            <div class="criteria-card">
+              <div>
+                <div class="criteria-card-top">
+                  <div class="criteria-icon-box" style="background:linear-gradient(135deg, #10b981, #047857);">
+                    <svg class="svg-icon" viewBox="0 0 24 24"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg>
+                  </div>
+                  <div>
+                    <h4 style="font-size:1rem; font-weight:800; color:var(--text-main); margin:0;">Lexical Resource (LR)</h4>
+                    <span style="font-size:0.75rem; color:var(--success); font-weight:700;">الثراء اللغوي والتلازم اللفظي الأكاديمي</span>
+                  </div>
+                </div>
+                <p style="font-size:0.84rem; color:var(--text-secondary); line-height:1.6; margin:0 0 1rem;">
+                  قياس دقة المفردات والتراكيب الأكاديمية (Collocations)، مع تنبيهات الفاحص للكلمات المكررة والبدائل المعجمية الراقية.
+                </p>
+              </div>
+              <div style="background:var(--bg-card-subtle); padding:0.6rem 0.85rem; border-radius:var(--radius-sm); border:1px solid var(--border-color); font-size:0.75rem; font-weight:700; color:var(--text-muted); display:flex; justify-content:space-between;">
+                <span>شرط Band 8+:</span>
+                <span style="color:var(--success);">تلازم لفظي نادر ودقة بالغة في السياق</span>
+              </div>
+            </div>
+
+            <!-- Slide 4: Grammatical Range & Accuracy -->
+            <div class="criteria-card">
+              <div>
+                <div class="criteria-card-top">
+                  <div class="criteria-icon-box" style="background:linear-gradient(135deg, #f59e0b, #b45309);">
+                    <svg class="svg-icon" viewBox="0 0 24 24"><path d="m2 15 5.5-5.5a2.12 2.12 0 0 1 3 0L12 11"/><path d="m12 13 1.5 1.5a2.12 2.12 0 0 0 3 0L22 9"/><path d="m17 4 3 3"/><path d="m4 17 3 3"/><path d="m9 10 6 6"/><path d="m15 8-6 6"/></svg>
+                  </div>
+                  <div>
+                    <h4 style="font-size:1rem; font-weight:800; color:var(--text-main); margin:0;">Grammar Range & Accuracy (GRA)</h4>
+                    <span style="font-size:0.75rem; color:var(--accent-amber); font-weight:700;">تنوع التراكيب النحوية ودقة الإعراب</span>
+                  </div>
+                </div>
+                <p style="font-size:0.84rem; color:var(--text-secondary); line-height:1.6; margin:0 0 1rem;">
+                  فحص التراكيب المعقدة (Conditionals, Relative Clauses, Inversions) ورصد الأخطاء الشائعة في توافق الفاعل والفعل وعلامات الترقيم.
+                </p>
+              </div>
+              <div style="background:var(--bg-card-subtle); padding:0.6rem 0.85rem; border-radius:var(--radius-sm); border:1px solid var(--border-color); font-size:0.75rem; font-weight:700; color:var(--text-muted); display:flex; justify-content:space-between;">
+                <span>شرط Band 8+:</span>
+                <span style="color:var(--success);">أغلبية الجمل خالية من أي خطأ نحوي</span>
+              </div>
+            </div>
+          </div>
         </div>
-        <div class="hero-feature-item">
-          <span>⏱️</span> محاكي بيئة حاسوب اختبار الآيلتس
-        </div>
-        <div class="hero-feature-item">
-          <span>📄</span> تقارير تقييم رسمية جاهزة للطباعة والتصدير كـ PDF
+
+        <div id="criteria-dots" class="carousel-dots">
+          <span class="carousel-dot active" data-index="0"></span>
+          <span class="carousel-dot" data-index="1"></span>
+          <span class="carousel-dot" data-index="2"></span>
+          <span class="carousel-dot" data-index="3"></span>
         </div>
       </div>
     </section>
@@ -113,7 +226,8 @@
       <div class="sub-banner-content">
         <div class="sub-banner-text">
           <h3>
-            <span>⚠️</span> حساب الطالب بانتظار التفعيل | سعر الاشتراك: <span class="price-tag">100 دولار</span>
+            <svg class="svg-icon svg-icon-sm" style="color:var(--warning);" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="8" y2="12"/><line x1="12" x2="12.01" y1="16" y2="16"/></svg>
+            <span>حساب الطالب بانتظار التفعيل | سعر الاشتراك: <span class="price-tag">100 دولار</span></span>
           </h3>
           <p>
             للاستفادة الكاملة من محاكي الاختبار والتقييم الفوري غير المحدود وتتبع بصمة الأخطاء، يتم دفع رسوم الاشتراك (100$) وتفعيل حسابك يدوياً من خلال المعلم مباشرة عبر الواتساب.
@@ -121,7 +235,8 @@
         </div>
         <div>
           <a href="https://wa.me/966549724510" target="_blank" class="btn-whatsapp wa-activation-link">
-            <span>💬</span> تفعيل الحساب عبر الواتساب (966549724510)
+            <svg class="svg-icon svg-icon-sm" style="fill:currentColor; stroke:none;" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
+            <span>تفعيل الحساب عبر الواتساب (966549724510)</span>
           </a>
         </div>
       </div>
@@ -134,7 +249,8 @@
         <!-- Left Panel: Prompt & Setup -->
         <aside class="prompt-panel">
           <div class="panel-title">
-            <span>📝</span> إعدادات المهمة وموضوع السؤال
+            <svg class="svg-icon svg-icon-sm" style="color:var(--primary);" viewBox="0 0 24 24"><line x1="4" x2="4" y1="21" y2="14"/><line x1="4" x2="4" y1="10" y2="3"/><line x1="12" x2="12" y1="21" y2="12"/><line x1="12" x2="12" y1="8" y2="3"/><line x1="20" x2="20" y1="21" y2="16"/><line x1="20" x2="20" y1="12" y2="3"/><line x1="1" x2="7" y1="14" y2="14"/><line x1="9" x2="15" y1="8" y2="8"/><line x1="17" x2="23" y1="16" y2="16"/></svg>
+            <span>إعدادات المهمة وموضوع السؤال</span>
           </div>
 
           <!-- Task Type Selector -->
@@ -161,8 +277,11 @@
             <textarea id="prompt-input" class="form-textarea prompt-textarea" placeholder="الصق نص السؤال هنا..."></textarea>
           </div>
 
-          <div style="background:var(--bg-card-subtle); padding:0.85rem; border-radius:var(--radius-md); font-size:0.78rem; color:var(--text-secondary); line-height:1.5;">
-            💡 <strong>معايير الفاحص:</strong> تأكد من تغطية جميع عناصر السؤال لإحراز Band 7+ في معيار Task Response وتجنب الآراء العامة غير المدعومة بأمثلة.
+          <div style="background:var(--bg-card-subtle); padding:0.85rem; border-radius:var(--radius-md); font-size:0.78rem; color:var(--text-secondary); line-height:1.5; border:1px solid var(--border-color); display:flex; gap:0.5rem; align-items:flex-start;">
+            <svg class="svg-icon svg-icon-xs" style="color:var(--accent-amber); margin-top:2px;" viewBox="0 0 24 24"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg>
+            <div>
+              <strong>معايير الفاحص:</strong> تأكد من تغطية جميع عناصر السؤال لإحراز Band 7+ في معيار Task Response وتجنب الآراء العامة غير المدعومة بأمثلة.
+            </div>
           </div>
         </aside>
 
@@ -172,18 +291,30 @@
           <!-- Exam Control Toolbar -->
           <div class="exam-toolbar">
             <div class="toolbar-left">
-              <!-- Live Timer -->
+              <!-- 2026 Live Timer -->
               <div id="timer-box" class="timer-box" title="مؤقت الاختبار التنازلي">
-                <span>⏱️</span>
+                <svg class="svg-icon svg-icon-sm" style="color:var(--primary);" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
                 <span id="timer-digits" class="timer-digits">40:00</span>
                 <div class="timer-controls">
-                  <button id="timer-toggle-btn" class="timer-btn" title="بدء / إيقاف المؤقت">▶️</button>
-                  <button id="timer-reset-btn" class="timer-btn" title="إعادة تعيين المؤقت">🔄</button>
+                  <button id="timer-toggle-btn" class="timer-btn" title="بدء / إيقاف المؤقت">
+                    <svg class="svg-icon svg-icon-xs" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                  </button>
+                  <button id="timer-reset-btn" class="timer-btn" title="إعادة تعيين المؤقت">
+                    <svg class="svg-icon svg-icon-xs" viewBox="0 0 24 24"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/></svg>
+                  </button>
                 </div>
+              </div>
+
+              <!-- Quick Duration Pills -->
+              <div class="segmented-slider" style="font-size:0.75rem;">
+                <button type="button" class="segmented-pill timer-preset-btn active" data-mins="40">40 د</button>
+                <button type="button" class="segmented-pill timer-preset-btn" data-mins="20">20 د</button>
+                <button type="button" class="segmented-pill timer-preset-btn" data-mins="60">60 د</button>
               </div>
 
               <!-- Word Counter -->
               <div id="word-count-pill" class="word-counter-pill under">
+                <svg class="svg-icon svg-icon-xs" viewBox="0 0 24 24"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/><path d="m15 5 4 4"/></svg>
                 <span>الكلمات:</span>
                 <span id="word-count-number">0</span> / <span id="word-count-min">250</span>
               </div>
@@ -196,7 +327,7 @@
                   <input type="checkbox" id="exam-mode-checkbox">
                   <span class="slider"></span>
                 </span>
-                <span>وضع الامتحان الصارم (Strict Exam Mode)</span>
+                <span>وضع الامتحان الصارم</span>
               </label>
             </div>
           </div>
@@ -210,11 +341,13 @@
 
           <!-- Footer Action Bar -->
           <div class="editor-footer">
-            <span class="footer-tip">
-              📌 يتم فحص مقالك بالاعتماد الكامل على معايير كامبريدج ومطابقته مع سجل أخطائك السابقة.
+            <span class="footer-tip" style="display:inline-flex; align-items:center; gap:0.4rem;">
+              <svg class="svg-icon svg-icon-xs" style="color:var(--primary);" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              <span>يتم فحص مقالك بالاعتماد الكامل على معايير كامبريدج ومطابقته مع سجل أخطائك السابقة.</span>
             </span>
-            <button id="submit-essay-btn" class="btn btn-primary btn-lg">
-              <span>🚀 إرسال المقال للتقييم والتشخيص الفوري</span>
+            <button id="submit-essay-btn" class="btn btn-primary btn-lg" style="display:inline-flex; align-items:center; gap:0.6rem;">
+              <svg class="svg-icon svg-icon-sm" viewBox="0 0 24 24"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/><path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/><path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"/><path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/></svg>
+              <span>إرسال المقال للتقييم والتشخيص الفوري</span>
             </button>
           </div>
         </div>
@@ -467,6 +600,6 @@
   <div id="toast-container" class="toast-container"></div>
 
   <!-- Scripts -->
-  <script type="module" src="js/app.js?v=2.3"></script>
+  <script type="module" src="js/app.js?v=3.0-ultra2026"></script>
 </body>
 </html>

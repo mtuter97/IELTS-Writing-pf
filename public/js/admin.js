@@ -1,4 +1,5 @@
 import { fetchStudents, createStudent, updateStudentStatus, deleteStudent, verifyAdminPin, fetchSettings, saveSettings } from './api.js';
+import { icons } from './icons.js';
 
 let isAdminAuthenticated = false;
 let adminActiveSubTab = 'students'; // 'students', 'analytics', 'settings'
@@ -23,8 +24,8 @@ export async function renderAdminDashboard() {
   if (!checkAdminSession()) {
     container.innerHTML = `
       <div style="text-align:center; padding:4rem 2rem; background:var(--bg-card); border-radius:var(--radius-lg); border:1px solid var(--border-color); max-width:520px; margin:2rem auto; box-shadow:var(--shadow-lg);">
-        <div style="width:68px; height:68px; margin:0 auto 1.25rem; background:var(--primary-light); color:var(--primary); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:2rem; border:1px solid var(--primary-border);">
-          🔐
+        <div style="width:68px; height:68px; margin:0 auto 1.25rem; background:var(--primary-light); color:var(--primary); border-radius:50%; display:flex; align-items:center; justify-content:center; border:1px solid var(--primary-border);">
+          <span style="display:flex; transform:scale(1.3);">${icons.shield}</span>
         </div>
         <h3 style="font-size:1.45rem; font-weight:800; margin-bottom:0.5rem; color:var(--text-main);">لوحة تحكم المعلم والمشرف</h3>
         <p style="color:var(--text-muted); font-size:0.92rem; margin-bottom:1.75rem; line-height:1.6;">
