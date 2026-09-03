@@ -529,24 +529,24 @@ export async function renderAdminDashboard() {
     if (saveSettingsInlineBtn) {
       saveSettingsInlineBtn.addEventListener('click', async () => {
         const active_provider = document.getElementById('admin-setting-provider-select').value;
-        const gemini_api_key = document.getElementById('admin-setting-gemini-key').value;
-        const groq_api_key = document.getElementById('admin-setting-groq-key').value;
-        const openrouter_api_key = document.getElementById('admin-setting-openrouter-key').value;
-        const you_api_key = document.getElementById('admin-setting-you-key')?.value;
+        const gemini_api_key = document.getElementById('admin-setting-gemini-key').value.trim();
+        const groq_api_key = document.getElementById('admin-setting-groq-key').value.trim();
+        const openrouter_api_key = document.getElementById('admin-setting-openrouter-key').value.trim();
+        const you_api_key = document.getElementById('admin-setting-you-key')?.value.trim();
         const teacher_whatsapp = document.getElementById('admin-setting-teacher-whatsapp').value.trim();
         const admin_pin = document.getElementById('admin-setting-admin-pin').value.trim();
 
+        const payload = { active_provider };
+        if (gemini_api_key) payload.gemini_api_key = gemini_api_key;
+        if (groq_api_key) payload.groq_api_key = groq_api_key;
+        if (openrouter_api_key) payload.openrouter_api_key = openrouter_api_key;
+        if (you_api_key) payload.you_api_key = you_api_key;
+        if (teacher_whatsapp) payload.teacher_whatsapp = teacher_whatsapp;
+        if (admin_pin) payload.admin_pin = admin_pin;
+
         try {
           saveSettingsInlineBtn.textContent = 'جاري الحفظ...';
-          await saveSettings({
-            active_provider,
-            gemini_api_key,
-            groq_api_key,
-            openrouter_api_key,
-            you_api_key,
-            teacher_whatsapp,
-            admin_pin
-          });
+          await saveSettings(payload);
           saveSettingsInlineBtn.textContent = '💾 حفظ كافة الإعدادات';
           if (saveSettingsStatus) {
             saveSettingsStatus.style.display = 'inline';

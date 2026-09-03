@@ -29,7 +29,7 @@ export function cleanJsonText(rawText) {
  * Google AI Studio (Gemini REST API)
  */
 async function callGemini({ apiKey, model, systemPrompt, userPrompt }) {
-  const candidateModels = [model, 'gemini-3.6-flash', 'gemini-2.5-flash', 'gemini-1.5-flash'].filter(Boolean);
+  const candidateModels = ['gemini-3.6-flash', model, 'gemini-2.5-flash'].filter(Boolean);
   const uniqueModels = [...new Set(candidateModels)];
 
   let lastError = null;
@@ -81,41 +81,50 @@ async function callGemini({ apiKey, model, systemPrompt, userPrompt }) {
  * Groq Cloud (OpenAI-compatible endpoint)
  */
 async function callGroq({ apiKey, model, systemPrompt, userPrompt }) {
-  const modelName = model || DEFAULT_MODELS.groq;
+  const candidateModels = [model, 'qwen/qwen3.8-27b', 'openai/gpt-oss-120b', 'allam-2-7b'].filter(Boolean);
+  const uniqueModels = [...new Set(candidateModels)];
   const endpoint = 'https://api.groq.com/openai/v1/chat/completions';
 
-  const payload = {
-    model: modelName,
-    messages: [
-      { role: 'system', content: systemPrompt },
-      { role: 'user', content: userPrompt }
-    ],
-    temperature: 0.2,
-    response_format: { type: 'json_object' }
-  };
+  let lastError = null;
+  for (const modelName of uniqueModels) {
+    try {
+      const payload = {
+        model: modelName,
+        messages: [
+          { role: 'system', content: systemPrompt },
+          { role: 'user', content: userPrompt }
+        ],
+        temperature: 0.2,
+        response_format: { type: 'json_object' }
+      };
 
-  const response = await fetch(endpoint, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${apiKey}`
-    },
-    body: JSON.stringify(payload)
-  });
+      const response = await fetch(endpoint, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${apiKey}`
+        },
+        body: JSON.stringify(payload)
+      });
 
-  if (!response.ok) {
-    const errorBody = await response.text();
-    throw new Error(`Groq API Error (${response.status}): ${errorBody}`);
+      if (!response.ok) {
+        const errorBody = await response.text();
+        lastError = new Error(`Groq API Error (${response.status}) on ${modelName}: ${errorBody}`);
+        continue;
+      }
+
+      const data = await response.json();
+      const textOutput = data?.choices?.[0]?.message?.content;
+
+      if (textOutput) {
+        return cleanJsonText(textOutput);
+      }
+    } catch (e) {
+      lastError = e;
+    }
   }
 
-  const data = await response.json();
-  const textOutput = data?.choices?.[0]?.message?.content;
-
-  if (!textOutput) {
-    throw new Error('Groq API returned an empty completion.');
-  }
-
-  return cleanJsonText(textOutput);
+  throw lastError || new Error('Groq API returned an empty completion on all models.');
 }
 
 /**

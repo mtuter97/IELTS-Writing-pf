@@ -443,16 +443,16 @@ export async function saveSettingsHandler(req, res) {
 
     const updates = {};
     if (active_provider) updates.active_provider = active_provider;
-    if (gemini_api_key !== undefined) updates.gemini_api_key = gemini_api_key.trim();
-    if (groq_api_key !== undefined) updates.groq_api_key = groq_api_key.trim();
-    if (openrouter_api_key !== undefined) updates.openrouter_api_key = openrouter_api_key.trim();
-    if (you_api_key !== undefined) updates.you_api_key = you_api_key.trim();
-    if (gemini_model) updates.gemini_model = gemini_model;
-    if (groq_model) updates.groq_model = groq_model;
-    if (openrouter_model) updates.openrouter_model = openrouter_model;
-    if (you_model) updates.you_model = you_model;
-    if (admin_pin) updates.admin_pin = admin_pin.trim();
-    if (teacher_whatsapp) updates.teacher_whatsapp = teacher_whatsapp.trim();
+    if (gemini_api_key && gemini_api_key.trim()) updates.gemini_api_key = gemini_api_key.trim();
+    if (groq_api_key && groq_api_key.trim()) updates.groq_api_key = groq_api_key.trim();
+    if (openrouter_api_key && openrouter_api_key.trim()) updates.openrouter_api_key = openrouter_api_key.trim();
+    if (you_api_key && you_api_key.trim()) updates.you_api_key = you_api_key.trim();
+    if (gemini_model && gemini_model.trim()) updates.gemini_model = gemini_model.trim();
+    if (groq_model && groq_model.trim()) updates.groq_model = groq_model.trim();
+    if (openrouter_model && openrouter_model.trim()) updates.openrouter_model = openrouter_model.trim();
+    if (you_model && you_model.trim()) updates.you_model = you_model.trim();
+    if (admin_pin && admin_pin.trim()) updates.admin_pin = admin_pin.trim();
+    if (teacher_whatsapp && teacher_whatsapp.trim()) updates.teacher_whatsapp = teacher_whatsapp.trim();
     if (subscription_price) updates.subscription_price = Number(subscription_price);
 
     const updated = saveSettings(updates);
