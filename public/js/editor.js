@@ -218,6 +218,29 @@ export function initEditor() {
         if (!proceed) return;
       }
 
+      // 🔒 Strict Authorization Check: Only active paid students can evaluate
+      if (!student) {
+        const studentModal = document.getElementById('student-modal');
+        if (studentModal) studentModal.classList.add('open');
+        const loginError = document.getElementById('login-modal-error');
+        if (loginError) {
+          loginError.style.display = 'block';
+          loginError.textContent = '🔒 محاكي التقييم متاح حصرياً للطلاب المشتركين. أدخل كود الدخول الخاص بك أو اشترك الآن عبر الواتساب (100$).';
+        }
+        alert('🔒 تنبيه الاشتراك:\n\nمحاكي التقييم وتشخيص الأخطاء متاح حصرياً للطلاب المشتركين والمفعلين.\n\nيرجى تسجيل الدخول بكود الطالب الخاص بك، أو التواصل مع المعلم لتفعيل اشتراكك (100$).');
+        return;
+      }
+
+      if (student.status !== 'active') {
+        const banner = document.getElementById('subscription-notice-banner');
+        if (banner) {
+          banner.style.display = 'block';
+          banner.scrollIntoView({ behavior: 'smooth' });
+        }
+        alert('⏳ تنبيه الاشتراك:\n\nحسابك بانتظار التفعيل من قِبل المعلم بعد سداد رسوم الاشتراك (100$). يرجى التواصل مع المعلم عبر الواتساب لتفعيل حسابك.');
+        return;
+      }
+
       // Show animated loading overlay with diagnostic steps
       const overlay = document.getElementById('evaluating-overlay');
       const stepText = document.getElementById('eval-step-text');
@@ -257,7 +280,16 @@ export function initEditor() {
         clearInterval(stepInterval);
         if (overlay) overlay.classList.remove('active');
         
-        if (err.is_pending_activation) {
+        if (err.requires_login) {
+          const studentModal = document.getElementById('student-modal');
+          if (studentModal) studentModal.classList.add('open');
+          const loginError = document.getElementById('login-modal-error');
+          if (loginError) {
+            loginError.style.display = 'block';
+            loginError.textContent = err.message;
+          }
+          alert(`🔒 تنبيه الاشتراك:\n${err.message}`);
+        } else if (err.is_pending_activation) {
           const banner = document.getElementById('subscription-notice-banner');
           if (banner) {
             banner.style.display = 'block';

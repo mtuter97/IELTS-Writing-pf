@@ -180,30 +180,44 @@ export async function evaluateEssayHandler(req, res) {
     const wordCount = words.length;
     const minThreshold = MIN_WORD_COUNTS[task_type] || 250;
 
-    // Student profile verification & subscription check
-    let student = null;
-    let mistakeHistory = null;
-    if (student_id) {
-      student = getStudent(student_id);
-      if (student) {
-        if (student.status === 'pending') {
-          return res.status(403).json({
-            success: false,
-            is_pending_activation: true,
-            error: 'عذراً، هذا الحساب في انتظار التفعيل. سعر الاشتراك في الأداة هو 100 دولار. يرجى التواصل مع المعلم عبر الواتساب لتفعيل حسابك.',
-            student_id: student.id,
-            student_name: student.name,
-            access_code: student.access_code,
-            teacher_whatsapp: '966549724510',
-            price: 100
-          });
-        }
-        mistakeHistory = getStudentMistakeHistory(student_id);
-      }
+    // Student profile verification & strict subscription check
+    const settings = getSettings();
+    if (!student_id) {
+      return res.status(401).json({
+        success: false,
+        requires_login: true,
+        error: 'عذراً، محاكي التقييم متاح حصرياً للطلاب المشتركين والمفعلين. يرجى تسجيل الدخول بكود الطالب الخاص بك، أو التواصل مع المعلم لتفعيل اشتراكك (100 دولار).',
+        teacher_whatsapp: settings.teacher_whatsapp || '966549724510',
+        price: settings.subscription_price || 100
+      });
     }
 
+    const student = getStudent(student_id);
+    if (!student) {
+      return res.status(404).json({
+        success: false,
+        requires_login: true,
+        error: 'حساب الطالب غير مسجل في النظام. يرجى التأكد من كود الدخول أو التواصل مع المعلم.',
+        teacher_whatsapp: settings.teacher_whatsapp || '966549724510'
+      });
+    }
+
+    if (student.status !== 'active') {
+      return res.status(403).json({
+        success: false,
+        is_pending_activation: true,
+        error: 'عذراً، هذا الحساب بانتظار التفعيل. سعر الاشتراك في الأداة هو 100 دولار. يرجى التواصل مع المعلم عبر الواتساب لتفعيل حسابك.',
+        student_id: student.id,
+        student_name: student.name,
+        access_code: student.access_code,
+        teacher_whatsapp: settings.teacher_whatsapp || '966549724510',
+        price: settings.subscription_price || 100
+      });
+    }
+
+    const mistakeHistory = getStudentMistakeHistory(student_id);
+
     // Active AI Provider & Key resolution
-    const settings = getSettings();
     const provider = settings.active_provider || 'gemini';
     let apiKey = '';
     let model = '';

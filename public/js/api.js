@@ -115,6 +115,7 @@ export async function submitEssayEvaluation(payload) {
   const data = await res.json();
   if (!data.success) {
     const err = new Error(data.error || 'Evaluation failed');
+    err.requires_login = data.requires_login;
     err.is_pending_activation = data.is_pending_activation;
     err.student_id = data.student_id;
     err.access_code = data.access_code;
