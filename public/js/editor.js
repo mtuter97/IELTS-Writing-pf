@@ -36,8 +36,35 @@ export const PRACTICE_PROMPTS = {
       title: "Formal Letter to Landlord",
       prompt: "You are renting an apartment and there has been a persistent plumbing problem that has not been repaired. Write a letter to your landlord explaining the issue, the impact on your daily life, and the action you expect them to take."
     }
+  ],
+  free_text: [
+    {
+      title: "✨ مسودة أو فقرة حرة (Custom Free Paragraph)",
+      prompt: "اكتب أو الصق أي نص، مقال، أو فقرة ترغب في تشخيص وتدقيق قواعدها وتراكيبها اللغوية ومفرداتها والارتقاء بها لمستوى Band 8+."
+    },
+    {
+      title: "✨ تدريب على المقدمة (Introduction Paragraph)",
+      prompt: "Write an introduction paragraph with paraphrase and clear thesis statement."
+    },
+    {
+      title: "✨ تدريب على فقرة جسم مقال (Body Paragraph with Example)",
+      prompt: "Write a body paragraph with a clear topic sentence, supporting explanation, and specific example."
+    }
   ]
 };
+
+function triggerToast(msg, type = 'info') {
+  const container = document.getElementById('toast-container');
+  if (container) {
+    const toast = document.createElement('div');
+    toast.className = `toast toast-${type}`;
+    toast.textContent = msg;
+    container.appendChild(toast);
+    setTimeout(() => toast.remove(), 4500);
+  } else {
+    alert(msg);
+  }
+}
 
 let timerInterval = null;
 let secondsRemaining = 40 * 60;
@@ -90,29 +117,41 @@ export function initEditor() {
 
   function updateTaskDefaults() {
     populatePromptPicker();
-    const minWords = currentTaskType === 'task_2' ? 250 : 150;
-    const minutes = currentTaskType === 'task_2' ? 40 : 20;
+    const isFree = currentTaskType === 'free_text';
+    const minWords = isFree ? 0 : (currentTaskType === 'task_2' ? 250 : 150);
+    const minutes = isFree ? 0 : (currentTaskType === 'task_2' ? 40 : 20);
     secondsRemaining = minutes * 60;
     updateTimerDisplay();
     updateWordCount();
+
+    if (isFree) {
+      if (promptInput) promptInput.placeholder = "اكتب موضوعك أو اترك هذا الحقل فارغاً لتقييم النص مباشرة...";
+      if (essayInput) essayInput.placeholder = "اكتب أو الصق أي نص أو فقرة بأي عدد من الكلمات، وسيقوم الفاحص بتشخيص القواعد والمفردات والترابط وتقديم نموذج تحسين Band 8+...";
+    } else {
+      if (promptInput) promptInput.placeholder = "الصق نص السؤال هنا...";
+      if (essayInput) essayInput.placeholder = "ابدأ بكتابة مقالك هنا مباشرة...";
+    }
   }
 
   // Word Counter
   function updateWordCount() {
     const text = essayInput.value.trim();
     const words = text ? text.split(/\s+/).filter(Boolean).length : 0;
-    const minWords = currentTaskType === 'task_2' ? 250 : 150;
+    const isFree = currentTaskType === 'free_text';
+    const minWords = isFree ? 0 : (currentTaskType === 'task_2' ? 250 : 150);
 
     const counterPill = document.getElementById('word-count-pill');
     const countNumber = document.getElementById('word-count-number');
     const countMin = document.getElementById('word-count-min');
 
     if (countNumber) countNumber.textContent = words;
-    if (countMin) countMin.textContent = minWords;
+    if (countMin) {
+      countMin.textContent = isFree ? 'حر' : minWords;
+    }
 
     if (counterPill) {
       counterPill.classList.remove('under', 'near', 'ready');
-      if (words >= minWords) {
+      if (isFree || words >= minWords) {
         counterPill.classList.add('ready');
       } else if (words >= minWords - 20) {
         counterPill.classList.add('near');
@@ -221,32 +260,16 @@ export function initEditor() {
       const student = getActiveStudent();
 
       if (!text) {
-        alert('يرجى كتابة أو لصق نص المقال أولاً.');
+        triggerToast('يرجى كتابة أو لصق النص أولاً في مساحة الكتابة.', 'error');
+        if (essayInput) essayInput.focus();
         return;
       }
 
-      const words = text.split(/\s+/).filter(Boolean).length;
-      const minRequired = currentTaskType === 'task_2' ? 250 : 150;
-      if (words < 50) {
-        alert(`المقال قصير جداً (${words} كلمة). لا يمكن للفاحص تقييم مقال يقل عن 50 كلمة.`);
-        return;
-      }
-
-      if (words < minRequired) {
-        const proceed = confirm(`تنبيه: عدد الكلمات (${words}) أقل من الحد الأدنى الرسمي المطلوب (${minRequired} كلمة). في اختبار الآيلتس سيؤدي هذا لخصم درجات في معيار Task Response. هل تود المتابعة والتقييم على أي حال؟`);
-        if (!proceed) return;
-      }
-
-      // 🔒 Strict Authorization Check: Only active paid students can evaluate
+      // Check if user is logged in
       if (!student) {
         const studentModal = document.getElementById('student-modal');
         if (studentModal) studentModal.classList.add('open');
-        const loginError = document.getElementById('login-modal-error');
-        if (loginError) {
-          loginError.style.display = 'block';
-          loginError.textContent = '🔒 محاكي التقييم متاح حصرياً للطلاب المشتركين. أدخل كود الدخول الخاص بك أو تواصل مع المعلم لاستلام الكود.';
-        }
-        alert('🔒 تنبيه الاشتراك:\n\nمحاكي التقييم وتشخيص الأخطاء متاح حصرياً للطلاب المشتركين والمفعلين.\n\nيرجى تسجيل الدخول بكود الطالب الخاص بك، أو التواصل مع المعلم لتفعيل اشتراكك.');
+        triggerToast('يرجى تسجيل الدخول بكود الطالب أو حساب Google للمتابعة.', 'info');
         return;
       }
 
@@ -256,7 +279,7 @@ export function initEditor() {
           banner.style.display = 'block';
           banner.scrollIntoView({ behavior: 'smooth' });
         }
-        alert('⏳ تنبيه الاشتراك:\n\nحسابك بانتظار إدخال كود التفعيل من المعلم. يرجى التواصل مع المعلم عبر الواتساب لتفعيل حسابك.');
+        triggerToast('حسابك بانتظار إدخال كود التفعيل من المعلم لتشغيل أداة التقييم.', 'warning');
         return;
       }
 
@@ -265,7 +288,14 @@ export function initEditor() {
       const stepText = document.getElementById('eval-step-text');
       if (overlay) overlay.classList.add('active');
 
-      const steps = [
+      const isFree = currentTaskType === 'free_text';
+      const steps = isFree ? [
+        'قراءة النص وتحليله وفق القواعد الأكاديمية...',
+        'تشخيص القواعد النحوية (GRA) وتراكيب الجمل...',
+        'فحص المفردات والتلازم اللفظي الأكاديمي (LR)...',
+        'تدقيق الترابط والتماسك والأسلوب اللغوي (CC)...',
+        'صياغة نموذج إعادة الكتابة Band 8+ والتقرير النهائي...'
+      ] : [
         'قراءة المقال وتحليله وفق معايير كامبريدج الرسمية...',
         'فحص معيار Task Response وتغطية الأفكار الرئيسية...',
         'تدقيق التماسك والترابط (Coherence & Cohesion) والفقرات...',
@@ -275,16 +305,17 @@ export function initEditor() {
       ];
 
       let stepIdx = 0;
+      if (stepText) stepText.textContent = steps[0];
       const stepInterval = setInterval(() => {
         stepIdx = (stepIdx + 1) % steps.length;
         if (stepText) stepText.textContent = steps[stepIdx];
-      }, 2500);
+      }, 2000);
 
       try {
         const payload = {
           student_id: student ? student.id : null,
           task_type: currentTaskType,
-          prompt_question: promptText,
+          prompt_question: promptText || (isFree ? 'تقييم نص حر' : 'موضوع غير محدد'),
           essay_content: text
         };
 
@@ -302,21 +333,16 @@ export function initEditor() {
         if (err.requires_login) {
           const studentModal = document.getElementById('student-modal');
           if (studentModal) studentModal.classList.add('open');
-          const loginError = document.getElementById('login-modal-error');
-          if (loginError) {
-            loginError.style.display = 'block';
-            loginError.textContent = err.message;
-          }
-          alert(`🔒 تنبيه الاشتراك:\n${err.message}`);
+          triggerToast(`🔒 ${err.message}`, 'error');
         } else if (err.is_pending_activation) {
           const banner = document.getElementById('subscription-notice-banner');
           if (banner) {
             banner.style.display = 'block';
             banner.scrollIntoView({ behavior: 'smooth' });
           }
-          alert(`⚠️ تنبيه الاشتراك:\n${err.message}`);
+          triggerToast(`⚠️ ${err.message}`, 'warning');
         } else {
-          alert(`حدث خطأ أثناء التقييم:\n${err.message}\n\nيرجى التأكد من إدخال مفتاح الـ API بشكل صحيح في شاشة الإعدادات.`);
+          triggerToast(`فشل التقييم: ${err.message}`, 'error');
         }
       }
     });

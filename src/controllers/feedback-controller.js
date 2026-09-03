@@ -242,7 +242,7 @@ export async function evaluateEssayHandler(req, res) {
     // Word count calculation
     const words = essay_content.trim().split(/\s+/).filter(Boolean);
     const wordCount = words.length;
-    const minThreshold = MIN_WORD_COUNTS[task_type] || 250;
+    const minThreshold = MIN_WORD_COUNTS[task_type] !== undefined ? MIN_WORD_COUNTS[task_type] : 250;
 
     // Student profile verification & strict subscription check
     const settings = getSettings();
@@ -250,9 +250,8 @@ export async function evaluateEssayHandler(req, res) {
       return res.status(401).json({
         success: false,
         requires_login: true,
-        error: 'عذراً، محاكي التقييم متاح حصرياً للطلاب المشتركين والمفعلين. يرجى تسجيل الدخول بكود الطالب الخاص بك، أو التواصل مع المعلم لتفعيل اشتراكك (100 دولار).',
-        teacher_whatsapp: settings.teacher_whatsapp || '966549724510',
-        price: settings.subscription_price || 100
+        error: 'عذراً، محاكي التقييم متاح حصرياً للطلاب المشتركين والمفعلين. يرجى تسجيل الدخول بكود الطالب الخاص بك، أو التواصل مع المعلم لتفعيل حسابك.',
+        teacher_whatsapp: settings.teacher_whatsapp || '966549724510'
       });
     }
 
@@ -270,12 +269,11 @@ export async function evaluateEssayHandler(req, res) {
       return res.status(403).json({
         success: false,
         is_pending_activation: true,
-        error: 'عذراً، هذا الحساب بانتظار التفعيل. سعر الاشتراك في الأداة هو 100 دولار. يرجى التواصل مع المعلم عبر الواتساب لتفعيل حسابك.',
+        error: 'عذراً، هذا الحساب بانتظار إدخال كود التفعيل. يرجى التواصل مع المعلم عبر الواتساب لاستلام كود التفعيل الخاص بك.',
         student_id: student.id,
         student_name: student.name,
         access_code: student.access_code,
-        teacher_whatsapp: settings.teacher_whatsapp || '966549724510',
-        price: settings.subscription_price || 100
+        teacher_whatsapp: settings.teacher_whatsapp || '966549724510'
       });
     }
 

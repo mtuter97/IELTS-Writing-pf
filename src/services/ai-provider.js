@@ -29,43 +29,52 @@ export function cleanJsonText(rawText) {
  * Google AI Studio (Gemini REST API)
  */
 async function callGemini({ apiKey, model, systemPrompt, userPrompt }) {
-  const modelName = model || DEFAULT_MODELS.gemini;
-  const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent?key=${apiKey}`;
+  const candidateModels = [model, 'gemini-2.5-flash', 'gemini-1.5-flash', 'gemini-1.5-pro'].filter(Boolean);
+  const uniqueModels = [...new Set(candidateModels)];
 
-  const payload = {
-    contents: [
-      {
-        role: 'user',
-        parts: [
-          { text: `${systemPrompt}\n\n---\n\n${userPrompt}` }
-        ]
+  let lastError = null;
+  for (const modelName of uniqueModels) {
+    try {
+      const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent?key=${apiKey}`;
+      const payload = {
+        contents: [
+          {
+            role: 'user',
+            parts: [
+              { text: `${systemPrompt}\n\n---\n\n${userPrompt}` }
+            ]
+          }
+        ],
+        generationConfig: {
+          temperature: 0.2, // low temperature for consistent, strict rubric scoring
+          responseMimeType: 'application/json'
+        }
+      };
+
+      const response = await fetch(endpoint, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+
+      if (!response.ok) {
+        const errorBody = await response.text();
+        lastError = new Error(`Google Gemini API Error (${response.status}) on ${modelName}: ${errorBody}`);
+        continue;
       }
-    ],
-    generationConfig: {
-      temperature: 0.2, // low temperature for consistent, strict rubric scoring
-      responseMimeType: 'application/json'
+
+      const data = await response.json();
+      const textOutput = data?.candidates?.[0]?.content?.parts?.[0]?.text;
+      
+      if (textOutput) {
+        return cleanJsonText(textOutput);
+      }
+    } catch (e) {
+      lastError = e;
     }
-  };
-
-  const response = await fetch(endpoint, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(payload)
-  });
-
-  if (!response.ok) {
-    const errorBody = await response.text();
-    throw new Error(`Google Gemini API Error (${response.status}): ${errorBody}`);
   }
 
-  const data = await response.json();
-  const textOutput = data?.candidates?.[0]?.content?.parts?.[0]?.text;
-  
-  if (!textOutput) {
-    throw new Error('Gemini API returned an empty response or was blocked by safety filters.');
-  }
-
-  return cleanJsonText(textOutput);
+  throw lastError || new Error('Gemini API failed on all candidate models.');
 }
 
 /**

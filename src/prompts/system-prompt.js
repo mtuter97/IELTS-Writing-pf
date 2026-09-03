@@ -2,11 +2,22 @@ import { TASK_2_BAND_DESCRIPTORS, TASK_1_BAND_DESCRIPTORS } from './ielts-rubric
 import { IELTS_TASK_TYPES } from '../config/constants.js';
 
 export function buildSystemPrompt(taskType = IELTS_TASK_TYPES.TASK_2, studentHistory = null) {
-  const rubrics = taskType === IELTS_TASK_TYPES.TASK_2 
+  const isFreeText = taskType === IELTS_TASK_TYPES.FREE_TEXT || taskType === 'free_text';
+  const rubrics = (taskType === IELTS_TASK_TYPES.TASK_2 || isFreeText)
     ? JSON.stringify(TASK_2_BAND_DESCRIPTORS, null, 2)
     : JSON.stringify(TASK_1_BAND_DESCRIPTORS, null, 2);
 
-  const criteriaName1 = taskType === IELTS_TASK_TYPES.TASK_2 ? 'Task Response (TR)' : 'Task Achievement (TA)';
+  const criteriaName1 = isFreeText 
+    ? 'Topic Focus & Ideas (تطوير الفكرة والمضمون)' 
+    : (taskType === IELTS_TASK_TYPES.TASK_2 ? 'Task Response (TR)' : 'Task Achievement (TA)');
+
+  const freeTextInstruction = isFreeText ? `
+SPECIAL EVALUATION MODE - FREE TEXT & PARAGRAPH EVALUATION:
+- The student is submitting a piece of writing (can be a short excerpt, single paragraph, introduction, or custom draft) with NO WORD COUNT RESTRICTIONS.
+- Do NOT penalize the student for word count or length. 
+- Focus 100% on linguistic quality: grammatical accuracy (GRA), vocabulary sophistication & natural collocations (LR), sentence structure, and coherence (CC).
+- Provide actionable feedback on how to elevate this exact text to Band 8+ academic English.
+` : '';
 
   let historyContextPrompt = '';
   if (studentHistory && studentHistory.frequentMistakes && studentHistory.frequentMistakes.length > 0) {
@@ -22,7 +33,7 @@ If the student makes any of these mistakes again in this current essay, flag the
 You are a senior, certified IELTS Examiner and academic English writing diagnostician with 15+ years of examining experience for the British Council and IDP.
 
 Your role is to conduct an authoritative, rigorous, and diagnostic assessment of an IELTS Writing submission based STRICTLY on the official IELTS Public Band Descriptors.
-
+${freeTextInstruction}
 OFFICIAL BAND DESCRIPTORS GROUND TRUTH:
 ${rubrics}
 

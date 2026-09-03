@@ -1,13 +1,15 @@
 export const IELTS_TASK_TYPES = {
   TASK_1_ACADEMIC: 'task_1_academic',
   TASK_1_GENERAL: 'task_1_general',
-  TASK_2: 'task_2'
+  TASK_2: 'task_2',
+  FREE_TEXT: 'free_text'
 };
 
 export const MIN_WORD_COUNTS = {
   [IELTS_TASK_TYPES.TASK_1_ACADEMIC]: 150,
   [IELTS_TASK_TYPES.TASK_1_GENERAL]: 150,
-  [IELTS_TASK_TYPES.TASK_2]: 250
+  [IELTS_TASK_TYPES.TASK_2]: 250,
+  [IELTS_TASK_TYPES.FREE_TEXT]: 0
 };
 
 export const RECOMMENDED_TIMES_MINUTES = {
