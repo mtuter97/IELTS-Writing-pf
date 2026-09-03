@@ -61,9 +61,45 @@ export function logoutStudent() {
   activeStudent = null;
   localStorage.removeItem('ielts_active_student_id');
   localStorage.removeItem('ielts_active_student_data');
+  localStorage.removeItem('ielts_latest_evaluation');
+  localStorage.removeItem('ielts_draft_essay');
+  localStorage.removeItem('ielts_draft_prompt');
+
+  // Reset Report View DOM to clean initial empty state
+  const reportContainer = document.getElementById('report-content-area');
+  if (reportContainer) {
+    reportContainer.innerHTML = `
+      <div style="text-align:center; padding:5rem 2rem; background:var(--bg-card); border-radius:var(--radius-lg); border:1px solid var(--border-color);">
+        <div style="font-size:3rem; margin-bottom:1rem;">📝</div>
+        <h3 style="font-size:1.35rem; font-weight:800; margin-bottom:0.5rem;">لم يتم تقييم أي مقال في هذه الجلسة بعد</h3>
+        <p style="color:var(--text-muted); font-size:0.92rem; max-width:500px; margin:0 auto 1.5rem;">
+          انتقل إلى شاشة "محاكي وكتابة المقال"، اكتب مقالك واضغط على "إرسال المقال للتقييم" لعرض تقرير الفاحص الشامل والدرجات التفصيلية.
+        </p>
+      </div>
+    `;
+  }
+
+  // Clear Essay & Prompt inputs in Simulator
+  const essayInput = document.getElementById('essay-input');
+  const promptInput = document.getElementById('prompt-input');
+  if (essayInput) essayInput.value = '';
+  if (promptInput) promptInput.value = '';
+  const wordCountNumber = document.getElementById('word-count-number');
+  if (wordCountNumber) wordCountNumber.textContent = '0';
+  const wordCountPill = document.getElementById('word-count-pill');
+  if (wordCountPill) {
+    wordCountPill.classList.remove('ready', 'near');
+    wordCountPill.classList.add('under');
+  }
+
   updateStudentHeaderUI();
   window.dispatchEvent(new CustomEvent('student-changed', { detail: null }));
   renderStudentDashboard();
+
+  // If user is currently on report or profile tab, switch back to editor
+  if (typeof window.switchAppTab === 'function') {
+    window.switchAppTab('editor');
+  }
 }
 
 export function updateStudentHeaderUI() {

@@ -113,13 +113,27 @@ export function switchTab(tabName) {
     renderAdminDashboard();
   } else if (tabName === 'report') {
     const cached = localStorage.getItem('ielts_latest_evaluation');
+    const reportContainer = document.getElementById('report-content-area');
+    let rendered = false;
     if (cached) {
       try {
         const parsed = JSON.parse(cached);
         if (parsed && parsed.essay && parsed.feedback) {
           renderFeedbackReport(parsed.essay, parsed.feedback);
+          rendered = true;
         }
       } catch (_) {}
+    }
+    if (!rendered && reportContainer) {
+      reportContainer.innerHTML = `
+        <div style="text-align:center; padding:5rem 2rem; background:var(--bg-card); border-radius:var(--radius-lg); border:1px solid var(--border-color);">
+          <div style="font-size:3rem; margin-bottom:1rem;">📝</div>
+          <h3 style="font-size:1.35rem; font-weight:800; margin-bottom:0.5rem;">لم يتم تقييم أي مقال في هذه الجلسة بعد</h3>
+          <p style="color:var(--text-muted); font-size:0.92rem; max-width:500px; margin:0 auto 1.5rem;">
+            انتقل إلى شاشة "محاكي وكتابة المقال"، اكتب مقالك واضغط على "إرسال المقال للتقييم" لعرض تقرير الفاحص الشامل والدرجات التفصيلية.
+          </p>
+        </div>
+      `;
     }
   }
 }
