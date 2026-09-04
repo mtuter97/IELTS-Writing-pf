@@ -4,12 +4,152 @@
   "phone": "01097971972",
   "access_code": "IELTS-8567",
   "status": "active",
-  "essay_count": 0,
-  "latest_band": null,
-  "highest_band": null,
+  "essay_count": 1,
+  "latest_band": 8.5,
+  "highest_band": 8.5,
   "target_band": 7.5,
-  "essays_history": [],
+  "essays_history": [
+    {
+      "id": "ess_1788551414277_aphxf",
+      "created_at": "2026-09-04T19:50:14.277Z",
+      "task_type": "task_2",
+      "prompt_question": "Some people think that university education should be free for all students. Others believe that students should pay for their higher education. Discuss both views and give your own opinion.",
+      "essay_content": "In modern society, access to higher education is widely regarded as a fundamental catalyst for socio-economic mobility. While some individuals argue that university education ought to be completely publicly funded, others maintain that tertiary students should bear the financial burden of their tuition. In my view, while universal free tertiary education promotes equal opportunity, a hybrid model offering subsidised tuition with needs-based scholarships represents a more sustainable solution.\n\nOn the one hand, proponents of tuition-free university education argue that education is a basic human right that benefits society as a whole. When higher education is freely accessible, academically talented individuals from underprivileged socio-economic backgrounds are not excluded by prohibitive tuition fees. Countries that adopt free education models, such as several Scandinavian nations, frequently exhibit higher levels of social equality, technological innovation, and workforce productivity. Furthermore, free university prevents graduates from accumulating exorbitant debts, allowing them to participate meaningfully in the economy immediately after graduation.\n\nOn the other hand, opponents assert that providing free university education imposes an unsustainable financial strain on national budgets. Public funds are finite, and heavy university subsidisation often necessitates higher taxation rates or diverts crucial resources away from primary healthcare and fundamental infrastructure. Additionally, when higher education requires private financial contribution, students often display higher dedication and accountability toward their academic disciplines, reducing university dropout rates and degree depreciation.\n\nIn conclusion, although universally free university education embodies an egalitarian ideal, its long-term financial viability is precarious. Therefore, governments should implement income-contingent student loan schemes and comprehensive merit scholarships rather than adopting an entirely free tertiary model.",
+      "word_count": 260,
+      "overall_band": 8.5,
+      "scores": {
+        "task_achievement_or_response": {
+          "band": 8.5,
+          "criterion_name": "Task Response (TR)",
+          "justification": "The response fully addresses all parts of the task. Both views (free university vs. paying for tuition) are analyzed in depth, and a nuanced, well-reasoned personal position (a hybrid subsidised model) is maintained consistently throughout the essay. Supporting arguments are mature, logical, and thoroughly developed."
+        },
+        "coherence_cohesion": {
+          "band": 8.5,
+          "criterion_name": "Coherence and Cohesion",
+          "justification": "Information and ideas are sequenced with exemplary logical flow. Paragraphing is clear and purposeful, with each paragraph featuring a well-defined central topic. Paragraph transitions ('On the one hand', 'On the other hand', 'In conclusion') and internal cohesive devices are natural and seamless."
+        },
+        "lexical_resource": {
+          "band": 8.5,
+          "criterion_name": "Lexical Resource",
+          "justification": "Demonstrates a wide range of academic vocabulary used with high precision, natural collocation, and appropriate register (e.g., 'socio-economic mobility', 'prohibitive tuition fees', 'egalitarian ideal', 'income-contingent'). Only minor stylistic refinements are possible."
+        },
+        "grammatical_range_accuracy": {
+          "band": 8.5,
+          "criterion_name": "Grammatical Range and Accuracy",
+          "justification": "Uses a wide range of complex structures with full flexibility and precision. Sentence structures are varied, including complex conditionals, passive constructs, and subordinate clauses. The essay is virtually free of grammatical errors, exhibiting native-like mastery."
+        },
+        "overall_band": 8.5
+      },
+      "feedback_summary": {
+        "examiner_verdict": "An exceptional, Band 8.5 academic response that demonstrates sophisticated vocabulary, flawless grammatical control, and a deeply developed, balanced argument. The response easily meets top-tier university entrance standards globally.",
+        "key_strengths": [
+          "Sophisticated academic vocabulary and precise collocations throughout.",
+          "Flawless structural organization and explicit logical progression.",
+          "Nuanced thesis statement introducing a balanced, hybrid perspective."
+        ],
+        "primary_weaknesses": [
+          "Occasional minor informal reduction in noun phrasing (e.g., using 'free university' instead of 'free university education')."
+        ],
+        "word_count_analysis": {
+          "count": 260,
+          "min_required": 250,
+          "status": "sufficient",
+          "comment": "Word count is 260, satisfying the 250-word minimum requirement."
+        }
+      },
+      "full_feedback": {
+        "scores": {
+          "task_achievement_or_response": {
+            "band": 8.5,
+            "criterion_name": "Task Response (TR)",
+            "justification": "The response fully addresses all parts of the task. Both views (free university vs. paying for tuition) are analyzed in depth, and a nuanced, well-reasoned personal position (a hybrid subsidised model) is maintained consistently throughout the essay. Supporting arguments are mature, logical, and thoroughly developed."
+          },
+          "coherence_cohesion": {
+            "band": 8.5,
+            "criterion_name": "Coherence and Cohesion",
+            "justification": "Information and ideas are sequenced with exemplary logical flow. Paragraphing is clear and purposeful, with each paragraph featuring a well-defined central topic. Paragraph transitions ('On the one hand', 'On the other hand', 'In conclusion') and internal cohesive devices are natural and seamless."
+          },
+          "lexical_resource": {
+            "band": 8.5,
+            "criterion_name": "Lexical Resource",
+            "justification": "Demonstrates a wide range of academic vocabulary used with high precision, natural collocation, and appropriate register (e.g., 'socio-economic mobility', 'prohibitive tuition fees', 'egalitarian ideal', 'income-contingent'). Only minor stylistic refinements are possible."
+          },
+          "grammatical_range_accuracy": {
+            "band": 8.5,
+            "criterion_name": "Grammatical Range and Accuracy",
+            "justification": "Uses a wide range of complex structures with full flexibility and precision. Sentence structures are varied, including complex conditionals, passive constructs, and subordinate clauses. The essay is virtually free of grammatical errors, exhibiting native-like mastery."
+          },
+          "overall_band": 8.5
+        },
+        "executive_summary": {
+          "examiner_verdict": "An exceptional, Band 8.5 academic response that demonstrates sophisticated vocabulary, flawless grammatical control, and a deeply developed, balanced argument. The response easily meets top-tier university entrance standards globally.",
+          "key_strengths": [
+            "Sophisticated academic vocabulary and precise collocations throughout.",
+            "Flawless structural organization and explicit logical progression.",
+            "Nuanced thesis statement introducing a balanced, hybrid perspective."
+          ],
+          "primary_weaknesses": [
+            "Occasional minor informal reduction in noun phrasing (e.g., using 'free university' instead of 'free university education')."
+          ],
+          "word_count_analysis": {
+            "count": 260,
+            "min_required": 250,
+            "status": "sufficient",
+            "comment": "Word count is 260, satisfying the 250-word minimum requirement."
+          }
+        },
+        "detailed_mistakes": [
+          {
+            "id": "err_1",
+            "category": "LR",
+            "severity": "minor",
+            "rule_tag": "LEXICAL_PRECISION",
+            "rule_friendly_name": "Noun Phrase Completeness (اكتمال العبارة الاسمية)",
+            "original_snippet": "Furthermore, free university prevents graduates from accumulating exorbitant debts",
+            "suggested_correction": "Furthermore, tuition-free university education prevents graduates from accumulating exorbitant debts",
+            "explanation": "Using 'free university' as a shorthand noun phrase is slightly colloquial. In formal academic writing, 'tuition-free university education' or 'free tertiary education' is preferred.",
+            "rule_micro_lesson": "Rule: Avoid shorthand noun reductions in formal academic writing; always specify the exact concept (e.g., 'free higher education' instead of 'free university').",
+            "is_recurring": false,
+            "history_count": 1,
+            "recurrence_alert": null
+          }
+        ],
+        "paragraph_by_paragraph_review": [
+          {
+            "paragraph_number": 1,
+            "type": "Introduction",
+            "feedback": "Outstanding introduction. The context is set with high-level academic language, both sides of the prompt are accurately paraphrased, and the thesis statement presents a clear, refined position.",
+            "improved_version": "In modern society, access to higher education is widely regarded as a fundamental catalyst for socio-economic mobility. While some individuals argue that university education ought to be completely publicly funded, others maintain that tertiary students should bear the financial burden of their tuition. In my view, while universal free tertiary education promotes equal opportunity, a hybrid model offering subsidised tuition with needs-based scholarships represents a more sustainable solution."
+          },
+          {
+            "paragraph_number": 2,
+            "type": "Body Paragraph 1",
+            "feedback": "Extremely well-structured body paragraph supporting free higher education. Ideas are fully extended with relevant real-world examples (Scandinavian nations) and logical consequences.",
+            "improved_version": "On the one hand, proponents of tuition-free university education argue that education is a basic human right that benefits society as a whole. When higher education is freely accessible, academically talented individuals from underprivileged socio-economic backgrounds are not excluded by prohibitive tuition fees. Countries that adopt free education models, such as several Scandinavian nations, frequently exhibit higher levels of social equality, technological innovation, and workforce productivity. Furthermore, tuition-free higher education prevents graduates from accumulating exorbitant debts, allowing them to participate meaningfully in the economy immediately after graduation."
+          },
+          {
+            "paragraph_number": 3,
+            "type": "Body Paragraph 2",
+            "feedback": "Presents a strong counter-argument regarding financial sustainability and student accountability. Cohesive linkages and sentence variety are excellent.",
+            "improved_version": "On the other hand, opponents assert that providing free university education imposes an unsustainable financial strain on national budgets. Public funds are finite, and heavy university subsidisation often necessitates higher taxation rates or diverts crucial resources away from primary healthcare and fundamental infrastructure. Additionally, when higher education requires private financial contribution, students often display higher dedication and accountability toward their academic disciplines, reducing university dropout rates and degree depreciation."
+          },
+          {
+            "paragraph_number": 4,
+            "type": "Conclusion",
+            "feedback": "Concise, persuasive, and synthesizes the core arguments effectively without repeating phrases verbatim. The final policy recommendation cements an Band 8.5+ Task Response score.",
+            "improved_version": "In conclusion, although universally free university education embodies an egalitarian ideal, its long-term financial viability is precarious. Therefore, governments should implement income-contingent student loan schemes and comprehensive merit scholarships rather than adopting an entirely free tertiary model."
+          }
+        ],
+        "action_plan": [
+          "Step 1: Consistently maintain full formal nominal phrases (e.g., 'tertiary education' over 'university') across all essay sections.",
+          "Step 2: Continue using sophisticated topic-specific collocations and advanced cohesive devices to ensure consistent Band 9 performance.",
+          "Step 3: Practice strictly timed 40-minute writing conditions to preserve this exceptionally high standard under real exam pressure."
+        ]
+      },
+      "mistakes_count": 1
+    }
+  ],
   "mistakes_history": [],
   "created_at": "2026-09-02T10:00:00.000Z",
-  "updated_at": "2026-09-03T21:00:00.000Z"
+  "updated_at": "2026-09-04T19:50:14.278Z"
 }
