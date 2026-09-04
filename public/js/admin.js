@@ -390,6 +390,44 @@ export async function renderAdminDashboard() {
               </div>
             </div>
 
+            <!-- Cloud Database Persistence Section -->
+            <div style="border-top:1px solid var(--border-color); padding-top:1.5rem; margin-top:1.5rem;">
+              <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:1rem; flex-wrap:wrap; gap:0.5rem;">
+                <h4 style="font-size:1.05rem; font-weight:800; color:var(--text-main); margin:0; display:flex; align-items:center; gap:0.5rem;">
+                  <span>💾</span> قاعدة البيانات السحابية الدائمة (Vercel KV / Upstash Redis)
+                </h4>
+                <span class="badge ${settings.cloud_storage_configured ? 'badge-success' : 'badge-warning'}" style="font-size:0.8rem; padding:0.3rem 0.75rem;">
+                  ${settings.cloud_storage_configured ? '● متصلة ونشطة (حفظ دائم)' : '⚠️ وضع التخزين المؤقت'}
+                </span>
+              </div>
+
+              ${settings.cloud_storage_configured ? `
+                <div style="background:var(--success-light, rgba(16, 185, 129, 0.1)); border:1px solid var(--success-border, rgba(16, 185, 129, 0.3)); border-radius:var(--radius-md); padding:1rem; font-size:0.85rem; color:var(--text-main); margin-bottom:1.25rem; line-height:1.6;">
+                  ✅ <strong>قاعدة البيانات السحابية الدائمة نشطة:</strong> كافة حسابات الطلاب والمقالات المقيمة والأكواد محفوظة في السحابة بشكل دائم ولن تُفقد عند إعادة تشغيل خوادم Vercel.
+                </div>
+              ` : `
+                <div style="background:var(--warning-light, rgba(245, 158, 11, 0.1)); border:1px solid var(--warning-border, rgba(245, 158, 11, 0.3)); border-radius:var(--radius-md); padding:1rem; font-size:0.85rem; color:var(--text-main); margin-bottom:1.25rem; line-height:1.6;">
+                  ⚠️ <strong>تنبيه لمنع حذف البيانات على Vercel:</strong><br>
+                  خوادم Vercel تمسح المجلدات المحلية بعد كل إعادة تشغيل. لضمان عدم حذف أي حساب أو مقال نهائياً، يرجى إنشاء قاعدة بيانات <strong>Upstash Redis / Vercel KV</strong> مجانية (تستغرق دقيقة واحدة) وإدخال بياناتها أدناه:
+                  <ol style="margin:0.5rem 0 0 1.25rem; padding:0;">
+                    <li>افتح <a href="https://console.upstash.com" target="_blank" style="color:var(--primary); font-weight:700;">console.upstash.com ↗</a> وسجل دخولك مجاناً بحساب Google أو GitHub.</li>
+                    <li>اضغط <strong>Create Database</strong> واختر Redis، ثم انقر على <strong>Create</strong>.</li>
+                    <li>من قسم <strong>REST API</strong>، انسخ <code>UPSTASH_REDIS_REST_URL</code> و <code>UPSTASH_REDIS_REST_TOKEN</code> وألصقهما أدناه:</li>
+                  </ol>
+                </div>
+              `}
+
+              <div class="form-group" style="margin-bottom:1rem;">
+                <label class="form-label">KV REST API URL (رابط الـ REST):</label>
+                <input type="text" id="admin-setting-kv-url" class="form-input" placeholder="مثال: https://distinct-mammal-12345.upstash.io" value="${settings.kv_rest_api_url || ''}">
+              </div>
+
+              <div class="form-group" style="margin-bottom:1.25rem;">
+                <label class="form-label">KV REST API TOKEN (رمز الدخول):</label>
+                <input type="password" id="admin-setting-kv-token" class="form-input" placeholder="${settings.cloud_storage_configured ? '•••••••••••••••• (تم الضبط)' : 'Axxxxxxxxxxxxxxxxxxxx...'}">
+              </div>
+            </div>
+
             <div style="display:flex; justify-content:space-between; align-items:center; margin-top:2rem; padding-top:1.5rem; border-top:1px solid var(--border-color);">
               <button id="admin-save-settings-inline-btn" class="btn btn-primary btn-lg" style="padding:0.75rem 2rem;">
                 💾 حفظ كافة الإعدادات
@@ -535,6 +573,8 @@ export async function renderAdminDashboard() {
         const you_api_key = document.getElementById('admin-setting-you-key')?.value.trim();
         const teacher_whatsapp = document.getElementById('admin-setting-teacher-whatsapp').value.trim();
         const admin_pin = document.getElementById('admin-setting-admin-pin').value.trim();
+        const kv_rest_api_url = document.getElementById('admin-setting-kv-url')?.value.trim();
+        const kv_rest_api_token = document.getElementById('admin-setting-kv-token')?.value.trim();
 
         const payload = { active_provider };
         if (gemini_api_key) payload.gemini_api_key = gemini_api_key;
@@ -543,6 +583,8 @@ export async function renderAdminDashboard() {
         if (you_api_key) payload.you_api_key = you_api_key;
         if (teacher_whatsapp) payload.teacher_whatsapp = teacher_whatsapp;
         if (admin_pin) payload.admin_pin = admin_pin;
+        if (kv_rest_api_url !== undefined) payload.kv_rest_api_url = kv_rest_api_url;
+        if (kv_rest_api_token) payload.kv_rest_api_token = kv_rest_api_token;
 
         try {
           saveSettingsInlineBtn.textContent = 'جاري الحفظ...';

@@ -3,10 +3,10 @@ import { getStudentEssays } from './storage.js';
 /**
  * Compiles all past mistakes for a student across their submitted essays
  */
-export function getStudentMistakeHistory(studentId) {
+export async function getStudentMistakeHistory(studentId, preloadedEssays = null) {
   if (!studentId) return { totalEssays: 0, frequentMistakes: [], mistakeTags: {} };
 
-  const essays = getStudentEssays(studentId);
+  const essays = preloadedEssays || (await getStudentEssays(studentId)) || [];
   const mistakeCounts = {};
   const categoryCounts = { GRA: 0, LR: 0, CC: 0, TR: 0, OTHER: 0 };
 
@@ -56,12 +56,12 @@ export function getStudentMistakeHistory(studentId) {
  * Cross-references new evaluation mistakes with student's past history
  * Marks duplicates as `is_recurring: true` and attaches occurrence count
  */
-export function correlateAndAnnotateMistakes(studentId, newMistakes) {
+export async function correlateAndAnnotateMistakes(studentId, newMistakes, preloadedEssays = null) {
   if (!studentId || !Array.isArray(newMistakes)) {
-    return newMistakes.map(m => ({ ...m, is_recurring: false, history_count: 1 }));
+    return (newMistakes || []).map(m => ({ ...m, is_recurring: false, history_count: 1 }));
   }
 
-  const history = getStudentMistakeHistory(studentId);
+  const history = await getStudentMistakeHistory(studentId, preloadedEssays);
   const pastTags = history.mistakeTags || {};
 
   return newMistakes.map(m => {

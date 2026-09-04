@@ -4,6 +4,57 @@ import { icons } from './icons.js';
 let activeStudent = null;
 let activeMistakeFilter = 'all'; // 'all', 'grammar', 'vocabulary', 'coherence', 'task'
 let activeEssayTypeFilter = 'all'; // 'all', 'task_1', 'task_2'
+let pendingStatusWatcherInterval = null;
+
+export function normalizeCode(str) {
+  if (!str) return '';
+  let s = String(str).replace(/[\u200B-\u200F\u202A-\u202E\uFEFF]/g, '').trim();
+  const arabicIndic = ['٠','١','٢','٣','٤','٥','٦','٧','٨','٩'];
+  s = s.replace(/[٠-٩]/g, d => {
+    const idx = arabicIndic.indexOf(d);
+    return idx !== -1 ? String(idx) : d;
+  });
+  s = s.replace(/[\u2010-\u2015\u2212\uFE58\uFE63\uFF0D]/g, '-');
+  s = s.replace(/\s*-\s*/g, '-').trim();
+  return s;
+}
+
+export function startPendingStatusWatcher() {
+  if (pendingStatusWatcherInterval) {
+    clearInterval(pendingStatusWatcherInterval);
+    pendingStatusWatcherInterval = null;
+  }
+  if (!activeStudent || activeStudent.status !== 'pending') return;
+
+  async function checkPendingStatus() {
+    if (!activeStudent || activeStudent.status !== 'pending') {
+      if (pendingStatusWatcherInterval) {
+        clearInterval(pendingStatusWatcherInterval);
+        pendingStatusWatcherInterval = null;
+      }
+      return;
+    }
+    try {
+      const data = await fetchStudentDetails(activeStudent.id);
+      if (data && data.student && data.student.status === 'active') {
+        if (pendingStatusWatcherInterval) {
+          clearInterval(pendingStatusWatcherInterval);
+          pendingStatusWatcherInterval = null;
+        }
+        setActiveStudent(data.student);
+        const toast = document.createElement('div');
+        toast.className = 'toast toast-success';
+        toast.textContent = '🎉 تهانينا! قام المعلم بتفعيل حسابك بنجاح. تم فتح محاكي التقييم وتشخيص الأخطاء بالكامل.';
+        document.getElementById('toast-container')?.appendChild(toast);
+        setTimeout(() => toast.remove(), 6000);
+        renderStudentDashboard();
+      }
+    } catch (_) {}
+  }
+
+  pendingStatusWatcherInterval = setInterval(checkPendingStatus, 7000);
+  window.addEventListener('focus', checkPendingStatus);
+}
 
 export function getActiveStudent() {
   return activeStudent;
@@ -23,6 +74,13 @@ export function setActiveStudent(student) {
   } catch (_) {}
   updateStudentHeaderUI();
   window.dispatchEvent(new CustomEvent('student-changed', { detail: student }));
+
+  if (student && student.status === 'pending') {
+    startPendingStatusWatcher();
+  } else if (pendingStatusWatcherInterval) {
+    clearInterval(pendingStatusWatcherInterval);
+    pendingStatusWatcherInterval = null;
+  }
 }
 
 export async function initStudentState() {
@@ -53,7 +111,7 @@ export async function initStudentState() {
           localStorage.setItem('ielts_active_student_data', JSON.stringify(student));
         }
       } catch (e) {
-        // DO NOT log out on network glitch or server spin-up! Retain the cached session!
+        // Retain the cached session
         console.warn('Network issue fetching student details, maintaining active student session:', e.message);
       }
     }
@@ -62,6 +120,9 @@ export async function initStudentState() {
   }
 
   updateStudentHeaderUI();
+  if (activeStudent && activeStudent.status === 'pending') {
+    startPendingStatusWatcher();
+  }
   return activeStudent;
 }
 
@@ -162,7 +223,8 @@ export function updateStudentHeaderUI() {
 
 export async function loginWithCode(code) {
   try {
-    const student = await loginStudentByCode(code);
+    const clean = normalizeCode(code);
+    const student = await loginStudentByCode(clean || code);
     setActiveStudent(student);
     window.dispatchEvent(new CustomEvent('student-changed', { detail: student }));
     return student;
@@ -181,7 +243,8 @@ export async function loginWithGoogle(googleData) {
 
 export async function activateStudentAccount(code) {
   if (!activeStudent) throw new Error('لا يوجد حساب نشط لتفعيله.');
-  const updatedStudent = await activateStudentByCode(activeStudent.id, code);
+  const clean = normalizeCode(code);
+  const updatedStudent = await activateStudentByCode(activeStudent.id, clean || code);
   setActiveStudent(updatedStudent);
   window.dispatchEvent(new CustomEvent('student-changed', { detail: updatedStudent }));
   renderStudentDashboard();
@@ -231,7 +294,7 @@ export async function renderStudentDashboard() {
             🔑 كود الطالب الخاص (Access Code):
           </label>
           <div style="display:flex; gap:0.5rem;">
-            <input type="text" id="portal-login-input" class="form-input" placeholder="مثال: IELTS-1042 أو رقم الهاتف..." style="font-family:monospace; font-size:1.05rem; font-weight:700; text-align:center;">
+            <input type="text" id="portal-login-input" class="form-input" placeholder="مثال: IELTS-1042 أو الأرقام فقط (1042)..." style="font-family:monospace; font-size:1.05rem; font-weight:700; text-align:center;">
             <button id="portal-login-btn" class="btn btn-primary" style="white-space:nowrap; padding:0.6rem 1.4rem;">دخول حسابي 🚀</button>
           </div>
           <div id="portal-login-error" style="color:var(--danger); font-size:0.85rem; margin-top:0.6rem; display:none; font-weight:600; text-align:right;"></div>
@@ -336,7 +399,7 @@ export async function renderStudentDashboard() {
               2️⃣ أدخل كود التفعيل الذي أرسله لك المعلم:
             </div>
             <div style="display:flex; gap:0.5rem;">
-              <input type="text" id="pending-activation-code-input" class="form-input" placeholder="مثال: IELTS-4098" style="font-family:monospace; font-weight:700; font-size:1.05rem; text-align:center;">
+              <input type="text" id="pending-activation-code-input" class="form-input" placeholder="مثال: IELTS-4098 أو الأرقام فقط (4098)..." style="font-family:monospace; font-weight:700; font-size:1.05rem; text-align:center;">
               <button id="pending-activate-btn" class="btn btn-primary" style="white-space:nowrap; padding:0.6rem 1.4rem;">تفعيل الحساب الآن 🚀</button>
             </div>
             <div id="pending-activation-error" style="color:var(--danger); font-size:0.85rem; margin-top:0.5rem; display:none; font-weight:600;"></div>

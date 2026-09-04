@@ -12,26 +12,27 @@ import {
   getEssay,
   getStudentEssays,
   getSettings,
-  saveSettings
+  saveSettings,
+  isCloudStorageConfigured
 } from '../services/storage.js';
 import { getStudentMistakeHistory, correlateAndAnnotateMistakes } from '../services/mistake-tracker.js';
 import { buildSystemPrompt, buildUserPrompt } from '../prompts/system-prompt.js';
 import { evaluateWithAI } from '../services/ai-provider.js';
 import { calculateOfficialBand, MIN_WORD_COUNTS, IELTS_TASK_TYPES } from '../config/constants.js';
 
-function verifyAdminRequest(req) {
+async function verifyAdminRequest(req) {
   const pin = req.headers['x-admin-pin'] || req.query?.admin_pin || req.body?.admin_pin;
-  const settings = getSettings();
+  const settings = await getSettings();
   const correctPin = settings.admin_pin || 'admin123';
   return Boolean(pin && (pin.trim() === correctPin || pin.trim() === 'admin123' || pin.trim() === 'elsae100100@' || pin.trim() === 'ثمسشثي100100@'));
 }
 
 export async function getStudentsHandler(req, res) {
   try {
-    if (!verifyAdminRequest(req)) {
+    if (!(await verifyAdminRequest(req))) {
       return res.status(401).json({ success: false, error: 'غير مصرح: عرض قائمة الطلاب متاح للمعلم فقط.' });
     }
-    const students = getAllStudents();
+    const students = await getAllStudents();
     res.json({ success: true, students });
   } catch (err) {
     res.status(500).json({ success: false, error: err.message });
@@ -40,14 +41,14 @@ export async function getStudentsHandler(req, res) {
 
 export async function createStudentHandler(req, res) {
   try {
-    if (!verifyAdminRequest(req)) {
+    if (!(await verifyAdminRequest(req))) {
       return res.status(401).json({ success: false, error: 'غير مصرح: إضافة طالب جديد متاحة للمعلم فقط.' });
     }
     const { name, phone = '', status = 'active', notes = '' } = req.body;
     if (!name || !name.trim()) {
       return res.status(400).json({ success: false, error: 'Student name is required.' });
     }
-    const student = createStudent(name, phone, status, notes);
+    const student = await createStudent(name, phone, status, notes);
     res.json({ success: true, student });
   } catch (err) {
     res.status(500).json({ success: false, error: err.message });
@@ -56,7 +57,7 @@ export async function createStudentHandler(req, res) {
 
 export async function updateStudentStatusHandler(req, res) {
   try {
-    if (!verifyAdminRequest(req)) {
+    if (!(await verifyAdminRequest(req))) {
       return res.status(401).json({ success: false, error: 'غير مصرح: تعديل حالة الطالب متاح للمعلم فقط.' });
     }
     const { id } = req.params;
@@ -64,7 +65,7 @@ export async function updateStudentStatusHandler(req, res) {
     if (!['active', 'pending'].includes(status)) {
       return res.status(400).json({ success: false, error: 'Status must be active or pending.' });
     }
-    const updated = updateStudent(id, { status });
+    const updated = await updateStudent(id, { status });
     if (!updated) {
       return res.status(404).json({ success: false, error: 'Student not found.' });
     }
@@ -76,11 +77,11 @@ export async function updateStudentStatusHandler(req, res) {
 
 export async function deleteStudentHandler(req, res) {
   try {
-    if (!verifyAdminRequest(req)) {
+    if (!(await verifyAdminRequest(req))) {
       return res.status(401).json({ success: false, error: 'غير مصرح: حذف الطالب متاح للمعلم فقط.' });
     }
     const { id } = req.params;
-    deleteStudent(id);
+    await deleteStudent(id);
     res.json({ success: true, message: 'Student deleted successfully.' });
   } catch (err) {
     res.status(500).json({ success: false, error: err.message });
@@ -93,9 +94,9 @@ export async function loginStudentByCodeHandler(req, res) {
     if (!code || !code.trim()) {
       return res.status(400).json({ success: false, error: 'Student code or ID is required.' });
     }
-    const student = getStudentByCode(code);
+    const student = await getStudentByCode(code);
     if (!student) {
-      return res.status(404).json({ success: false, error: 'كود الطالب غير صحيح أو غير مسجل في النظام.' });
+      return res.status(404).json({ success: false, error: 'كود الطالب غير صحيح أو غير مسجل في النظام. تأكد من إدخال الكود أو الأرقام بدقة.' });
     }
     res.json({ success: true, student });
   } catch (err) {
@@ -130,8 +131,8 @@ export async function googleAuthHandler(req, res) {
       return res.status(400).json({ success: false, error: 'بيانات حساب Google غير مكتملة.' });
     }
 
-    const student = findOrCreateGoogleStudent(profile);
-    const settings = getSettings();
+    const student = await findOrCreateGoogleStudent(profile);
+    const settings = await getSettings();
 
     res.json({ 
       success: true, 
@@ -154,7 +155,7 @@ export async function activateStudentByCodeHandler(req, res) {
       return res.status(400).json({ success: false, error: 'يرجى إدخال كود التفعيل.' });
     }
 
-    const result = activateStudentWithCode(id, code);
+    const result = await activateStudentWithCode(id, code);
     if (!result.success) {
       return res.status(400).json(result);
     }
@@ -168,7 +169,7 @@ export async function activateStudentByCodeHandler(req, res) {
 export async function verifyAdminHandler(req, res) {
   try {
     const { pin } = req.body;
-    const settings = getSettings();
+    const settings = await getSettings();
     const correctPin = settings.admin_pin || 'admin123';
     
     if (pin && (pin.trim() === correctPin || pin.trim() === 'admin123' || pin.trim() === 'elsae100100@' || pin.trim() === 'ثمسشثي100100@')) {
@@ -183,12 +184,12 @@ export async function verifyAdminHandler(req, res) {
 export async function getStudentDetailsHandler(req, res) {
   try {
     const { id } = req.params;
-    const student = getStudent(id);
+    const student = await getStudent(id);
     if (!student) {
       return res.status(404).json({ success: false, error: 'Student not found.' });
     }
-    const essays = getStudentEssays(id);
-    const mistakeProfile = getStudentMistakeHistory(id);
+    const essays = await getStudentEssays(id);
+    const mistakeProfile = await getStudentMistakeHistory(id, essays);
 
     // Prepare score progression data
     const scoreHistory = essays.map(e => ({
@@ -217,11 +218,11 @@ export async function getStudentDetailsHandler(req, res) {
 
 export async function getStudentFileHandler(req, res) {
   try {
-    if (!verifyAdminRequest(req)) {
+    if (!(await verifyAdminRequest(req))) {
       return res.status(401).json({ success: false, error: 'غير مصرح: استعراض الملف الأكاديمي الشامل متاح للمعلم فقط.' });
     }
     const { id } = req.params;
-    const master = getStudentMasterFile(id);
+    const master = await getStudentMasterFile(id);
     if (!master) {
       return res.status(404).json({ success: false, error: 'Student file not found.' });
     }
@@ -245,7 +246,7 @@ export async function evaluateEssayHandler(req, res) {
     const minThreshold = MIN_WORD_COUNTS[task_type] !== undefined ? MIN_WORD_COUNTS[task_type] : 250;
 
     // Student profile verification & strict subscription check
-    const settings = getSettings();
+    const settings = await getSettings();
     if (!student_id) {
       return res.status(401).json({
         success: false,
@@ -255,7 +256,7 @@ export async function evaluateEssayHandler(req, res) {
       });
     }
 
-    const student = getStudent(student_id);
+    const student = await getStudent(student_id);
     if (!student) {
       return res.status(404).json({
         success: false,
@@ -277,7 +278,7 @@ export async function evaluateEssayHandler(req, res) {
       });
     }
 
-    const mistakeHistory = getStudentMistakeHistory(student_id);
+    const mistakeHistory = await getStudentMistakeHistory(student_id);
 
     // Active AI Provider & Key resolution with automatic fallback
     let provider = settings.active_provider || 'you';
@@ -348,7 +349,7 @@ export async function evaluateEssayHandler(req, res) {
 
     // Annotate detailed mistakes with recurring indicators
     const rawMistakes = rawAiResult.detailed_mistakes || [];
-    const annotatedMistakes = correlateAndAnnotateMistakes(student_id, rawMistakes);
+    const annotatedMistakes = await correlateAndAnnotateMistakes(student_id, rawMistakes);
     rawAiResult.detailed_mistakes = annotatedMistakes;
 
     // Word count status
@@ -362,8 +363,8 @@ export async function evaluateEssayHandler(req, res) {
         : `Word count is ${wordCount}, below the ${minThreshold}-word minimum. Examiners will apply a Task Response penalty.`
     };
 
-    // Save Essay Record
-    const essayRecord = saveEssay({
+    // Save Essay Record permanently
+    const essayRecord = await saveEssay({
       student_id: student?.id || null,
       student_name: student?.name || 'Guest Student',
       task_type,
@@ -387,7 +388,7 @@ export async function evaluateEssayHandler(req, res) {
 export async function getEssayHandler(req, res) {
   try {
     const { id } = req.params;
-    const essay = getEssay(id);
+    const essay = await getEssay(id);
     if (!essay) {
       return res.status(404).json({ success: false, error: 'Essay not found.' });
     }
@@ -399,14 +400,15 @@ export async function getEssayHandler(req, res) {
 
 export async function getSettingsHandler(req, res) {
   try {
-    const settings = getSettings();
-    // Mask sensitive keys when returning to UI
+    const settings = await getSettings();
     const masked = {
       active_provider: settings.active_provider,
       gemini_configured: Boolean(settings.gemini_api_key),
       groq_configured: Boolean(settings.groq_api_key),
       openrouter_configured: Boolean(settings.openrouter_api_key),
       you_configured: Boolean(settings.you_api_key),
+      cloud_storage_configured: isCloudStorageConfigured(),
+      kv_rest_api_url: settings.kv_rest_api_url || '',
       gemini_model: settings.gemini_model,
       groq_model: settings.groq_model,
       openrouter_model: settings.openrouter_model,
@@ -423,7 +425,7 @@ export async function getSettingsHandler(req, res) {
 
 export async function saveSettingsHandler(req, res) {
   try {
-    if (!verifyAdminRequest(req)) {
+    if (!(await verifyAdminRequest(req))) {
       return res.status(401).json({ success: false, error: 'غير مصرح: تعديل إعدادات المنظومة متاح للمعلم فقط.' });
     }
     const {
@@ -438,7 +440,9 @@ export async function saveSettingsHandler(req, res) {
       you_model,
       admin_pin,
       teacher_whatsapp,
-      subscription_price
+      subscription_price,
+      kv_rest_api_url,
+      kv_rest_api_token
     } = req.body;
 
     const updates = {};
@@ -454,12 +458,15 @@ export async function saveSettingsHandler(req, res) {
     if (admin_pin && admin_pin.trim()) updates.admin_pin = admin_pin.trim();
     if (teacher_whatsapp && teacher_whatsapp.trim()) updates.teacher_whatsapp = teacher_whatsapp.trim();
     if (subscription_price) updates.subscription_price = Number(subscription_price);
+    if (kv_rest_api_url !== undefined) updates.kv_rest_api_url = kv_rest_api_url.trim();
+    if (kv_rest_api_token !== undefined) updates.kv_rest_api_token = kv_rest_api_token.trim();
 
-    const updated = saveSettings(updates);
+    const updated = await saveSettings(updates);
     res.json({
       success: true,
       message: 'Settings saved successfully.',
-      active_provider: updated.active_provider
+      active_provider: updated.active_provider,
+      cloud_storage_configured: isCloudStorageConfigured()
     });
   } catch (err) {
     res.status(500).json({ success: false, error: err.message });

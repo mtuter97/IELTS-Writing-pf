@@ -1,5 +1,5 @@
-import { submitEssayEvaluation } from './api.js';
-import { getActiveStudent } from './student.js';
+import { submitEssayEvaluation, fetchStudentDetails } from './api.js';
+import { getActiveStudent, setActiveStudent } from './student.js';
 
 // Cambridge IELTS Standard Practice Topics
 export const PRACTICE_PROMPTS = {
@@ -361,7 +361,7 @@ export function initEditor() {
     submitBtn.addEventListener('click', async () => {
       const text = essayInput.value.trim();
       const promptText = promptInput.value.trim();
-      const student = getActiveStudent();
+      let student = getActiveStudent();
 
       if (!text) {
         triggerToast('يرجى كتابة أو لصق النص أولاً في مساحة الكتابة.', 'error');
@@ -375,6 +375,17 @@ export function initEditor() {
         if (studentModal) studentModal.classList.add('open');
         triggerToast('يرجى تسجيل الدخول بكود الطالب أو حساب Google للمتابعة.', 'info');
         return;
+      }
+
+      if (student.status !== 'active') {
+        // Fast re-check with server if teacher just activated
+        try {
+          const freshData = await fetchStudentDetails(student.id);
+          if (freshData && freshData.student && freshData.student.status === 'active') {
+            student = freshData.student;
+            setActiveStudent(student);
+          }
+        } catch (_) {}
       }
 
       if (student.status !== 'active') {
