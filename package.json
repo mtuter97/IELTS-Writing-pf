@@ -8,12 +8,21 @@
     "start": "node src/server.js",
     "dev": "node --watch --watch-path=src src/server.js"
   },
-  "keywords": ["ielts", "writing", "feedback", "band-descriptors", "ai-evaluator"],
+  "keywords": [
+    "ielts",
+    "writing",
+    "feedback",
+    "band-descriptors",
+    "ai-evaluator"
+  ],
   "author": "",
   "license": "ISC",
   "dependencies": {
     "cors": "^2.8.5",
     "dotenv": "^16.4.7",
     "express": "^4.21.2"
+  },
+  "devDependencies": {
+    "puppeteer-core": "^25.10.0"
   }
 }
