@@ -269,10 +269,10 @@
             <textarea id="prompt-input" class="form-textarea prompt-textarea" placeholder="الصق نص السؤال هنا..."></textarea>
           </div>
 
-          <div style="background:var(--bg-card-subtle); padding:0.85rem; border-radius:var(--radius-md); font-size:0.78rem; color:var(--text-secondary); line-height:1.5; border:1px solid var(--border-color); display:flex; gap:0.5rem; align-items:flex-start;">
-            <svg class="svg-icon svg-icon-xs" style="color:var(--accent-amber); margin-top:2px;" viewBox="0 0 24 24"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg>
-            <div>
-              <strong>معايير الفاحص:</strong> تأكد من تغطية جميع عناصر السؤال لإحراز Band 7+ في معيار Task Response وتجنب الآراء العامة غير المدعومة بأمثلة.
+          <div id="task-criteria-tip-box" style="background:var(--bg-card-subtle); padding:0.85rem; border-radius:var(--radius-md); font-size:0.78rem; color:var(--text-secondary); line-height:1.5; border:1px solid var(--border-color); display:flex; gap:0.5rem; align-items:flex-start;">
+            <svg class="svg-icon svg-icon-xs" style="color:var(--accent-amber); margin-top:2px; flex-shrink:0;" viewBox="0 0 24 24"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg>
+            <div id="task-criteria-tip-text">
+              <strong>معايير الفاحص لـ Task 2:</strong> المعيار هو <b>Task Response (TR - 250 كلمة كحد أدنى)</b>. تأكد من تغطية جميع عناصر السؤال لإحراز Band 7+، تحديد موقف واضح طوال المقال، وتطوير الأفكار بأمثلة محددة دون استطراد.
             </div>
           </div>
         </aside>
@@ -1045,6 +1045,18 @@
         <div class="idp-intro-stat-item">
           <span class="stat-lbl">قواعد التقريب الرسمية</span>
           <span class="stat-val" style="color:#a64cf9;">.25 ➔ .5 | .75 ➔ 1.0</span>
+        </div>
+      </div>
+
+      <!-- Task 1 vs Task 2 Critical Differences Alert -->
+      <div style="background:rgba(255,133,63,0.08); border:1px solid rgba(255,133,63,0.3); border-radius:var(--radius-md); padding:0.85rem 1.25rem; margin-bottom:1.25rem; font-size:0.84rem; line-height:1.6; display:flex; gap:0.75rem; align-items:flex-start;">
+        <span style="font-size:1.4rem; line-height:1;">⚠️</span>
+        <div style="flex:1;">
+          <strong style="color:var(--text-main); font-size:0.88rem;">فروق جوهرية بين معايير تصحيح Task 1 و Task 2 في IDP و Cambridge:</strong>
+          <div style="margin-top:0.35rem; color:var(--text-secondary); font-size:0.82rem; display:flex; flex-direction:column; gap:0.3rem;">
+            <div>• <strong>في Task 1 (المعيار هو Task Achievement - TA):</strong> غياب النظرة العامة (Overview) يُسقط الدرجة فورياً إلى Band 5 كحد أقصى! يُمنع تماماً كتابة أي آراء شخصية أو تفسيرات خارج الرسم البياني.</div>
+            <div>• <strong>في Task 2 (المعيار هو Task Response - TR):</strong> يتطلب تحديد موقف واضح (Clear Position) طوال المقال، وتغطية جميع أجزاء السؤال بالتساوي (عدم مناقشة رأي واحد وإهمال الآخر).</div>
+          </div>
         </div>
       </div>
 

@@ -188,6 +188,19 @@ export function initEditor() {
       if (promptInput) promptInput.placeholder = "الصق نص السؤال هنا...";
       if (essayInput) essayInput.placeholder = "ابدأ بكتابة مقالك هنا مباشرة...";
     }
+
+    const tipTextEl = document.getElementById('task-criteria-tip-text');
+    if (tipTextEl) {
+      if (currentTaskType === 'task_1_academic') {
+        tipTextEl.innerHTML = `<strong>معايير Task 1 (تقرير أكاديمي):</strong> المعيار هو <b>Task Achievement (150 كلمة كحد أدنى)</b>. ⚠️ شرط حاسم: كتابة نظرة عامة شاملة (Overview) واستخراج المعالم الرئيسية مع دعمها بالأرقام. تجنب تماماً إبداء أي رأي شخصي أو تفسيرات غير موجودة في الرسم البياني!`;
+      } else if (currentTaskType === 'task_1_general') {
+        tipTextEl.innerHTML = `<strong>معايير Task 1 (رسالة عامة):</strong> المعيار هو <b>Task Achievement (150 كلمة كحد أدنى)</b>. ⚠️ شرط حاسم: توضيح الغرض من الرسالة من السطر الأول، تغطية النقاط الثلاث، والالتزام بأسلوب (رسمي أو ودي) متسق دون خلط.`;
+      } else if (isFree) {
+        tipTextEl.innerHTML = `<strong>وضع التدريب على فقرة حرة:</strong> بدون قيود على عدد الكلمات. يركز الفاحص 100% على سلامة القواعد (GRA)، دقة وتنوع المفردات (LR)، والترابط وسلاسة الجمل (CC) مع تقديم صياغة نموذجية Band 8.5+.`;
+      } else {
+        tipTextEl.innerHTML = `<strong>معايير Task 2 (مقال أكاديمي):</strong> المعيار هو <b>Task Response (250 كلمة كحد أدنى - ثلثا الدرجة)</b>. ⚠️ شرط حاسم: تغطية جميع عناصر السؤال (مثل مناقشة الرأيين معاً)، وتحديد موقف واضح طوال المقال، وتطوير الحجج بأمثلة وشروحات منطقية دون استطراد.`;
+      }
+    }
   }
 
   // Word Counter

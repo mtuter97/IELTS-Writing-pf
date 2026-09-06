@@ -7,9 +7,54 @@ export function buildSystemPrompt(taskType = IELTS_TASK_TYPES.TASK_2, studentHis
     ? JSON.stringify(TASK_2_BAND_DESCRIPTORS, null, 2)
     : JSON.stringify(TASK_1_BAND_DESCRIPTORS, null, 2);
 
+  const isTask1Academic = taskType === IELTS_TASK_TYPES.TASK_1_ACADEMIC || taskType === 'task_1_academic';
+  const isTask1General = taskType === IELTS_TASK_TYPES.TASK_1_GENERAL || taskType === 'task_1_general';
+  const isTask1 = isTask1Academic || isTask1General;
+
   const criteriaName1 = isFreeText 
     ? 'Topic Focus & Ideas (تطوير الفكرة والمضمون)' 
-    : (taskType === IELTS_TASK_TYPES.TASK_2 ? 'Task Response (TR)' : 'Task Achievement (TA)');
+    : (isTask1 ? 'Task Achievement (TA)' : 'Task Response (TR)');
+
+  let taskSpecificDirectives = '';
+  if (isTask1Academic) {
+    taskSpecificDirectives = `
+CRITICAL TASK-SPECIFIC EXAMINER RULES - IELTS WRITING TASK 1 (ACADEMIC REPORT):
+1. CRITERION 1 IS STRICTLY "TASK ACHIEVEMENT (TA)":
+   - Assess the ability to select, report, and compare main features of the visual input (graph, chart, table, map, or process).
+   - MANDATORY OVERVIEW RULE: The candidate MUST provide a clear, comprehensive overview of the overall trends, differences, or main stages.
+     * IF OVERVIEW IS MISSING: Cap Task Achievement at Band 5.0 (per official IDP/Cambridge rubric).
+     * IF OVERVIEW IS INCOMPLETE OR UNCLEAR: Cap Task Achievement at Band 6.0.
+     * FOR BAND 7+: Presents a clear overview; data are appropriately categorized; main trends/differences clearly highlighted.
+   - DATA SUPPORT: Key features must be illustrated with relevant figures. Do NOT reward mechanical listing of every data point.
+   - ABSOLUTE FORBIDDEN: NO personal opinion, NO speculative reasons, and NO assumptions not shown in the diagram. If the student writes "I think this happened because of...", flag it as a Task Achievement error!
+   - MINIMUM WORD COUNT: 150 words. Length below 150 words directly penalizes Task Achievement.
+`;
+  } else if (isTask1General) {
+    taskSpecificDirectives = `
+CRITICAL TASK-SPECIFIC EXAMINER RULES - IELTS WRITING TASK 1 (GENERAL TRAINING LETTER):
+1. CRITERION 1 IS STRICTLY "TASK ACHIEVEMENT (TA)":
+   - CLEAR PURPOSE: The purpose of the letter must be explicitly stated in the opening lines.
+   - ALL 3 BULLET POINTS: All three prompt bullet points MUST be addressed and developed.
+     * IF A BULLET POINT IS OMITTED: Cap Task Achievement at Band 5.0.
+     * FOR BAND 7+: All bullet points covered and clearly highlighted with appropriate detail.
+   - TONE & REGISTER CONSISTENCY:
+     * Formal letters (to landlords, managers, officials) MUST be consistently formal (e.g. Dear Sir/Madam, no informal slang or contractions, appropriate sign-off).
+     * Inconsistent tone (e.g. mix of informal and formal) directly lowers TA and LR.
+   - MINIMUM WORD COUNT: 150 words. Length below 150 words directly penalizes Task Achievement.
+`;
+  } else if (!isFreeText) {
+    taskSpecificDirectives = `
+CRITICAL TASK-SPECIFIC EXAMINER RULES - IELTS WRITING TASK 2 (DISCURSIVE ESSAY):
+1. CRITERION 1 IS STRICTLY "TASK RESPONSE (TR)":
+   - ADDRESS ALL PARTS OF THE PROMPT:
+     * If the prompt asks to "Discuss both views and give your opinion", the student MUST give balanced attention to BOTH views AND clearly establish their own opinion.
+     * IF ONE VIEW IS OMITTED OR ONLY HALF OF A TWO-PART PROMPT IS ANSWERED: Cap Task Response at Band 5.0.
+     * IF CONCLUSIONS ARE UNCLEAR, UNJUSTIFIED, OR REPETITIVE: Cap Task Response at Band 6.0.
+   - CLEAR POSITION THROUGHOUT: The student's stance must be evident from the introduction, maintained through body paragraphs, and reiterated in the conclusion.
+   - EXTENDED & SUPPORTED IDEAS: Main ideas must be supported with logical explanation and concrete real-world examples. Broad, unsupported generalizations cap TR at Band 6.0.
+   - ESSAY WEIGHT & MINIMUM: Contributes 66.7% (two-thirds) to final score. Minimum word count is 250 words. Essays under 250 words receive an automatic Task Response penalty.
+`;
+  }
 
   const freeTextInstruction = isFreeText ? `
 SPECIAL EVALUATION MODE - FREE TEXT & PARAGRAPH EVALUATION:
@@ -34,6 +79,7 @@ You are a senior, certified IELTS Examiner and academic English writing diagnost
 
 Your role is to conduct an authoritative, rigorous, and diagnostic assessment of an IELTS Writing submission based STRICTLY on the official IELTS Public Band Descriptors.
 ${freeTextInstruction}
+${taskSpecificDirectives}
 OFFICIAL BAND DESCRIPTORS GROUND TRUTH:
 ${rubrics}
 
