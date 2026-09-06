@@ -256,7 +256,7 @@ export async function evaluateEssayHandler(req, res) {
       });
     }
 
-    const student = await getStudent(student_id);
+    const student = (await getStudent(student_id)) || (await getStudentByCode(student_id));
     if (!student) {
       return res.status(404).json({
         success: false,

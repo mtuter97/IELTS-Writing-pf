@@ -36,12 +36,13 @@ export function startPendingStatusWatcher() {
     }
     try {
       const data = await fetchStudentDetails(activeStudent.id);
-      if (data && data.student && data.student.status === 'active') {
+      const student = (data && data.student) ? data.student : data;
+      if (student && student.status === 'active') {
         if (pendingStatusWatcherInterval) {
           clearInterval(pendingStatusWatcherInterval);
           pendingStatusWatcherInterval = null;
         }
-        setActiveStudent(data.student);
+        setActiveStudent(student);
         const toast = document.createElement('div');
         toast.className = 'toast toast-success';
         toast.textContent = '🎉 تهانينا! قام المعلم بتفعيل حسابك بنجاح. تم فتح محاكي التقييم وتشخيص الأخطاء بالكامل.';
@@ -57,6 +58,17 @@ export function startPendingStatusWatcher() {
 }
 
 export function getActiveStudent() {
+  if (!activeStudent) {
+    try {
+      const cached = localStorage.getItem('ielts_active_student_data');
+      if (cached) {
+        const parsed = JSON.parse(cached);
+        if (parsed && (parsed.id || parsed.access_code)) {
+          activeStudent = parsed;
+        }
+      }
+    } catch (_) {}
+  }
   return activeStudent;
 }
 
@@ -83,6 +95,16 @@ export function setActiveStudent(student) {
   }
 }
 
+// Global synchronization listener for student-changed
+if (typeof window !== 'undefined') {
+  window.addEventListener('student-changed', (e) => {
+    if (e.detail !== undefined) {
+      activeStudent = e.detail;
+      updateStudentHeaderUI();
+    }
+  });
+}
+
 export async function initStudentState() {
   try {
     localStorage.removeItem('ielts_latest_evaluation');
@@ -94,7 +116,7 @@ export async function initStudentState() {
     if (cachedData) {
       try {
         const parsed = JSON.parse(cachedData);
-        if (parsed && parsed.id) {
+        if (parsed && (parsed.id || parsed.access_code)) {
           activeStudent = parsed;
           updateStudentHeaderUI();
         }
@@ -104,7 +126,8 @@ export async function initStudentState() {
     const savedId = localStorage.getItem('ielts_active_student_id') || (activeStudent && activeStudent.id);
     if (savedId) {
       try {
-        const student = await fetchStudentDetails(savedId);
+        const data = await fetchStudentDetails(savedId);
+        const student = (data && data.student) ? data.student : data;
         if (student && student.id) {
           activeStudent = student;
           localStorage.setItem('ielts_active_student_id', student.id);

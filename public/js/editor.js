@@ -381,8 +381,9 @@ export function initEditor() {
         // Fast re-check with server if teacher just activated
         try {
           const freshData = await fetchStudentDetails(student.id);
-          if (freshData && freshData.student && freshData.student.status === 'active') {
-            student = freshData.student;
+          const freshStudent = (freshData && freshData.student) ? freshData.student : freshData;
+          if (freshStudent && freshStudent.status === 'active') {
+            student = freshStudent;
             setActiveStudent(student);
           }
         } catch (_) {}

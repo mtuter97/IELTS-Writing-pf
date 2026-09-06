@@ -1,5 +1,5 @@
 import { initTheme } from './theme.js';
-import { initStudentState, renderStudentDashboard, loginWithCode, loginWithGoogle, logoutStudent, getActiveStudent } from './student.js?v=7.0-privacy';
+import { initStudentState, renderStudentDashboard, loginWithCode, loginWithGoogle, logoutStudent, getActiveStudent } from './student.js';
 import { initEditor } from './editor.js';
 import { renderFeedbackReport } from './report-renderer.js';
 import { renderAdminDashboard } from './admin.js';
