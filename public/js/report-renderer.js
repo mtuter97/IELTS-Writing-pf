@@ -17,7 +17,20 @@ export function renderFeedbackReport(essayRecord, feedback) {
   const overallBand = scores.overall_band || 6.0;
   const scorePct = Math.round((overallBand / 9.0) * 100);
 
-  const trScore = scores.task_achievement_or_response || { band: 6.0, criterion_name: 'Task Response', justification: '' };
+  const isTask1 = essayRecord?.task_type === 'task_1_academic' || essayRecord?.task_type === 'task_1_general';
+  const isFreeText = essayRecord?.task_type === 'free_text';
+  const trCodeLabel = isFreeText ? 'Topic Focus' : (isTask1 ? 'TA (25%)' : 'TR (25%)');
+  const defaultTrName = isFreeText ? 'Topic Focus & Ideas' : (isTask1 ? 'Task Achievement (TA)' : 'Task Response (TR)');
+
+  const taskTypeNames = {
+    task_2: 'Writing Task 2 (مقال أكاديمي - 250+ كلمة)',
+    task_1_academic: 'Writing Task 1 (تقرير أكاديمي - 150+ كلمة)',
+    task_1_general: 'Writing Task 1 (رسالة عامة - 150+ كلمة)',
+    free_text: 'تدريب على نص/فقرة حُرّة'
+  };
+  const displayTaskName = taskTypeNames[essayRecord?.task_type] || (essayRecord?.task_type || 'Task 2').replace(/_/g, ' ');
+
+  const trScore = scores.task_achievement_or_response || { band: 6.0, criterion_name: defaultTrName, justification: '' };
   const ccScore = scores.coherence_cohesion || { band: 6.0, criterion_name: 'Coherence and Cohesion', justification: '' };
   const lrScore = scores.lexical_resource || { band: 6.0, criterion_name: 'Lexical Resource', justification: '' };
   const graScore = scores.grammatical_range_accuracy || { band: 6.0, criterion_name: 'Grammatical Range & Accuracy', justification: '' };
@@ -82,7 +95,7 @@ export function renderFeedbackReport(essayRecord, feedback) {
       <div class="report-top-actions">
         <div class="report-title-info">
           <h2>تقرير تشخيص الأداء المعتمد (Official Diagnostic Report)</h2>
-          <p>الطالب: <strong>${essayRecord.student_name || 'Guest'}</strong> | المهمة: <strong>${essayRecord.task_type.replace(/_/g, ' ')}</strong> | التاريخ: <strong>${new Date(essayRecord.created_at).toLocaleDateString('ar-EG', { dateStyle: 'long' })}</strong></p>
+          <p>الطالب: <strong>${essayRecord.student_name || 'Guest'}</strong> | نوع الاختبار: <strong>${displayTaskName}</strong> | التاريخ: <strong>${new Date(essayRecord.created_at).toLocaleDateString('ar-EG', { dateStyle: 'long' })}</strong></p>
         </div>
         <div style="display:flex; gap:0.5rem;">
           <button id="print-pdf-btn" class="btn btn-primary btn-sm">
@@ -140,10 +153,10 @@ export function renderFeedbackReport(essayRecord, feedback) {
         <!-- TR / TA -->
         <div class="criteria-card">
           <div class="criteria-header">
-            <span class="criteria-code">TR / TA (25%)</span>
+            <span class="criteria-code">${trCodeLabel}</span>
             <span class="criteria-band">Band ${trScore.band?.toFixed(1) || '6.0'}</span>
           </div>
-          <div class="criteria-name">${trScore.criterion_name || 'Task Response'}</div>
+          <div class="criteria-name">${trScore.criterion_name || defaultTrName}</div>
           <div class="criteria-justification">${trScore.justification}</div>
         </div>
 
