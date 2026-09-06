@@ -1,0 +1,786 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IELTS Preparation Master Portal | المنصة المركزية الشاملة للآيلتس</title>
+  <meta name="description" content="منصة التحضير لاختبار الآيلتس المكثف؛ شرائح الماستر كلاس التفاعلية لكل أسبوع، جدول الحصص الفعلية ونقاط النقاش، خزانة الملفات المرجعية، ومكتبة كبار المعلمين الأجانب ومختبر الاستراتيجيات الشامل.">
+  
+  <!-- CSS Stylesheet -->
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" type="image/png" href="assets/images/chipset_logo.png">
+  <!-- FontAwesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+</head>
+<body>
+
+  <!-- Top Emergency Notice & Schedule Ticker (Metobuild Industrial Marquee) -->
+  <aside class="top-notice-ticker no-print" id="topTicker">
+    <div class="ticker-item">
+      <span style="color: var(--mb-clr-pr-1); font-weight: 800;">🚨 تنبيه طوارئ:</span>
+      <span class="ar-text">أثناء إجازة عيد الأضحى الفريق الإداري في إجازة، والمدرب متاح 24/7 على الخاص للحالات العاجلة.</span>
+    </div>
+    <div class="ticker-item" style="font-size: 11px;">
+      <span style="color: var(--mb-clr-sd-1); font-weight: 700;">📅 موعد المحاكاة:</span>
+      <span>الجمعة 5 يوليو (3 ساعات)</span>
+      <span style="margin: 0 8px; opacity: 0.4;">|</span>
+      <span style="color: var(--mb-clr-pr-1); font-weight: 700;">🎯 نافذة الحجز:</span>
+      <span>10 - 20 أغسطس 2024</span>
+    </div>
+  </aside>
+
+  <!-- Sticky Navbar -->
+  <nav class="navbar" id="navbar">
+    <div class="container nav-wrapper">
+      <a href="#" class="brand-logo">
+        <div class="brand-icon">I</div>
+        <div class="brand-text">
+          <span class="brand-title">IELTS <span>MASTER HUB</span></span>
+          <span class="brand-sub">Lead Coach: Mahmoud El-Saeed</span>
+        </div>
+      </a>
+
+      <ul class="nav-links">
+        <li><a href="#hero" class="nav-link active">الرئيسية</a></li>
+        <li><a href="#live-sessions" class="nav-link">الحصص الفعلية</a></li>
+        <li><a href="#roadmap" class="nav-link">السلايدات والأسابيع</a></li>
+        <li><a href="#files-vault" class="nav-link">خزانة الملفات (21)</a></li>
+        <li><a href="#strategy-lab" class="nav-link">مختبر CHIPSET</a></li>
+        <li><a href="#commandHub" class="nav-link" style="color: var(--mb-clr-pr-1); font-weight: 700;">⚡ مركز التحكم</a></li>
+      </ul>
+
+      <div class="nav-actions">
+        <!-- Progress Indicator -->
+        <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 4px;">
+          <div style="display: flex; align-items: center; gap: 8px; font-size: 11px; text-transform: uppercase; font-weight: 700; color: var(--mb-clr-sd-1);">
+            <span>إنجاز المهام</span>
+            <span id="navProgressPct" style="color: #FFF; font-family: var(--mb-font-head); font-size: 14px;">0%</span>
+          </div>
+          <div style="width: 110px; height: 5px; background: rgba(255,255,255,0.1); border-radius: 999px; overflow: hidden;">
+            <div id="navProgressBar" style="width: 0%; height: 100%; background: linear-gradient(90deg, var(--mb-clr-pr-1), var(--mb-clr-sd-1)); transition: width 0.4s ease;"></div>
+          </div>
+        </div>
+
+        <!-- Standalone Presentation Deck Launcher Button with MetoBuild Button -->
+        <a href="presentation.html?week=1" target="_blank" class="mb-pr-btn-1 glow-box-flame" style="padding: 6px 14px 6px 18px; font-size: 12px; gap: 10px;" title="فتح عارض السلايدات بشاشة كاملة">
+          <span>🖥️ عارض السلايدات</span>
+          <span class="icon" style="width: 28px; height: 28px;">
+            <i class="fa-solid fa-arrow-right" style="font-size: 10px;"></i>
+            <i class="fa-solid fa-arrow-right" style="font-size: 10px;"></i>
+          </span>
+        </a>
+
+        <!-- Theme Toggle (Dark / Light) -->
+        <button class="icon-btn" id="themeToggleBtn" title="تبديل الوضع الداكن والفاتح">
+          ☀️
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Section (Full Authentic MetoBuild Industrial Engineering Aesthetics) -->
+  <header class="hero-section" id="hero">
+    <!-- Dark MetoBuild Gradient Overlay -->
+    <div class="hero-overlay-dark"></div>
+
+    <!-- Ambient Radiant Glow Flares -->
+    <div class="hero-ambient-flare-1"></div>
+    <div class="hero-ambient-flare-2"></div>
+    
+    <!-- MetoBuild Watermark Shape -->
+    <img src="assets/metobuild/Line-Shape.webp" class="mb-watermark-shape" alt="" />
+
+    <div class="container hero-grid">
+      
+      <!-- Hero Content Column -->
+      <div class="hero-content-col">
+        <div class="hero-badge-wrap">
+          <span class="pulse-dot"></span>
+          <span class="hero-badge-text">IELTS Intensive Immersion • Band 7.5 - 8.5</span>
+        </div>
+
+        <h1 class="hero-title font-teko">
+          BAND 7.5 - 8.5 <span class="gradient-text">IMMERSION SYSTEM</span>
+          <span class="hero-subtitle">المرشح: م. محمود المرياني • إشراف وتوجيه: د. محمد خليل (محمود السعيد)</span>
+        </h1>
+
+        <p class="hero-desc ar-text">
+          منظومة التحضير الأكاديمي المباشر؛ جدول الحصص وورش العمل، شرائح العرض التفاعلية (16:9)، ومختبر استراتيجيات CHIPSET.
+        </p>
+
+        <!-- Compact Clean Schedule Bar -->
+        <div class="hero-schedule-pill">
+          <div class="schedule-icon-wrap"><i class="fa-solid fa-clock"></i></div>
+          <div class="schedule-text">
+            <span>مواعيد الحصص المباشرة: <strong>الأربعاء 8:00 م</strong> • <strong>الجمعة 2:00 م - 6:00 م</strong></span>
+          </div>
+        </div>
+
+        <!-- Hero CTAs with Authentic MetoBuild Buttons -->
+        <div class="hero-cta-group">
+          <a href="presentation.html?week=1" target="_blank" class="mb-pr-btn-1" title="فتح عارض السلايدات المستقل">
+            <span>عرض السلايدات (16:9)</span>
+            <span class="icon">
+              <i class="fa-solid fa-arrow-right"></i>
+              <i class="fa-solid fa-arrow-right"></i>
+            </span>
+          </a>
+          <a href="#live-sessions" class="mb-outline-btn">
+            <i class="fa-solid fa-video" style="color: var(--mb-clr-sd-1);"></i>
+            <span>جدول الحصص الفعلية</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- Hero Visual Column: User Authentic Photo & Clean Floating Accents -->
+      <div class="hero-visual-container">
+        
+        <!-- Floating Clean Target Standard Badge -->
+        <div class="hero-hud-card hud-top-left">
+          <div class="hud-icon-box orange">🎯</div>
+          <div>
+            <div class="hud-label">Target Standard</div>
+            <div class="hud-value font-teko">BAND 8.0+</div>
+          </div>
+        </div>
+
+        <!-- User Authentic Hero Visual -->
+        <div class="hero-user-frame">
+          <img src="assets/images/user_hero_transparent.png" alt="Candidate Hero" class="hero-cutout-img animate-float" id="heroCutoutImg" />
+        </div>
+
+        <!-- Floating Glass Coach Badge & Photo Switcher Dock -->
+        <div class="hero-coach-dock">
+          <div class="hero-coach-tag">
+            <i class="fa-solid fa-crown" style="color: #FFBC18;"></i>
+            <span>كوتش الكورس: محمود السعيد</span>
+          </div>
+          <button id="photoSwitchBtn" class="hero-switch-btn" title="تبديل زاوية الصورة">
+            <i class="fa-solid fa-camera-rotate"></i>
+            <span id="photoSwitchLabel">صورة: مفرغة</span>
+          </button>
+        </div>
+
+      </div>
+
+    </div>
+  </header>
+
+  <!-- Metrics Strip -->
+  <section class="metrics-section">
+    <div class="container metrics-grid">
+      <div class="metric-card">
+        <div class="metric-icon-wrap">📽️</div>
+        <div>
+          <div class="metric-num">8</div>
+          <div class="metric-label">شرائح أسابيع تفاعلية (0-7)</div>
+        </div>
+      </div>
+
+      <div class="metric-card">
+        <div class="metric-icon-wrap amber">🕒</div>
+        <div>
+          <div class="metric-num">12</div>
+          <div class="metric-label">حصة فعلية وورشة عمل</div>
+        </div>
+      </div>
+
+      <div class="metric-card">
+        <div class="metric-icon-wrap">📂</div>
+        <div>
+          <div class="metric-num">21</div>
+          <div class="metric-label">ملف ومستند كورس مرجعي</div>
+        </div>
+      </div>
+
+      <div class="metric-card">
+        <div class="metric-icon-wrap amber">🇬🇧</div>
+        <div>
+          <div class="metric-num">10</div>
+          <div class="metric-label">ماستركلاس لمعلمين أجانب</div>
+        </div>
+      </div>
+
+      <div class="metric-card">
+        <div class="metric-icon-wrap">🎬</div>
+        <div>
+          <div class="metric-num">49+</div>
+          <div class="metric-label">فيديو منهجي تفاعلي</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================================= -->
+  <!-- EXECUTIVE COMMAND HUB: SECTION SWITCHER & SEARCH ("إزالة أي تعقيد")        -->
+  <!-- ========================================================================= -->
+  <nav class="command-hub-bar" id="commandHub">
+    <div class="container">
+      <div class="hub-wrapper">
+        <div class="hub-tabs" id="mainSectionTabs">
+          <button class="hub-tab-btn active" data-target="live-sessions" title="الحصص الفعلية ونقاط النقاش">
+            <i class="fa-solid fa-video" style="color: var(--mb-clr-sd-1);"></i>
+            <span>الحصص الفعلية (Live Sessions)</span>
+          </button>
+          <button class="hub-tab-btn" data-target="cadence" title="الروتين اليومي">
+            <i class="fa-solid fa-calendar-check"></i>
+            <span>الروتين اليومي</span>
+          </button>
+          <button class="hub-tab-btn" data-target="roadmap" title="السلايدات التفاعلية">
+            <i class="fa-solid fa-chalkboard-user"></i>
+            <span>السلايدات والأسابيع</span>
+          </button>
+          <button class="hub-tab-btn" data-target="files-vault" title="خزانة ملفات الكورس الـ 21">
+            <i class="fa-solid fa-folder-open" style="color: var(--mb-clr-pr-1);"></i>
+            <span>خزانة الملفات (21)</span>
+          </button>
+          <button class="hub-tab-btn" data-target="strategy-lab" title="مختبر استراتيجيات CHIPSET">
+            <i class="fa-solid fa-brain" style="color: var(--mb-clr-sd-1);"></i>
+            <span>مختبر CHIPSET</span>
+          </button>
+          <button class="hub-tab-btn" data-target="masters" title="مكتبة المعلمين الأجانب">
+            <i class="fa-solid fa-user-graduate"></i>
+            <span>المعلمين الأجانب</span>
+          </button>
+          <button class="hub-tab-btn" data-target="videos" title="المكتبة المرئية">
+            <i class="fa-solid fa-play" style="color: var(--mb-clr-pr-1);"></i>
+            <span>المكتبة المرئية (49)</span>
+          </button>
+          <button class="hub-tab-btn" data-target="speaking" title="بنك التحدث">
+            <i class="fa-solid fa-microphone-lines" style="color: var(--mb-clr-sd-1);"></i>
+            <span>بنك التحدث</span>
+          </button>
+          <button class="hub-tab-btn" data-target="writing" title="معايير الكتابة والجرامر">
+            <i class="fa-solid fa-pen-nib" style="color: var(--mb-clr-pr-1);"></i>
+            <span>الكتابة والجرامر</span>
+          </button>
+          <button class="hub-tab-btn" data-target="all" title="عرض جميع الأقسام دفعة واحدة">
+            <i class="fa-solid fa-layer-group"></i>
+            <span>عرض الكل (All Modules)</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Section 1: Daily WhatsApp Cadence -->
+  <section class="section" id="cadence">
+    <div class="container">
+      <div class="section-head">
+        <div class="section-title-wrap">
+          <span class="section-tag">24-Hour Commitment Cadence</span>
+          <h2 class="section-title">Daily WhatsApp <span>Routine</span></h2>
+          <p class="section-desc ar-text">
+            الروتين اليومي الإلزامي لطلاب الكورس عبر الواتساب للحفاظ على وتيرة الانغماس الكامل والوصول إلى أقصى درجات الانضباط.
+          </p>
+        </div>
+      </div>
+
+      <div class="cadence-grid" id="cadenceGrid">
+        <!-- Injected dynamically by app.js -->
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 2: ACTUAL LIVE DISCUSSION SESSIONS & WORKSHOPS (الحصص الفعلية) -->
+  <section class="section section-tinted" id="live-sessions">
+    <div class="container">
+      <div class="section-head">
+        <div class="section-title-wrap">
+          <span class="section-tag">ورش العمل وجلسات النقاش التفاعلية</span>
+          <h2 class="section-title">الحصص الفعلية <span>ومحاور النقاش المباشر</span></h2>
+          <p class="section-desc ar-text">
+            هذه هي <strong>الحصص الفعلية الحقيقية</strong> التي يتم فيها مناقشة الموضوعات، تفكيك المقالات، ومحاكاة أسئلة التحدث على الهواء مباشرة مع المدرب، مع روابط مباشرة لجميع الملفات والواجبات.
+          </p>
+        </div>
+      </div>
+
+      <!-- Live Sessions Grid Container -->
+      <div class="live-sessions-grid" id="liveSessionsGrid">
+        <!-- Injected dynamically by app.js -->
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 3: Interactive 7-Week Curriculum Roadmap & Slides Engine -->
+  <section class="section" id="roadmap">
+    <div class="container">
+      <div class="section-head">
+        <div class="section-title-wrap">
+          <span class="section-tag">Interactive Weekly Slide Decks</span>
+          <h2 class="section-title">7-Week Masterclass <span>Roadmap & Slides</span></h2>
+          <p class="section-desc ar-text">
+            افتح السلايدات التفاعلية المستقلة لكل أسبوع بنظام الشاشة الكاملة (16:9 Presentation Deck)، مع قائمة المهام التفاعلية وروابط الملفات المرجعية لكل أسبوع.
+          </p>
+        </div>
+      </div>
+
+      <!-- Roadmap Week Tabs -->
+      <div class="roadmap-tabs" id="roadmapTabs">
+        <!-- Injected dynamically by app.js -->
+      </div>
+
+      <!-- Roadmap Panels Container -->
+      <div id="roadmapPanels">
+        <!-- Injected dynamically by app.js -->
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 4: REFERENCED COURSE FILES VAULT (خزانة الملفات والمستندات المرجعية) -->
+  <section class="section section-tinted" id="files-vault">
+    <div class="container">
+      <div class="section-head">
+        <div class="section-title-wrap">
+          <span class="section-tag">Direct Original Course Documents</span>
+          <h2 class="section-title">خزانة الملفات والمستندات <span>المرجعية للكورس (21 ملفاً)</span></h2>
+          <p class="section-desc ar-text">
+            جميع ملفات الـ PDF والخطط الأسبوعية وكتيبات التحدث ومخططات الأفكار المستخرجة من الكورس؛ متاحة للتحميل والفتح المباشر بضغطة واحدة دون الحاجة للبحث.
+          </p>
+        </div>
+      </div>
+
+      <!-- Files Vault Grid -->
+      <div class="files-vault-grid" id="filesVaultGrid">
+        <!-- Injected dynamically by app.js -->
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 5: MASTER STRATEGY LABORATORY (مختبر الاستراتيجيات والتكنيكات) -->
+  <section class="section" id="strategy-lab">
+    <div class="container">
+      <div class="section-head">
+        <div class="section-title-wrap">
+          <span class="section-tag">The Core Cognitive Formulas</span>
+          <h2 class="section-title">مختبر الاستراتيجيات <span>والتكنيكات الشامل</span></h2>
+          <p class="section-desc ar-text">
+            جميع المعادلات والتكنيكات الذهبية المستخرجة حرفياً من ملفات الكورس: نظام توليد الأفكار <strong>CHIPSET</strong>، هيكل الفقرات <strong>TEXS</strong>، مقدمات <strong>BRO</strong>، مونولوج التحدث <strong>WHTFM</strong>، وتدقيق الدقائق الخمس <strong>PSTA</strong> ومصفوفة الخطابات.
+          </p>
+        </div>
+      </div>
+
+      <!-- Strategy Tabs Bar -->
+      <div class="strategy-tabs-bar" id="strategyTabsBar">
+        <button class="strategy-tab-btn active" data-pane="pane-chipset">🧠 نظام الأفكار CHIPSET (22 مساراً)</button>
+        <button class="strategy-tab-btn" data-pane="pane-texs">📝 هيكل الفقرات TEXS</button>
+        <button class="strategy-tab-btn" data-pane="pane-bro">🎯 مقدمات المقال BRO</button>
+        <button class="strategy-tab-btn" data-pane="pane-whtfm">🎙️ مونولوج التحدث WHTFM</button>
+        <button class="strategy-tab-btn" data-pane="pane-psta">🔍 بروتوكول المراجعة PSTA</button>
+        <button class="strategy-tab-btn" data-pane="pane-letters">✉️ مصفوفة خطابات التدريب العام</button>
+        <button class="strategy-tab-btn" data-pane="pane-clinic">🏥 عيادة الآيلتس وسجل أخطائي وأفتخر</button>
+      </div>
+
+      <!-- Panes Container -->
+      <div id="strategyPanesContainer">
+        <!-- Injected dynamically by app.js -->
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 6: Foreign IELTS Masters Library -->
+  <section class="section section-tinted" id="masters">
+    <div class="container">
+      <div class="section-head">
+        <div class="section-title-wrap">
+          <span class="section-tag">Top British & International Experts</span>
+          <h2 class="section-title">Foreign IELTS <span>Masters Library</span></h2>
+          <p class="section-desc ar-text">
+            مكتبة الماستركلاس المنتقاة من كبار مصححي كامبريدج وخبراء الآيلتس الأجانب (Chris Pell, IELTS Liz, Simon Ex-Examiner, Keith O'Hare, Jay E2, Asiya Fastrack) لتعزيز كل أسبوع بأقوى التكنيكات العالمية.
+          </p>
+        </div>
+      </div>
+
+      <div class="masters-grid" id="foreignMastersGrid">
+        <!-- Injected dynamically by app.js -->
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 7: Video Lecture Vault -->
+  <section class="section" id="videos">
+    <div class="container">
+      <div class="section-head">
+        <div class="section-title-wrap">
+          <span class="section-tag">Course Multimedia Hub</span>
+          <h2 class="section-title">Curated Video <span>Vault (49+)</span></h2>
+          <p class="section-desc ar-text">
+            جميع فيديوهات المنهج الـ 49 المستخرجة من ملفات الكورس مرتبة حسب الأسبوع والتصنيف مع إمكانية البحث الفوري والتشغيل المباشر.
+          </p>
+        </div>
+
+        <div class="search-input-wrap">
+          <span class="search-icon">🔍</span>
+          <input type="text" id="videoSearchInput" class="search-input" placeholder="البحث في الفيديوهات حسب العنوان أو المهارة...">
+        </div>
+      </div>
+
+      <!-- Video Category Filter Pills -->
+      <div class="filter-bar">
+        <div class="filter-pills" id="videoFilterPills">
+          <button class="filter-pill active" data-filter="All">All Videos (49)</button>
+          <button class="filter-pill" data-filter="Grammar">Grammar</button>
+          <button class="filter-pill" data-filter="Speaking">Speaking</button>
+          <button class="filter-pill" data-filter="Writing Task 2">Writing Task 2</button>
+          <button class="filter-pill" data-filter="Writing Task 1">Writing Task 1</button>
+          <button class="filter-pill" data-filter="Listening">Listening</button>
+          <button class="filter-pill" data-filter="Reading">Reading</button>
+        </div>
+      </div>
+
+      <!-- Video Grid -->
+      <div class="video-grid" id="videoGrid">
+        <!-- Injected dynamically by app.js -->
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 8: Speaking Bank (Expected Questions) -->
+  <section class="section section-tinted" id="speaking">
+    <div class="container">
+      <div class="section-head">
+        <div class="section-title-wrap">
+          <span class="section-tag">Decrypted From 51-Page Booklet</span>
+          <h2 class="section-title">Expected Speaking <span>Bank & Idioms</span></h2>
+          <p class="section-desc ar-text">
+            أبرز موضوعات المحادثة الحقيقية مع أسئلة الأجزاء 1 و 2 و 3، ومصطلحات Band 8.0+ وتراكيب WHTFM التي تضمن الطلاقة والترابط.
+          </p>
+        </div>
+      </div>
+
+      <div class="speaking-grid" id="speakingGrid">
+        <!-- Injected dynamically by app.js -->
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 9: Writing Blueprint & Fatal Errors Matrix -->
+  <section class="section" id="writing">
+    <div class="container">
+      <div class="section-head">
+        <div class="section-title-wrap">
+          <span class="section-tag">Scoring Safety Net</span>
+          <h2 class="section-title">The 7 Fatal Grammar Mistakes <span>("Cancer of IELTS")</span></h2>
+          <p class="section-desc ar-text">
+            مصفوفة مقارنة الأخطاء الصارمة: ما يقيدك عند Band 5.0 مقابل ما يرفع درجتك إلى Band 8.0+ في معايير المصححين الرسمية.
+          </p>
+        </div>
+      </div>
+
+      <!-- Matrix Table -->
+      <div class="table-responsive">
+        <table class="matrix-table">
+          <thead>
+            <tr>
+              <th style="width: 20%;">نوع الخطأ القاتل</th>
+              <th style="width: 32%;">الخطأ الكارثي (Band 5.0 Trap)</th>
+              <th style="width: 32%;">الحل الأكاديمي النموذجي (Band 8.0+)</th>
+              <th style="width: 16%;">عقوبة المصحح</th>
+            </tr>
+          </thead>
+          <tbody id="grammarTableBody">
+            <!-- Injected dynamically by app.js -->
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Writing Task Architecture Card & Parenting Model Essay -->
+      <div style="margin-top: 40px; background: var(--mb-clr-surface); border: 1px solid var(--mb-border); border-radius: var(--mb-radius-lg); padding: 34px;">
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px;">
+          <div>
+            <span style="font-size: 11px; font-weight: 800; color: var(--mb-clr-sd-1); text-transform: uppercase;">Writing Task 1 Blueprint</span>
+            <h3 style="font-size: 22px; color: #FFF; margin: 8px 0 14px;">The 4-Paragraph Report (150 - 200 Words)</h3>
+            <p style="font-size: 13.5px; color: var(--mb-clr-text-muted); line-height: 1.6; margin-bottom: 14px;" class="ar-text">
+              1. <strong>المقدمة:</strong> إعادة صياغة السؤال مع ذكر الوحدات.<br>
+              2. <strong>النظرة العامة (The Mandatory Overview):</strong> رصد الاتجاه العام الكلي وأعلى وأدنى نقطة <em>دون ذكر أرقام إطلاقاً</em> (بدونها تقف درجتك عند Band 5.0 تلقائياً).<br>
+              3. <strong>فقرة التفاصيل الأولى (Body 1):</strong> تجميع البيانات المتشابهة والمقارنات الدقيقة بالأرقام.<br>
+              4. <strong>فقرة التفاصيل الثانية (Body 2):</strong> بقية البيانات ومقارنات التقاطع.<br>
+              <em>الوقت المخصص: 20 دقيقة بدقة صارمة.</em>
+            </p>
+          </div>
+
+          <div>
+            <span style="font-size: 11px; font-weight: 800; color: var(--mb-clr-pr-1); text-transform: uppercase;">Writing Task 2 Blueprint</span>
+            <h3 style="font-size: 22px; color: #FFF; margin: 8px 0 14px;">The TEXS / P.E.E.L Essay Structure (265 - 285 Words)</h3>
+            <p style="font-size: 13.5px; color: var(--mb-clr-text-muted); line-height: 1.6; margin-bottom: 14px;" class="ar-text">
+              1. <strong>مقدمة BRO:</strong> Background (خلفية موضوعية) ➔ Rephrase (إعادة صياغة) ➔ Opinion (الموقف الصريح).<br>
+              2. <strong>جسم 1 (TEXS):</strong> Topic Sentence (الفكرة المركزية) ➔ Explanation (الشرح بـ In other words) ➔ eXample (مثال دولي مقنع) ➔ Significance (جملة Cleft متقدمة).<br>
+              3. <strong>جسم 2 (TEXS):</strong> مناقشة الفكرة الثانية بتعليل ومثال وجملة Inversion.<br>
+              4. <strong>الخاتمة (Summary + Recommendation):</strong> تلخيص الفكرتين دون أي أفكار جديدة.<br>
+              <em>الوقت المخصص: 40 دقيقة (3 تخطيط + 32 كتابة + 5 مراجعة PSTA).</em>
+            </p>
+          </div>
+        </div>
+
+        <!-- Parenting Model Essay Deconstruction -->
+        <div style="margin-top: 30px; padding-top: 24px; border-top: 1px solid var(--mb-border);">
+          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; flex-wrap: wrap; gap: 10px;">
+            <div>
+              <span class="session-timing-badge">تحليل نموذج حقيقي من الكورس</span>
+              <h4 style="font-size: 18px; color: #FFF; margin-top: 6px;">نموذج مقال التربية (IELTS Essay 1: Parenting Courses - Band 8.5)</h4>
+            </div>
+            <a href="IELTS Essay 1- Parenting.pdf" target="_blank" rel="noopener" class="btn-session-watch" style="flex: 0 0 auto;">
+              <span>📄 فتح ملف المقال الأصلي PDF</span>
+            </a>
+          </div>
+
+          <div style="background: rgba(0,0,0,0.3); padding: 20px; border-radius: 12px; border-right: 4px solid var(--mb-clr-pr-1); font-size: 13.5px; color: #E2E8F0; line-height: 1.8;">
+            <p style="margin-bottom: 12px;">
+              <strong style="color: var(--mb-clr-pr-1);">المقدمة (BRO):</strong> (R) In the modern era, whilst some couples opine that parental education programs are pivotal for rearing children, opponents argue that they are unnecessary because it is an innate skill. (O) However, in my opinion, these workshops are quintessential to nurturing psychologically stable youths.
+            </p>
+            <p style="margin-bottom: 12px;">
+              <strong style="color: var(--mb-clr-sd-1);">جسم 1 (TEXS):</strong> (T) To embark on, parenting classes play an imperative role because they develop communication skills between mothers and fathers and their infants. (E) This means that if parents attend professional discipline workshops, these classes will bridge the generation gap between guardians and their dependents... (X) An eminent example is that Denmark and Sweden have been ranked as the best places in the world... (S) As a result, what can be said is that [cleft] parenting skills have a considerable influence on most aspects of a child's development.
+            </p>
+            <p style="margin-bottom: 12px;">
+              <strong style="color: #38BDF8;">جسم 2 (TEXS):</strong> (T) Moreover, these sessions help parents to know how to safeguard their sons and daughters from the detrimental effects of cultural impacts and social media. (E) In other words, when custodians attend such courses, they will know how to curtail the risk of child abuse... (X) For example, a research study conducted by Washington University emphasizes... (S) Thus, not only is caregiver training pivotal [inversion], but also it is crucial for parent-child interactions.
+            </p>
+            <p>
+              <strong style="color: #A855F7;">الخاتمة:</strong> (S) In conclusion, by highlighting the above-mentioned points, it can be reiterated that educational upbringing programs have beneficial consequences... (O) Moreover, definitely the authorities should obligate parents to join such programs before they plan to beget a newborn.
+            </p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Fullscreen 16:9 Interactive Slides Deck Modal Engine -->
+  <div class="slides-deck-modal" id="slidesDeckModal">
+    <!-- Topbar -->
+    <div class="slides-deck-topbar">
+      <div class="slides-week-title" id="slideDeckWeekTitle">
+        <span>📽️</span> Masterclass Slides
+      </div>
+      <div class="slides-counter" id="slideDeckCounter">
+        Slide 1 / 5
+      </div>
+      <div class="slides-topbar-actions">
+        <button class="icon-btn" id="slideDeckFullscreenBtn" title="Toggle Fullscreen (F)">⛶</button>
+        <button class="icon-btn" id="slideDeckCloseBtn" title="Close Slides (Esc)">✕</button>
+      </div>
+    </div>
+
+    <!-- Canvas -->
+    <div class="slide-canvas-wrapper">
+      <div class="slide-16x9-canvas" id="slideDeckCanvas">
+        <!-- Rendered dynamically by app.js -->
+      </div>
+    </div>
+
+    <!-- Bottombar -->
+    <div class="slides-deck-bottombar">
+      <div class="slides-nav-controls">
+        <button class="slide-step-btn" id="slideDeckPrevBtn">◀ السابق</button>
+        <div class="slides-indicators" id="slideDeckIndicators"></div>
+        <button class="slide-step-btn" id="slideDeckNextBtn">التالي ▶</button>
+      </div>
+
+      <div class="slides-shortcuts-hint">
+        <span>اختصارات لوحة المفاتيح:</span>
+        <span><kbd class="kbd-chip">←</kbd> <kbd class="kbd-chip">→</kbd> التنقل</span>
+        <span><kbd class="kbd-chip">Space</kbd> تقدم</span>
+        <span><kbd class="kbd-chip">F</kbd> ملء الشاشة</span>
+        <span><kbd class="kbd-chip">Esc</kbd> خروج</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Video Player Modal -->
+  <div class="modal-backdrop" id="videoModal">
+    <div class="modal-box">
+      <div class="modal-head">
+        <h4 class="modal-title" id="modalVideoTitle">IELTS Video Lecture</h4>
+        <button class="modal-close-btn" id="modalCloseBtn" title="Close Video">✕</button>
+      </div>
+      <div class="modal-video-wrapper">
+        <iframe id="modalVideoIframe" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================================= -->
+  <!-- METOBUILD SIGNATURE INDUSTRIAL FOOTER                                     -->
+  <!-- ========================================================================= -->
+  <footer class="mb-footer-area" id="mainFooter">
+    <!-- Authentic MetoBuild Footer Background Image -->
+    <div class="mb-footer-bg-img"></div>
+    
+    <!-- Ambient Glow Flares in Footer -->
+    <div class="hero-ambient-flare-1" style="top: -100px; left: 10%; opacity: 0.7;"></div>
+    <div class="hero-ambient-flare-2" style="bottom: -50px; right: 10%; opacity: 0.7;"></div>
+
+    <div class="container" style="position: relative; z-index: 2;">
+      <div class="footer-grid">
+        
+        <!-- Col 1: Identity & System Overview -->
+        <div>
+          <div class="brand-logo" style="margin-bottom: 14px;">
+            <div class="brand-icon">I</div>
+            <div class="brand-text">
+              <span class="brand-title">IELTS <span>MASTER HUB</span></span>
+              <span class="brand-sub">Lead Coach: Mahmoud El-Saeed</span>
+            </div>
+          </div>
+          <p class="footer-brand-p ar-text" style="line-height: 1.8; color: #9BA6B8; font-size: 13.5px;">
+            منظومة تعليمية هندسية متطورة مصممة خصيصاً للمرشح <strong>محمود المرياني</strong> بإشراف وتوجيه <strong>المدرب د. محمد خليل (Mahmoud El-Saeed)</strong>، مع دمج كامل هوية ثيم MetoBuild والشرائح التفاعلية لجميع الأسابيع ومختبر الاستراتيجيات CHIPSET.
+          </p>
+          <div style="margin-top: 16px; display: flex; align-items: center; gap: 10px;">
+            <span class="pulse-dot"></span>
+            <span style="font-size: 12px; font-weight: 700; color: var(--mb-clr-pr-1); text-transform: uppercase;">Immersion Protocol 100% Operational</span>
+          </div>
+        </div>
+
+        <!-- Col 2: Core Platform Modules -->
+        <div>
+          <h4 class="footer-col-title font-teko" style="font-size: 24px; color: #FFF; letter-spacing: 0.04em;">وحدات المنصة الرئيسية</h4>
+          <ul class="footer-links" style="font-size: 13px;">
+            <li><a href="#hero">الرئيسية وملف المرشح</a></li>
+            <li><a href="#cadence">الروتين اليومي الإلزامي (WhatsApp)</a></li>
+            <li><a href="#live-sessions">الحصص الفعلية ومحاور النقاش المباشر</a></li>
+            <li><a href="#roadmap">شرائح الأسابيع التفاعلية (16:9 Deck)</a></li>
+            <li><a href="#files-vault">خزانة الملفات والمستندات المرجعية (21 ملف)</a></li>
+            <li><a href="#strategy-lab">مختبر الاستراتيجيات CHIPSET & TEXS</a></li>
+            <li><a href="#masters">مكتبة نخبة المعلمين الأجانب ومصححي الامتحان</a></li>
+            <li><a href="#speaking">بنك أسئلة التحدث ومونولوج WHTFM</a></li>
+            <li><a href="#writing">معايير المصححين والـ 7 أخطاء القاتلة</a></li>
+          </ul>
+        </div>
+
+        <!-- Col 3: Key Deadlines & Portals -->
+        <div>
+          <h4 class="footer-col-title font-teko" style="font-size: 24px; color: #FFF; letter-spacing: 0.04em;">مواعيد ووصلات حاسمة</h4>
+          <ul class="footer-links" style="font-size: 13px;">
+            <li><strong style="color: var(--mb-clr-sd-1);">📅 موعد المحاكاة الشاملة:</strong> الجمعة 5 يوليو (3 ساعات)</li>
+            <li><strong style="color: var(--mb-clr-pr-1);">🎯 نافذة حجز الامتحان:</strong> 10 أغسطس - 20 أغسطس 2024</li>
+            <li><strong style="color: #10B981);">🏥 عيادة الآيلتس:</strong> السبت 1:00م - 2:30م (Band 5/5.5)</li>
+            <li><strong style="color: #8B5CF6);">☕ قهوة الآيلتس:</strong> الخميس 8:00م - 9:00م</li>
+            <li>
+              <a href="https://takeielts.britishcouncil.org" target="_blank" rel="noopener" style="color: #60A5FA;">
+                <i class="fa-solid fa-arrow-up-right-from-square" style="font-size: 10px; margin-left: 4px;"></i>
+                المجلس الثقافي البريطاني (British Council)
+              </a>
+            </li>
+            <li>
+              <a href="https://ielts.idp.com" target="_blank" rel="noopener" style="color: #60A5FA;">
+                <i class="fa-solid fa-arrow-up-right-from-square" style="font-size: 10px; margin-left: 4px;"></i>
+                منصة IDP IELTS الرسمية
+              </a>
+            </li>
+          </ul>
+        </div>
+
+      </div>
+
+      <!-- Giant MetoBuild Watermark Branding Text -->
+      <div class="mb-footer-branding-watermark">
+        BAND 7.5 - 8.5 IELTS
+      </div>
+
+      <div class="footer-bottom" style="border-top: 1px solid rgba(255,255,255,0.08); padding-top: 20px; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12px; font-size: 12px; color: #657388;">
+        <div>&copy; 2024 - 2026 IELTS 7.5 Academic Immersion Protocol. All rights reserved.</div>
+        <div>Candidate: <strong style="color: #FFF;">Mahmoud Mureiani</strong> • Lead Coach: <strong style="color: var(--mb-clr-sd-1);">Mahmoud El-Saeed</strong> • MetoBuild Industrial Theme</div>
+      </div>
+
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="course_data.js"></script>
+  <script src="app.js"></script>
+
+  <!-- Executive Command Hub Module Switcher & User Photo Manager Script ("إزالة أي تعقيد") -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const tabs = document.querySelectorAll('.hub-tab-btn');
+      const sections = [
+        'cadence', 'live-sessions', 'roadmap', 'files-vault', 
+        'strategy-lab', 'masters', 'videos', 'speaking', 'writing'
+      ];
+
+      // Modular View Controller
+      function applyModuleView(target, shouldScroll = false) {
+        tabs.forEach(t => {
+          if (t.dataset.target === target) {
+            t.classList.add('active');
+          } else {
+            t.classList.remove('active');
+          }
+        });
+
+        if (target === 'all') {
+          sections.forEach(id => {
+            const el = document.getElementById(id);
+            if (el) el.style.display = '';
+          });
+        } else {
+          sections.forEach(id => {
+            const el = document.getElementById(id);
+            if (el) {
+              if (id === target) {
+                el.style.display = '';
+                if (shouldScroll) {
+                  el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+              } else {
+                el.style.display = 'none';
+              }
+            }
+          });
+        }
+      }
+
+      // Tab click events
+      tabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+          applyModuleView(tab.dataset.target, true);
+        });
+      });
+
+      // Navbar links / Hashchange integration
+      window.addEventListener('hashchange', () => {
+        const hash = window.location.hash.replace('#', '');
+        if (sections.includes(hash)) {
+          applyModuleView(hash, true);
+        }
+      });
+
+      // Default on load: ONLY show the primary module (live-sessions) to keep page uncluttered!
+      const initialHash = window.location.hash.replace('#', '');
+      if (sections.includes(initialHash)) {
+        applyModuleView(initialHash, false);
+      } else {
+        applyModuleView('live-sessions', false);
+      }
+
+      // --- User Hero Photo Switcher Controller ---
+      const heroImg = document.getElementById('heroCutoutImg');
+      const photoSwitchBtn = document.getElementById('photoSwitchBtn');
+      const userPhotos = [
+        { src: 'assets/images/user_hero_transparent.png', label: 'مفرغة (Cutout)' },
+        { src: 'assets/images/user_hero_portrait.png', label: 'شخصية (Portrait)' },
+        { src: 'assets/images/user_hero_alt1.jpg', label: 'ميدانية (Action)' }
+      ];
+      let photoIdx = parseInt(localStorage.getItem('ielts_user_photo_idx') || '0', 10);
+      if (photoIdx >= userPhotos.length) photoIdx = 0;
+
+      function updatePhoto() {
+        if (heroImg && userPhotos[photoIdx]) {
+          heroImg.src = userPhotos[photoIdx].src;
+          if (photoSwitchBtn) {
+            photoSwitchBtn.querySelector('span').textContent = `صورة: ${userPhotos[photoIdx].label}`;
+          }
+        }
+      }
+      updatePhoto();
+
+      if (photoSwitchBtn) {
+        photoSwitchBtn.addEventListener('click', () => {
+          photoIdx = (photoIdx + 1) % userPhotos.length;
+          localStorage.setItem('ielts_user_photo_idx', photoIdx);
+          updatePhoto();
+        });
+      }
+    });
+  </script>
+</body>
+</html>
