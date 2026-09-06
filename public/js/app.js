@@ -4,6 +4,7 @@ import { initEditor } from './editor.js';
 import { renderFeedbackReport } from './report-renderer.js';
 import { renderAdminDashboard } from './admin.js';
 import { fetchSettings, saveSettings, fetchEssay, createStudent } from './api.js';
+import { IDP_META, OFFICIAL_IDP_DESCRIPTORS } from './idp-criteria-data.js';
 
 let activeTab = 'editor';
 
@@ -458,6 +459,148 @@ function setupModals() {
       });
     });
   }
+
+  // 2026 Official IDP Writing Band Descriptors Modal
+  setupIdpCriteriaModal();
+}
+
+function setupIdpCriteriaModal() {
+  const modal = document.getElementById('idp-criteria-modal');
+  const openBtn = document.getElementById('open-idp-rubrics-modal-btn');
+  const closeBtn = document.getElementById('close-idp-criteria-modal');
+  const closeBottomBtn = document.getElementById('close-idp-modal-bottom-btn');
+  const container = document.getElementById('idp-descriptors-container');
+  if (!modal || !container) return;
+
+  let currentTask = 'task2';
+  let currentBandFilter = 'all';
+
+  const bandLabels = {
+    band_9: { title: 'Band 9', levelEn: 'Expert User', levelAr: 'المستخدم الخبير (أداء استثنائي كامل)' },
+    band_8: { title: 'Band 8', levelEn: 'Very Good User', levelAr: 'المستخدم المتفوق جداً (دقة عالية وهفوات نادرة)' },
+    band_7: { title: 'Band 7', levelEn: 'Good User', levelAr: 'المستخدم الجيد (كفاءة ممتازة مع بعض التعميم)' },
+    band_6: { title: 'Band 6', levelEn: 'Competent User', levelAr: 'المستخدم الكفء (وضوح عام مع تباين الدقة)' },
+    band_5: { title: 'Band 5', levelEn: 'Modest User', levelAr: 'المستخدم المتواضع (تغطية جزئية وأخطاء متكررة)' },
+    band_4: { title: 'Band 4', levelEn: 'Limited User', levelAr: 'المستخدم المحدود (أفكار غير مكتملة وتراكيب بسيطة)' },
+    band_3: { title: 'Band 3', levelEn: 'Extremely Limited User', levelAr: 'أداء شديد المحدودية' },
+    band_2: { title: 'Band 2', levelEn: 'Intermittent User', levelAr: 'كلمات متفرقة وغير مترابطة' },
+    band_1: { title: 'Band 1', levelEn: 'Non-User', levelAr: 'أقل من 20 كلمة / لا توجد لغة قابلة للتقييم' },
+    band_0: { title: 'Band 0', levelEn: 'Did not attend / Memorised', levelAr: 'عدم المحاولة أو نص محفوظ بالكامل' }
+  };
+
+  function formatBulletPoints(text) {
+    if (!text) return '<p style="color:var(--text-muted); font-style:italic;">No specific descriptor.</p>';
+    const lines = text.split('\n').map(l => l.trim()).filter(Boolean);
+    return lines.map(line => `<div class="idp-bullet-point">${line}</div>`).join('');
+  }
+
+  function renderDescriptors() {
+    const taskData = OFFICIAL_IDP_DESCRIPTORS[currentTask] || {};
+    let bandsToDisplay = [];
+
+    if (currentBandFilter === 'all') {
+      bandsToDisplay = ['band_9', 'band_8', 'band_7', 'band_6', 'band_5', 'band_4', 'band_3', 'band_2', 'band_1', 'band_0'];
+    } else if (currentBandFilter === 'low') {
+      bandsToDisplay = ['band_3', 'band_2', 'band_1', 'band_0'];
+    } else {
+      bandsToDisplay = [currentBandFilter];
+    }
+
+    const html = bandsToDisplay.map(bandKey => {
+      const bandObj = taskData[bandKey] || {};
+      const info = bandLabels[bandKey] || { title: bandKey, levelEn: '', levelAr: '' };
+      const isTask1 = currentTask === 'task1';
+      const trText = isTask1 ? bandObj.task_achievement : bandObj.task_response;
+      const ccText = bandObj.coherence_cohesion;
+      const lrText = bandObj.lexical_resource;
+      const graText = bandObj.grammatical_range_accuracy;
+
+      return `
+        <div class="idp-rubric-band-card">
+          <div class="idp-band-header">
+            <div class="idp-band-title-wrap">
+              <span class="idp-band-badge">${info.title}</span>
+              <span class="idp-band-sublabel">${info.levelEn} • ${info.levelAr}</span>
+            </div>
+            <span style="font-size:0.78rem; color:var(--text-muted); font-weight:700;">
+              IDP Official Verbatim Rubric
+            </span>
+          </div>
+          <div class="idp-criteria-quad-grid">
+            <div class="idp-criterion-col">
+              <div class="idp-crit-heading tr">
+                <span>${isTask1 ? 'Task Achievement (TA)' : 'Task Response (TR)'}</span>
+                <span style="font-size:0.7rem; opacity:0.8;">25%</span>
+              </div>
+              ${formatBulletPoints(trText)}
+            </div>
+            <div class="idp-criterion-col">
+              <div class="idp-crit-heading cc">
+                <span>Coherence & Cohesion (CC)</span>
+                <span style="font-size:0.7rem; opacity:0.8;">25%</span>
+              </div>
+              ${formatBulletPoints(ccText)}
+            </div>
+            <div class="idp-criterion-col">
+              <div class="idp-crit-heading lr">
+                <span>Lexical Resource (LR)</span>
+                <span style="font-size:0.7rem; opacity:0.8;">25%</span>
+              </div>
+              ${formatBulletPoints(lrText)}
+            </div>
+            <div class="idp-criterion-col">
+              <div class="idp-crit-heading gra">
+                <span>Grammar Range & Accuracy</span>
+                <span style="font-size:0.7rem; opacity:0.8;">25%</span>
+              </div>
+              ${formatBulletPoints(graText)}
+            </div>
+          </div>
+        </div>
+      `;
+    }).join('');
+
+    container.innerHTML = html;
+  }
+
+  // Open & Close
+  if (openBtn) {
+    openBtn.addEventListener('click', () => {
+      renderDescriptors();
+      modal.classList.add('open');
+    });
+  }
+  if (closeBtn) {
+    closeBtn.addEventListener('click', () => modal.classList.remove('open'));
+  }
+  if (closeBottomBtn) {
+    closeBottomBtn.addEventListener('click', () => modal.classList.remove('open'));
+  }
+  modal.addEventListener('click', (e) => {
+    if (e.target === modal) modal.classList.remove('open');
+  });
+
+  // Task Switcher
+  const taskButtons = modal.querySelectorAll('.idp-task-btn');
+  taskButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      taskButtons.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      currentTask = btn.getAttribute('data-task');
+      renderDescriptors();
+    });
+  });
+
+  // Band Filter Pills
+  const filterPills = modal.querySelectorAll('.idp-band-pill');
+  filterPills.forEach(pill => {
+    pill.addEventListener('click', () => {
+      filterPills.forEach(p => p.classList.remove('active'));
+      pill.classList.add('active');
+      currentBandFilter = pill.getAttribute('data-band');
+      renderDescriptors();
+    });
+  });
 }
 
 async function updateProviderStatusBadge() {

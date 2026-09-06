@@ -2459,5 +2459,333 @@ p.feature-desc {
   25%, 50% { width: 100%; }
 }
 
+/* ========================================================
+   Official IDP Criteria Badge & Interactive Matrix Modal
+======================================================== */
+.criteria-official-badge-container {
+  margin-top: 2rem;
+  width: 100%;
+}
 
+.criteria-official-badge-card {
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.08) 0%, rgba(14, 165, 233, 0.06) 100%);
+  border: 1.5px solid rgba(16, 185, 129, 0.25);
+  border-radius: var(--radius-lg);
+  padding: 1.5rem 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.03);
+  transition: all 0.3s ease;
+}
 
+[data-theme="dark"] .criteria-official-badge-card {
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.12) 0%, rgba(14, 165, 233, 0.08) 100%);
+  border-color: rgba(16, 185, 129, 0.35);
+}
+
+.criteria-official-badge-card:hover {
+  border-color: var(--primary);
+  box-shadow: 0 12px 35px rgba(16, 185, 129, 0.12);
+  transform: translateY(-2px);
+}
+
+.badge-icon-wrap {
+  width: 56px;
+  height: 56px;
+  border-radius: 16px;
+  background: rgba(16, 185, 129, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.8rem;
+  flex-shrink: 0;
+}
+
+.badge-text-wrap {
+  flex: 1;
+  text-align: right;
+}
+
+.badge-header-line {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.4rem;
+  flex-wrap: wrap;
+}
+
+.badge-status-pill {
+  background: #10b981;
+  color: #ffffff;
+  font-size: 0.75rem;
+  font-weight: 800;
+  padding: 0.2rem 0.65rem;
+  border-radius: 20px;
+  letter-spacing: 0.02em;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.badge-title {
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: var(--text-main);
+  margin: 0;
+}
+
+.badge-desc {
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  margin: 0;
+}
+
+.badge-actions-wrap {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-shrink: 0;
+}
+
+@media (max-width: 900px) {
+  .criteria-official-badge-card {
+    flex-direction: column;
+    text-align: center;
+    padding: 1.25rem;
+  }
+  .badge-text-wrap {
+    text-align: center;
+  }
+  .badge-header-line {
+    justify-content: center;
+  }
+  .badge-actions-wrap {
+    width: 100%;
+    justify-content: center;
+    flex-direction: column;
+  }
+  .badge-actions-wrap button,
+  .badge-actions-wrap a {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+/* Modal Wide Specification */
+.modal-card-wide {
+  max-width: 1100px !important;
+  width: 95% !important;
+  max-height: 92vh !important;
+  padding: 2rem !important;
+}
+
+.idp-modal-intro-bar {
+  background: var(--bg-card-subtle);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 1rem 1.25rem;
+  margin-bottom: 1.5rem;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+  text-align: center;
+}
+
+@media (max-width: 768px) {
+  .idp-modal-intro-bar {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.idp-intro-stat-item .stat-lbl {
+  display: block;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  font-weight: 700;
+  margin-bottom: 0.2rem;
+}
+
+.idp-intro-stat-item .stat-val {
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: var(--text-main);
+}
+
+.idp-controls-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.idp-task-switcher {
+  display: flex;
+  background: var(--bg-card-subtle);
+  padding: 4px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-color);
+  gap: 4px;
+}
+
+.idp-task-btn {
+  border: none;
+  background: transparent;
+  color: var(--text-secondary);
+  font-size: 0.88rem;
+  font-weight: 700;
+  padding: 0.5rem 1.1rem;
+  border-radius: calc(var(--radius-md) - 3px);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.idp-task-btn.active {
+  background: var(--primary);
+  color: #ffffff;
+  box-shadow: var(--shadow-sm);
+}
+
+.idp-band-filter-strip {
+  display: flex;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.idp-band-pill {
+  border: 1px solid var(--border-color);
+  background: var(--bg-card);
+  color: var(--text-secondary);
+  padding: 0.35rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.idp-band-pill:hover {
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+.idp-band-pill.active {
+  background: var(--text-main);
+  color: var(--bg-card);
+  border-color: var(--text-main);
+}
+
+/* Descriptors Container & Band Cards */
+.idp-rubric-band-card {
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  background: var(--bg-card);
+  margin-bottom: 1.75rem;
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  transition: border-color 0.2s;
+}
+
+.idp-rubric-band-card:hover {
+  border-color: var(--primary);
+}
+
+.idp-band-header {
+  padding: 0.9rem 1.25rem;
+  background: var(--bg-card-subtle);
+  border-bottom: 1px solid var(--border-color);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.idp-band-title-wrap {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.idp-band-badge {
+  background: var(--primary);
+  color: #ffffff;
+  font-weight: 900;
+  font-size: 0.9rem;
+  padding: 0.25rem 0.65rem;
+  border-radius: 6px;
+}
+
+.idp-band-sublabel {
+  font-size: 0.88rem;
+  font-weight: 800;
+  color: var(--text-main);
+}
+
+.idp-criteria-quad-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0;
+  direction: ltr; /* Criteria text is in English as published by IDP */
+}
+
+@media (max-width: 1000px) {
+  .idp-criteria-quad-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 650px) {
+  .idp-criteria-quad-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.idp-criterion-col {
+  padding: 1.25rem;
+  border-right: 1px solid var(--border-color);
+  font-size: 0.84rem;
+  line-height: 1.6;
+  color: var(--text-main);
+  background: var(--bg-card);
+}
+
+.idp-criterion-col:last-child {
+  border-right: none;
+}
+
+.idp-crit-heading {
+  font-size: 0.8rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  margin-bottom: 0.75rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid var(--primary);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.idp-crit-heading.tr { border-bottom-color: var(--primary); color: var(--primary); }
+.idp-crit-heading.cc { border-bottom-color: #ff853f; color: #ff853f; }
+.idp-crit-heading.lr { border-bottom-color: #15c1fa; color: #15c1fa; }
+.idp-crit-heading.gra { border-bottom-color: #a64cf9; color: #a64cf9; }
+
+.idp-bullet-point {
+  margin-bottom: 0.6rem;
+  padding-left: 0.75rem;
+  position: relative;
+}
+
+.idp-bullet-point::before {
+  content: "•";
+  position: absolute;
+  left: 0;
+  top: -1px;
+  color: var(--primary);
+  font-weight: bold;
+}
