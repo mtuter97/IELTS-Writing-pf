@@ -1,0 +1,72 @@
+{
+  "student_id": "stu_official_1282",
+  "student_name": "البطل يزيد",
+  "task_type": "task_2",
+  "prompt_question": "Many people think that environmental protection should be managed primarily by governments, while others believe that individuals themselves should take greater responsibility. Discuss both views and give your opinion.",
+  "essay_content": "Environmental degradation has emerged as one of the most critical global challenges in modern times. While some argue that governments bear the primary obligation to protect the planet, others contend that individual actions are equally pivotal. In my perspective, while national legislation provides the indispensable framework, meaningful environmental conservation can only succeed with widespread civic cooperation.\n\nOn the one hand, state administrations possess the legislative authority and financial capital necessary to implement systemic reforms. Governments can enact strict environmental regulations, penalize heavy industrial polluters, and subsidize green renewable technologies such as solar and wind infrastructure. Without government enforcement, private corporations often prioritize profit over ecological sustainability.\n\nOn the other hand, grass-roots individual habits play a decisive role in reducing everyday carbon footprints. If individuals continue unsustainable consumption patterns, centralized policies will have limited efficacy. However, every citizens must recognize their personal duty to minimize household waste, conserve electricity, and support sustainable public transit.\n\nIn conclusion, although state authorities are responsible for overarching policy and environmental law, the preservation of the natural world requires vigorous individual accountability. Both forces are complementary and indispensable.",
+  "word_count": 285,
+  "feedback": {
+    "scores": {
+      "task_achievement_or_response": {
+        "band": 7.5,
+        "criterion_name": "Task Response (TR)",
+        "justification": "Well-developed response addressing all parts with clear personal position."
+      },
+      "coherence_cohesion": {
+        "band": 7.5,
+        "criterion_name": "Coherence and Cohesion",
+        "justification": "Clear logical progression, appropriate cohesive devices."
+      },
+      "lexical_resource": {
+        "band": 7.5,
+        "criterion_name": "Lexical Resource",
+        "justification": "Rich academic vocabulary with high flexibility (e.g., civic cooperation, systemic reforms)."
+      },
+      "grammatical_range_accuracy": {
+        "band": 7.5,
+        "criterion_name": "Grammatical Range and Accuracy",
+        "justification": "Wide range of complex structures produced with high degree of accuracy."
+      },
+      "overall_band": 7.5
+    },
+    "executive_summary": {
+      "candidate_name": "البطل يزيد",
+      "target_band_gap": 0,
+      "main_strengths": [
+        "Outstanding Task Response",
+        "Sophisticated academic vocabulary"
+      ],
+      "priority_fixes": [
+        "Watch singular noun agreement after every"
+      ]
+    },
+    "detailed_mistakes": [
+      {
+        "rule_tag": "GRA_AGREEMENT_EVERY_SINGULAR",
+        "rule_friendly_name": "Every / Each must be followed by a singular noun",
+        "category": "GRA",
+        "original_snippet": "every citizens must recognize",
+        "suggested_correction": "every citizen must recognize",
+        "explanation": "Quantifier \"every\" requires singular noun \"citizen\".",
+        "rule_micro_lesson": "Always use singular nouns after every and each: every citizen, each applicant.",
+        "is_recurring": true,
+        "history_count": 2,
+        "recurrence_alert": "⚠️ تكرر هذا الخطأ معك (2) مرات في مقالات سابقة!"
+      },
+      {
+        "rule_tag": "CC_TRANSITION_CONTRAST",
+        "rule_friendly_name": "Abrupt transition with however",
+        "category": "CC",
+        "original_snippet": "However, every citizens",
+        "suggested_correction": "Consequently, every citizen",
+        "explanation": "The logical connector does not contrast with the previous thought.",
+        "rule_micro_lesson": "Use cohesive devices that accurately reflect the logical relationship.",
+        "is_recurring": false,
+        "history_count": 1,
+        "recurrence_alert": null
+      }
+    ]
+  },
+  "id": "ess_1788788815295_mf7j6",
+  "created_at": "2026-09-07T13:46:55.295Z"
+}
