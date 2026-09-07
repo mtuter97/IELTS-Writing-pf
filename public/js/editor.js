@@ -452,6 +452,15 @@ export function initEditor() {
         clearInterval(stepInterval);
         if (overlay) overlay.classList.remove('active');
 
+        try {
+          localStorage.setItem('ielts_last_submitted_essay', JSON.stringify({
+            task_type: currentTaskType,
+            prompt_question: payload.prompt_question,
+            essay_content: payload.essay_content,
+            date: new Date().toISOString()
+          }));
+        } catch (_) {}
+
         // Dispatch event to show report
         window.dispatchEvent(new CustomEvent('evaluation-completed', { detail: result }));
 

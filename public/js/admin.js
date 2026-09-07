@@ -1,4 +1,4 @@
-import { fetchStudents, createStudent, updateStudentStatus, deleteStudent, verifyAdminPin, fetchSettings, saveSettings, setStoredAdminPin } from './api.js';
+import { fetchStudents, createStudent, updateStudentStatus, deleteStudent, verifyAdminPin, fetchSettings, saveSettings, setStoredAdminPin, fetchStudentMasterFile } from './api.js';
 import { icons } from './icons.js';
 
 let isAdminAuthenticated = false;
@@ -499,10 +499,9 @@ export async function renderAdminDashboard() {
         const id = btn.getAttribute('data-id');
         const name = btn.getAttribute('data-name');
         try {
-          const res = await fetch(`/api/students/${id}/file`);
-          const data = await res.json();
-          if (data.success) {
-            const blob = new Blob([JSON.stringify(data.student_file, null, 2)], { type: 'application/json' });
+          const studentFile = await fetchStudentMasterFile(id);
+          if (studentFile) {
+            const blob = new Blob([JSON.stringify(studentFile, null, 2)], { type: 'application/json' });
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;

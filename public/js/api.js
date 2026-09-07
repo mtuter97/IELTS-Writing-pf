@@ -121,6 +121,22 @@ export async function fetchStudentDetails(id) {
   return data;
 }
 
+export async function syncStudentData(studentId, clientEssays = []) {
+  try {
+    const res = await fetch(`${API_BASE}/students/${studentId}/sync`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ client_essays: clientEssays })
+    });
+    const data = await res.json();
+    if (!data.success) throw new Error(data.error);
+    return data;
+  } catch (err) {
+    console.warn('Sync student data notice:', err.message);
+    return null;
+  }
+}
+
 export async function fetchStudentMasterFile(id) {
   const res = await fetch(`${API_BASE}/students/${id}/file`, {
     headers: getAdminHeaders()

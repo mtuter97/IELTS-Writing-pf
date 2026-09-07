@@ -17,7 +17,8 @@ import {
   evaluateEssayHandler,
   getEssayHandler,
   getSettingsHandler,
-  saveSettingsHandler
+  saveSettingsHandler,
+  syncStudentHandler
 } from './controllers/feedback-controller.js';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -54,6 +55,8 @@ app.delete('/api/students/:id', deleteStudentHandler);
 app.post('/api/students/login-by-code', loginStudentByCodeHandler);
 app.post('/api/auth/google', googleAuthHandler);
 app.post('/api/students/:id/activate-code', activateStudentByCodeHandler);
+app.post('/api/students/:id/sync', syncStudentHandler);
+app.post('/api/students/sync', syncStudentHandler);
 
 // Admin
 app.post('/api/admin/verify', verifyAdminHandler);

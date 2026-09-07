@@ -1,9 +1,9 @@
 import { initTheme } from './theme.js';
-import { initStudentState, renderStudentDashboard, loginWithCode, loginWithGoogle, logoutStudent, getActiveStudent } from './student.js';
+import { initStudentState, renderStudentDashboard, loginWithCode, loginWithGoogle, logoutStudent, getActiveStudent, setActiveStudent } from './student.js';
 import { initEditor } from './editor.js';
 import { renderFeedbackReport } from './report-renderer.js';
 import { renderAdminDashboard } from './admin.js';
-import { fetchSettings, saveSettings, fetchEssay, createStudent } from './api.js';
+import { fetchSettings, saveSettings, fetchEssay, createStudent, fetchStudentDetails, syncStudentData } from './api.js';
 import { IDP_META, OFFICIAL_IDP_DESCRIPTORS } from './idp-criteria-data.js';
 
 let activeTab = 'editor';
@@ -142,7 +142,7 @@ export function syncReportView() {
     if (cached) {
       try {
         const parsed = JSON.parse(cached);
-        if (parsed && parsed.essay && parsed.feedback && parsed.essay.student_id === currentStudent.id) {
+        if (parsed && parsed.essay && parsed.feedback) {
           renderFeedbackReport(parsed.essay, parsed.feedback);
           return;
         }
@@ -633,18 +633,40 @@ function setupAppEvents() {
     const { essay, feedback } = e.detail;
     localStorage.removeItem('ielts_latest_evaluation'); // Purge legacy key
     
-    const currentStudent = getActiveStudent();
+    let currentStudent = getActiveStudent();
     if (currentStudent && currentStudent.id) {
+      const fullEssayRecord = {
+        ...essay,
+        feedback: feedback || essay.feedback
+      };
+
       try {
-        localStorage.setItem(`ielts_evaluation_${currentStudent.id}`, JSON.stringify({ essay, feedback }));
+        localStorage.setItem(`ielts_evaluation_${currentStudent.id}`, JSON.stringify({ essay: fullEssayRecord, feedback: fullEssayRecord.feedback }));
       } catch (_) {}
+
       try {
         const key = `ielts_cache_essays_${currentStudent.id}`;
         const existing = JSON.parse(localStorage.getItem(key) || '[]');
-        if (!existing.some(x => x.id === essay.id)) {
-          existing.unshift(essay);
-          localStorage.setItem(key, JSON.stringify(existing.slice(0, 50)));
+        const idx = existing.findIndex(x => x.id === fullEssayRecord.id);
+        if (idx !== -1) {
+          existing[idx] = fullEssayRecord;
+        } else {
+          existing.unshift(fullEssayRecord);
         }
+        localStorage.setItem(key, JSON.stringify(existing.slice(0, 50)));
+
+        // Update student session statistics
+        currentStudent.essay_count = Math.max(currentStudent.essay_count || 0, existing.length);
+        if (feedback?.scores?.overall_band) {
+          currentStudent.latest_band = feedback.scores.overall_band;
+          currentStudent.highest_band = Math.max(Number(currentStudent.highest_band || 0), Number(feedback.scores.overall_band));
+        }
+        setActiveStudent(currentStudent);
+
+        // Background sync to server
+        try {
+          syncStudentData(currentStudent.id, existing);
+        } catch (_) {}
       } catch (err) {
         console.warn('LocalStorage cache error:', err);
       }
@@ -660,21 +682,52 @@ function setupAppEvents() {
 
   window.addEventListener('load-essay-report', async (e) => {
     const { essayId } = e.detail;
-    try {
-      const essay = await fetchEssay(essayId);
-      if (essay && essay.feedback) {
-        const currentStudent = getActiveStudent();
-        if (currentStudent && currentStudent.id) {
-          try {
-            localStorage.setItem(`ielts_evaluation_${currentStudent.id}`, JSON.stringify({ essay, feedback: essay.feedback }));
-          } catch (_) {}
-        }
-        renderFeedbackReport(essay, essay.feedback);
-        switchTab('report');
-      }
-    } catch (err) {
-      alert('فشل استرجاع المقال: ' + err.message);
+    const currentStudent = getActiveStudent();
+
+    // 1. Check local cache FIRST before hitting network
+    let foundEssay = null;
+    if (currentStudent && currentStudent.id) {
+      try {
+        const cachedList = JSON.parse(localStorage.getItem(`ielts_cache_essays_${currentStudent.id}`) || '[]');
+        foundEssay = cachedList.find(x => x.id === essayId);
+      } catch (_) {}
     }
+
+    // Also scan all localStorage cache keys if not found
+    if (!foundEssay) {
+      try {
+        for (let i = 0; i < localStorage.length; i++) {
+          const k = localStorage.key(i);
+          if (k && k.startsWith('ielts_cache_essays_')) {
+            const list = JSON.parse(localStorage.getItem(k) || '[]');
+            const m = list.find(x => x.id === essayId);
+            if (m) { foundEssay = m; break; }
+          }
+        }
+      } catch (_) {}
+    }
+
+    // 2. If not found locally, try fetching from server
+    if (!foundEssay) {
+      try {
+        foundEssay = await fetchEssay(essayId);
+      } catch (err) {
+        console.warn('Server fetch essay error, checking fallback:', err.message);
+      }
+    }
+
+    if (foundEssay && foundEssay.feedback) {
+      if (currentStudent && currentStudent.id) {
+        try {
+          localStorage.setItem(`ielts_evaluation_${currentStudent.id}`, JSON.stringify({ essay: foundEssay, feedback: foundEssay.feedback }));
+        } catch (_) {}
+      }
+      renderFeedbackReport(foundEssay, foundEssay.feedback);
+      switchTab('report');
+      return;
+    }
+
+    alert('لم يتم العثور على تقرير هذا المقال في سجلات المتصفح أو الخادم.');
   });
 
   window.addEventListener('student-changed', () => {
@@ -687,6 +740,18 @@ function setupAppEvents() {
   });
 
   window.addEventListener('admin-inspect-student', async (e) => {
+    const { studentId } = e.detail || {};
+    if (studentId) {
+      try {
+        const data = await fetchStudentDetails(studentId);
+        const student = (data && data.student) ? data.student : data;
+        if (student) {
+          setActiveStudent(student);
+        }
+      } catch (_) {
+        setActiveStudent({ id: studentId, name: 'طالب' });
+      }
+    }
     switchTab('profile');
     renderStudentDashboard();
   });

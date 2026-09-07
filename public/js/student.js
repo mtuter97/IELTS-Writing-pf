@@ -1,4 +1,4 @@
-import { fetchStudentDetails, loginStudentByCode, authWithGoogle, activateStudentByCode } from './api.js';
+import { fetchStudentDetails, loginStudentByCode, authWithGoogle, activateStudentByCode, syncStudentData } from './api.js';
 import { icons } from './icons.js';
 
 let activeStudent = null;
@@ -105,6 +105,50 @@ if (typeof window !== 'undefined') {
   });
 }
 
+// Client-side chronic mistake compiler to ensure 100% resilience offline/cold-start
+export function buildLocalMistakeProfile(essays = []) {
+  const mistakeCounts = {};
+  const categoryCounts = { GRA: 0, LR: 0, CC: 0, TR: 0, OTHER: 0 };
+
+  for (const essay of essays) {
+    const mistakes = essay.feedback?.detailed_mistakes || [];
+    for (const m of mistakes) {
+      const tag = m.rule_tag || 'UNCATEGORIZED_ERROR';
+      const cat = m.category || 'OTHER';
+      categoryCounts[cat] = (categoryCounts[cat] || 0) + 1;
+
+      if (!mistakeCounts[tag]) {
+        mistakeCounts[tag] = {
+          rule_tag: tag,
+          rule_friendly_name: m.rule_friendly_name || tag,
+          category: cat,
+          count: 0,
+          micro_lesson: m.rule_micro_lesson || m.micro_lesson || '',
+          examples: []
+        };
+      }
+      mistakeCounts[tag].count += 1;
+      if (mistakeCounts[tag].examples.length < 3) {
+        mistakeCounts[tag].examples.push({
+          essay_id: essay.id,
+          date: essay.created_at,
+          snippet: m.original_snippet,
+          correction: m.suggested_correction
+        });
+      }
+    }
+  }
+
+  const frequentMistakes = Object.values(mistakeCounts).sort((a, b) => b.count - a.count);
+  return {
+    totalEssays: essays.length,
+    totalMistakes: Object.values(categoryCounts).reduce((a, b) => a + b, 0),
+    categoryCounts,
+    frequentMistakes,
+    mistakeTags: mistakeCounts
+  };
+}
+
 export async function initStudentState() {
   try {
     localStorage.removeItem('ielts_latest_evaluation');
@@ -118,6 +162,16 @@ export async function initStudentState() {
         const parsed = JSON.parse(cachedData);
         if (parsed && (parsed.id || parsed.access_code)) {
           activeStudent = parsed;
+          // Synchronize stats with locally cached essays if available
+          try {
+            const locEssays = JSON.parse(localStorage.getItem(`ielts_cache_essays_${activeStudent.id}`) || '[]');
+            if (locEssays.length > 0) {
+              activeStudent.essay_count = Math.max(activeStudent.essay_count || 0, locEssays.length);
+              if (locEssays[0].feedback?.scores?.overall_band) {
+                activeStudent.latest_band = locEssays[0].feedback.scores.overall_band;
+              }
+            }
+          } catch (_) {}
           updateStudentHeaderUI();
         }
       } catch (_) {}
@@ -129,9 +183,9 @@ export async function initStudentState() {
         const data = await fetchStudentDetails(savedId);
         const student = (data && data.student) ? data.student : data;
         if (student && student.id) {
-          activeStudent = student;
+          activeStudent = { ...activeStudent, ...student };
           localStorage.setItem('ielts_active_student_id', student.id);
-          localStorage.setItem('ielts_active_student_data', JSON.stringify(student));
+          localStorage.setItem('ielts_active_student_data', JSON.stringify(activeStudent));
         }
       } catch (e) {
         // Retain the cached session
@@ -482,17 +536,84 @@ export async function renderStudentDashboard() {
     </div>
   `;
 
+  let student = { ...activeStudent };
+  let localEssays = [];
   try {
-    const data = await fetchStudentDetails(activeStudent.id);
-    let { student, essays = [], scoreHistory = [], mistakeProfile = {} } = data;
+    localEssays = JSON.parse(localStorage.getItem(`ielts_cache_essays_${activeStudent.id}`) || '[]');
+  } catch (_) {}
 
-    // Cache merge for instant local updates
-    try {
-      const localEssays = JSON.parse(localStorage.getItem(`ielts_cache_essays_${activeStudent.id}`) || '[]');
-      for (const loc of localEssays) {
-        if (!essays.some(e => e.id === loc.id)) essays.unshift(loc);
+  // Fallback: Also check if there's an evaluation in ielts_evaluation_${activeStudent.id}
+  try {
+    const latestRaw = localStorage.getItem(`ielts_evaluation_${activeStudent.id}`);
+    if (latestRaw) {
+      const parsed = JSON.parse(latestRaw);
+      if (parsed && parsed.essay && !localEssays.some(x => x.id === parsed.essay.id)) {
+        localEssays.unshift({
+          ...parsed.essay,
+          feedback: parsed.feedback || parsed.essay.feedback
+        });
       }
-    } catch (e) {}
+    }
+  } catch (_) {}
+
+  let essays = [...localEssays];
+  let scoreHistory = [];
+  let mistakeProfile = {};
+
+  try {
+    // 1. Attempt bidirectional sync with server
+    const syncResult = await syncStudentData(activeStudent.id, localEssays);
+    if (syncResult && syncResult.success) {
+      if (syncResult.student) student = { ...student, ...syncResult.student };
+      if (Array.isArray(syncResult.essays) && syncResult.essays.length > 0) {
+        essays = syncResult.essays;
+      }
+      if (Array.isArray(syncResult.scoreHistory)) scoreHistory = syncResult.scoreHistory;
+      if (syncResult.mistakeProfile) mistakeProfile = syncResult.mistakeProfile;
+    } else {
+      // 2. Fallback to fetchStudentDetails
+      const data = await fetchStudentDetails(activeStudent.id);
+      if (data && data.student) student = { ...student, ...data.student };
+      if (Array.isArray(data?.essays)) {
+        for (const se of data.essays) {
+          if (!essays.some(e => e.id === se.id)) essays.push(se);
+        }
+      }
+      if (Array.isArray(data?.scoreHistory)) scoreHistory = data.scoreHistory;
+      if (data?.mistakeProfile) mistakeProfile = data.mistakeProfile;
+    }
+  } catch (err) {
+    console.warn('Server sync notice, using locally stored student data:', err.message);
+  }
+
+  // 3. Merge localEssays into essays to ensure zero data loss
+  for (const loc of localEssays) {
+    if (!essays.some(e => e.id === loc.id)) essays.unshift(loc);
+  }
+
+  // Update local storage cache with consolidated essays
+  try {
+    localStorage.setItem(`ielts_cache_essays_${activeStudent.id}`, JSON.stringify(essays.slice(0, 50)));
+  } catch (_) {}
+
+  // 4. Ensure student stats are strictly up-to-date with essays
+  student.essay_count = Math.max(student.essay_count || 0, essays.length);
+  if (essays.length > 0) {
+    const firstScore = Number(essays[0].feedback?.scores?.overall_band || 0);
+    if (firstScore > 0) student.latest_band = firstScore;
+    const maxScore = essays.reduce((max, e) => Math.max(max, Number(e.feedback?.scores?.overall_band || 0)), Number(student.highest_band || 0));
+    if (maxScore > 0) student.highest_band = maxScore;
+  }
+
+  // Synchronize activeStudent state
+  activeStudent = { ...activeStudent, ...student };
+  localStorage.setItem('ielts_active_student_data', JSON.stringify(activeStudent));
+  updateStudentHeaderUI();
+
+  // If mistake profile is empty, build it client-side from the essays
+  if (!mistakeProfile.frequentMistakes || mistakeProfile.frequentMistakes.length === 0) {
+    mistakeProfile = buildLocalMistakeProfile(essays);
+  }
 
     // Target Band Logic
     const currentBand = Number(student.latest_band) || (essays.length > 0 ? Number(essays[0].feedback?.scores?.overall_band || 5.5) : 5.5);

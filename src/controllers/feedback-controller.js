@@ -13,7 +13,8 @@ import {
   getStudentEssays,
   getSettings,
   saveSettings,
-  isCloudStorageConfigured
+  isCloudStorageConfigured,
+  syncStudentEssays
 } from '../services/storage.js';
 import { getStudentMistakeHistory, correlateAndAnnotateMistakes } from '../services/mistake-tracker.js';
 import { buildSystemPrompt, buildUserPrompt } from '../prompts/system-prompt.js';
@@ -184,14 +185,56 @@ export async function verifyAdminHandler(req, res) {
 export async function getStudentDetailsHandler(req, res) {
   try {
     const { id } = req.params;
-    const student = await getStudent(id);
+    const student = (await getStudent(id)) || (await getStudentByCode(id));
     if (!student) {
       return res.status(404).json({ success: false, error: 'Student not found.' });
     }
-    const essays = await getStudentEssays(id);
-    const mistakeProfile = await getStudentMistakeHistory(id, essays);
+    const essays = await getStudentEssays(student.id);
+    const mistakeProfile = await getStudentMistakeHistory(student.id, essays);
 
     // Prepare score progression data
+    const scoreHistory = essays.map(e => ({
+      id: e.id,
+      date: e.created_at,
+      task_type: e.task_type,
+      overall_band: e.feedback?.scores?.overall_band || 0,
+      tr_ta_band: e.feedback?.scores?.task_achievement_or_response?.band || 0,
+      cc_band: e.feedback?.scores?.coherence_cohesion?.band || 0,
+      lr_band: e.feedback?.scores?.lexical_resource?.band || 0,
+      gra_band: e.feedback?.scores?.grammatical_range_accuracy?.band || 0,
+      word_count: e.word_count
+    }));
+
+    res.json({
+      success: true,
+      student,
+      essays,
+      scoreHistory,
+      mistakeProfile
+    });
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+}
+
+export async function syncStudentHandler(req, res) {
+  try {
+    const { id } = req.params;
+    const { client_essays = [] } = req.body;
+    const studentId = id || req.body.student_id;
+
+    if (!studentId) {
+      return res.status(400).json({ success: false, error: 'Student ID is required.' });
+    }
+
+    const result = await syncStudentEssays(studentId, client_essays);
+    if (!result || !result.student) {
+      return res.status(404).json({ success: false, error: 'Student not found.' });
+    }
+
+    const { student, essays } = result;
+    const mistakeProfile = await getStudentMistakeHistory(student.id, essays);
+
     const scoreHistory = essays.map(e => ({
       id: e.id,
       date: e.created_at,

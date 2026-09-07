@@ -218,32 +218,44 @@ async function maybeSeedKv() {
 
 function readDiskStudents() {
   ensureDirs();
-  const dirToRead = fs.existsSync(STUDENTS_DIR) ? STUDENTS_DIR : SEED_STUDENTS_DIR;
-  if (!fs.existsSync(dirToRead)) return [];
-  const files = fs.readdirSync(dirToRead).filter(f => f.endsWith('.json'));
-  const students = [];
-  for (const file of files) {
+  const dirs = [STUDENTS_DIR, SEED_STUDENTS_DIR].filter(d => fs.existsSync(d));
+  const studentsMap = new Map();
+  for (const dir of dirs) {
     try {
-      const content = fs.readFileSync(path.join(dirToRead, file), 'utf-8');
-      students.push(JSON.parse(content));
+      const files = fs.readdirSync(dir).filter(f => f.endsWith('.json'));
+      for (const file of files) {
+        try {
+          const content = fs.readFileSync(path.join(dir, file), 'utf-8');
+          const st = JSON.parse(content);
+          if (st && st.id && !studentsMap.has(st.id)) {
+            studentsMap.set(st.id, st);
+          }
+        } catch (_) {}
+      }
     } catch (_) {}
   }
-  return students;
+  return Array.from(studentsMap.values());
 }
 
 function readDiskEssays() {
   ensureDirs();
-  const dirToRead = fs.existsSync(ESSAYS_DIR) ? ESSAYS_DIR : SEED_ESSAYS_DIR;
-  if (!fs.existsSync(dirToRead)) return [];
-  const files = fs.readdirSync(dirToRead).filter(f => f.endsWith('.json'));
-  const essays = [];
-  for (const file of files) {
+  const dirs = [ESSAYS_DIR, SEED_ESSAYS_DIR].filter(d => fs.existsSync(d));
+  const essaysMap = new Map();
+  for (const dir of dirs) {
     try {
-      const content = fs.readFileSync(path.join(dirToRead, file), 'utf-8');
-      essays.push(JSON.parse(content));
+      const files = fs.readdirSync(dir).filter(f => f.endsWith('.json'));
+      for (const file of files) {
+        try {
+          const content = fs.readFileSync(path.join(dir, file), 'utf-8');
+          const ess = JSON.parse(content);
+          if (ess && ess.id && !essaysMap.has(ess.id)) {
+            essaysMap.set(ess.id, ess);
+          }
+        } catch (_) {}
+      }
     } catch (_) {}
   }
-  return essays;
+  return Array.from(essaysMap.values());
 }
 
 // ==========================================
@@ -334,6 +346,15 @@ export async function getStudent(id) {
       return parsed;
     } catch (_) {}
   }
+
+  // 4. Fallback: Check by access code, numeric digits, phone, or email
+  try {
+    const matched = await getStudentByCode(id);
+    if (matched) {
+      memoryStudents.set(matched.id, matched);
+      return matched;
+    }
+  } catch (_) {}
 
   return null;
 }
@@ -609,34 +630,46 @@ export async function saveEssay(essay) {
   } catch (_) {}
 
   // 3. Update student stats & essay history
+  let student = null;
   if (record.student_id) {
-    const student = await getStudent(record.student_id);
-    if (student) {
-      const overallBand = record.feedback?.scores?.overall_band || 0;
-      const highestBand = Math.max(student.highest_band || 0, overallBand);
-      const essaysHistory = Array.isArray(student.essays_history) ? [...student.essays_history] : [];
+    student = (await getStudent(record.student_id)) || (await getStudentByCode(record.student_id));
+  }
 
-      essaysHistory.unshift({
-        id: record.id,
-        created_at: record.created_at,
-        task_type: record.task_type,
-        prompt_question: record.prompt_question || '',
-        essay_content: record.essay_content || '',
-        word_count: record.word_count,
-        overall_band: overallBand,
-        scores: record.feedback?.scores || {},
-        feedback_summary: record.feedback?.executive_summary || {},
-        full_feedback: record.feedback || {},
-        mistakes_count: (record.feedback?.detailed_mistakes || []).length
-      });
+  if (student) {
+    record.student_id = student.id;
+    record.student_name = student.name || record.student_name;
 
-      await updateStudent(record.student_id, {
-        essay_count: (student.essay_count || 0) + 1,
-        latest_band: overallBand,
-        highest_band: highestBand,
-        essays_history: essaysHistory.slice(0, 100)
-      });
+    const overallBand = record.feedback?.scores?.overall_band || 0;
+    const highestBand = Math.max(student.highest_band || 0, overallBand);
+    const essaysHistory = Array.isArray(student.essays_history) ? [...student.essays_history] : [];
+
+    const historyItem = {
+      id: record.id,
+      created_at: record.created_at,
+      task_type: record.task_type,
+      prompt_question: record.prompt_question || '',
+      essay_content: record.essay_content || '',
+      word_count: record.word_count,
+      overall_band: overallBand,
+      scores: record.feedback?.scores || {},
+      feedback_summary: record.feedback?.executive_summary || {},
+      full_feedback: record.feedback || {},
+      mistakes_count: (record.feedback?.detailed_mistakes || []).length
+    };
+
+    const existingIdx = essaysHistory.findIndex(e => e.id === record.id);
+    if (existingIdx >= 0) {
+      essaysHistory[existingIdx] = historyItem;
+    } else {
+      essaysHistory.unshift(historyItem);
     }
+
+    await updateStudent(student.id, {
+      essay_count: essaysHistory.length,
+      latest_band: overallBand,
+      highest_band: highestBand,
+      essays_history: essaysHistory.slice(0, 100)
+    });
   }
 
   return record;
@@ -670,6 +703,15 @@ export async function getEssay(id) {
     } catch (_) {}
   }
 
+  const seedEssayPath = path.join(SEED_ESSAYS_DIR, `${id}.json`);
+  if (fs.existsSync(seedEssayPath)) {
+    try {
+      const parsed = JSON.parse(fs.readFileSync(seedEssayPath, 'utf-8'));
+      memoryEssays.set(id, parsed);
+      return parsed;
+    } catch (_) {}
+  }
+
   return null;
 }
 
@@ -677,52 +719,102 @@ export async function getStudentEssays(studentId) {
   if (!studentId) return [];
   ensureDirs();
 
+  const student = (await getStudent(studentId)) || (await getStudentByCode(studentId));
+  const canonicalId = student ? student.id : studentId;
+  const accessCode = student ? student.access_code : null;
+
+  const essayMap = new Map();
+
   // 1. If KV configured, read from student essay set
   if (isCloudStorageConfigured()) {
     try {
-      const ids = await kvExecute(['SMEMBERS', `ielts:student_essays:${studentId}`]);
+      const ids = await kvExecute(['SMEMBERS', `ielts:student_essays:${canonicalId}`]);
       if (Array.isArray(ids) && ids.length > 0) {
         const mgetCmd = ['MGET', ...ids.map(id => `ielts:essay:${id}`)];
         const rawList = await kvExecute(mgetCmd);
-        const essays = [];
         if (Array.isArray(rawList)) {
           for (const raw of rawList) {
             if (raw) {
               try {
                 const parsed = typeof raw === 'string' ? JSON.parse(raw) : raw;
-                essays.push(parsed);
-                memoryEssays.set(parsed.id, parsed);
+                if (parsed && parsed.id) {
+                  essayMap.set(parsed.id, parsed);
+                  memoryEssays.set(parsed.id, parsed);
+                }
               } catch (_) {}
             }
           }
-        }
-        if (essays.length > 0) {
-          return essays.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
         }
       }
     } catch (_) {}
   }
 
-  // 2. Fallback: check student object's own embedded essays_history
-  const student = await getStudent(studentId);
+  // 2. Read student object's own embedded essays_history
   if (student && Array.isArray(student.essays_history) && student.essays_history.length > 0) {
-    return student.essays_history.map(h => ({
-      id: h.id,
-      student_id: studentId,
-      student_name: student.name,
-      task_type: h.task_type,
-      prompt_question: h.prompt_question,
-      essay_content: h.essay_content,
-      word_count: h.word_count,
-      created_at: h.created_at,
-      feedback: h.full_feedback || {}
-    })).sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+    for (const h of student.essays_history) {
+      if (h && h.id && !essayMap.has(h.id)) {
+        essayMap.set(h.id, {
+          id: h.id,
+          student_id: canonicalId,
+          student_name: student.name,
+          task_type: h.task_type,
+          prompt_question: h.prompt_question,
+          essay_content: h.essay_content,
+          word_count: h.word_count,
+          created_at: h.created_at,
+          feedback: h.full_feedback || {}
+        });
+      }
+    }
   }
 
-  // 3. Fallback: scan disk
+  // 3. Scan memory essays
+  for (const ess of memoryEssays.values()) {
+    if (ess && ess.id && !essayMap.has(ess.id)) {
+      if (ess.student_id === canonicalId || ess.student_id === studentId || (accessCode && ess.student_id === accessCode)) {
+        essayMap.set(ess.id, ess);
+      }
+    }
+  }
+
+  // 4. Scan disk essays (runtime & seed)
   const diskEssays = readDiskEssays();
-  const matched = diskEssays.filter(e => e.student_id === studentId);
-  return matched.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+  for (const ess of diskEssays) {
+    if (ess && ess.id && !essayMap.has(ess.id)) {
+      if (ess.student_id === canonicalId || ess.student_id === studentId || (accessCode && ess.student_id === accessCode)) {
+        essayMap.set(ess.id, ess);
+      }
+    }
+  }
+
+  const all = Array.from(essayMap.values());
+  return all.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+}
+
+export async function syncStudentEssays(studentId, clientEssays = []) {
+  ensureDirs();
+  const student = (await getStudent(studentId)) || (await getStudentByCode(studentId));
+  if (!student) return null;
+
+  if (Array.isArray(clientEssays) && clientEssays.length > 0) {
+    for (const ce of clientEssays) {
+      if (!ce || !ce.id) continue;
+      const existing = await getEssay(ce.id);
+      if (!existing) {
+        await saveEssay({
+          ...ce,
+          student_id: student.id,
+          student_name: student.name
+        });
+      } else {
+        memoryEssays.set(ce.id, existing);
+      }
+    }
+  }
+
+  const updatedStudent = await getStudent(student.id);
+  const essays = await getStudentEssays(student.id);
+  return { student: updatedStudent, essays };
 }
 
 export async function getStudentMasterFile(id) {
@@ -841,6 +933,11 @@ export async function saveSettings(partial) {
   // Save to disk
   try {
     fs.writeFileSync(SETTINGS_FILE, JSON.stringify(updated, null, 2), 'utf-8');
+  } catch (_) {}
+  try {
+    if (fs.existsSync(SEED_SETTINGS_FILE) && SEED_SETTINGS_FILE !== SETTINGS_FILE) {
+      fs.writeFileSync(SEED_SETTINGS_FILE, JSON.stringify(updated, null, 2), 'utf-8');
+    }
   } catch (_) {}
 
   return updated;
