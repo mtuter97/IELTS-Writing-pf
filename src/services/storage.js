@@ -712,6 +712,31 @@ export async function getEssay(id) {
     } catch (_) {}
   }
 
+  // Fallback: Check all students' embedded essays_history
+  try {
+    const allStudents = await getAllStudents();
+    for (const st of allStudents) {
+      if (Array.isArray(st.essays_history)) {
+        const found = st.essays_history.find(e => e.id === id);
+        if (found) {
+          const reconstructed = {
+            id: found.id,
+            student_id: st.id,
+            student_name: st.name,
+            task_type: found.task_type,
+            prompt_question: found.prompt_question,
+            essay_content: found.essay_content,
+            word_count: found.word_count,
+            created_at: found.created_at,
+            feedback: found.full_feedback || {}
+          };
+          memoryEssays.set(id, reconstructed);
+          return reconstructed;
+        }
+      }
+    }
+  } catch (_) {}
+
   return null;
 }
 
@@ -799,16 +824,12 @@ export async function syncStudentEssays(studentId, clientEssays = []) {
   if (Array.isArray(clientEssays) && clientEssays.length > 0) {
     for (const ce of clientEssays) {
       if (!ce || !ce.id) continue;
-      const existing = await getEssay(ce.id);
-      if (!existing) {
-        await saveEssay({
-          ...ce,
-          student_id: student.id,
-          student_name: student.name
-        });
-      } else {
-        memoryEssays.set(ce.id, existing);
-      }
+      await saveEssay({
+        ...ce,
+        student_id: student.id,
+        student_name: student.name,
+        feedback: ce.feedback || ce.full_feedback || {}
+      });
     }
   }
 

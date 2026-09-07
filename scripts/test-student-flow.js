@@ -5,6 +5,7 @@ import http from 'http';
 import app from '../src/app.js';
 import {
   getStudent,
+  updateStudent,
   getStudentByCode,
   saveEssay,
   getEssay,
@@ -55,14 +56,12 @@ async function runEndToEndStudentTest() {
     console.log(`   - الباند المستهدف: ${studentById.target_band || 7.5}\n`);
 
     // Reset student essays_history for clean baseline testing
-    const baselineStudent = {
-      ...studentById,
+    await updateStudent(studentId, {
       essay_count: 0,
       latest_band: null,
       highest_band: null,
       essays_history: []
-    };
-    fs.writeFileSync(studentFile, JSON.stringify(baselineStudent, null, 2), 'utf-8');
+    });
 
     // -------------------------------------------------------------
     // STAGE 2: الاختبار الأول (Cambridge IELTS 18 - Test 1: Task 2)

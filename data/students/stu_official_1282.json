@@ -10,8 +10,8 @@
   "target_band": 7.5,
   "essays_history": [
     {
-      "id": "ess_1788788815295_mf7j6",
-      "created_at": "2026-09-07T13:46:55.295Z",
+      "id": "ess_1788789277681_bynic",
+      "created_at": "2026-09-07T13:54:37.681Z",
       "task_type": "task_2",
       "prompt_question": "Many people think that environmental protection should be managed primarily by governments, while others believe that individuals themselves should take greater responsibility. Discuss both views and give your opinion.",
       "essay_content": "Environmental degradation has emerged as one of the most critical global challenges in modern times. While some argue that governments bear the primary obligation to protect the planet, others contend that individual actions are equally pivotal. In my perspective, while national legislation provides the indispensable framework, meaningful environmental conservation can only succeed with widespread civic cooperation.\n\nOn the one hand, state administrations possess the legislative authority and financial capital necessary to implement systemic reforms. Governments can enact strict environmental regulations, penalize heavy industrial polluters, and subsidize green renewable technologies such as solar and wind infrastructure. Without government enforcement, private corporations often prioritize profit over ecological sustainability.\n\nOn the other hand, grass-roots individual habits play a decisive role in reducing everyday carbon footprints. If individuals continue unsustainable consumption patterns, centralized policies will have limited efficacy. However, every citizens must recognize their personal duty to minimize household waste, conserve electricity, and support sustainable public transit.\n\nIn conclusion, although state authorities are responsible for overarching policy and environmental law, the preservation of the natural world requires vigorous individual accountability. Both forces are complementary and indispensable.",
@@ -96,8 +96,8 @@
             "explanation": "Quantifier \"every\" requires singular noun \"citizen\".",
             "rule_micro_lesson": "Always use singular nouns after every and each: every citizen, each applicant.",
             "is_recurring": true,
-            "history_count": 2,
-            "recurrence_alert": "⚠️ تكرر هذا الخطأ معك (2) مرات في مقالات سابقة!"
+            "history_count": 5,
+            "recurrence_alert": "⚠️ تكرر هذا الخطأ معك (5) مرات في مقالات سابقة!"
           },
           {
             "rule_tag": "CC_TRANSITION_CONTRAST",
@@ -107,17 +107,17 @@
             "suggested_correction": "Consequently, every citizen",
             "explanation": "The logical connector does not contrast with the previous thought.",
             "rule_micro_lesson": "Use cohesive devices that accurately reflect the logical relationship.",
-            "is_recurring": false,
-            "history_count": 1,
-            "recurrence_alert": null
+            "is_recurring": true,
+            "history_count": 2,
+            "recurrence_alert": "⚠️ تكرر هذا الخطأ معك (2) مرات في مقالات سابقة!"
           }
         ]
       },
       "mistakes_count": 2
     },
     {
-      "id": "ess_1788788815282_vxkcx",
-      "created_at": "2026-09-07T13:46:55.282Z",
+      "id": "ess_1788789277664_msib3",
+      "created_at": "2026-09-07T13:54:37.664Z",
       "task_type": "task_2",
       "prompt_question": "Some people believe that studying at university is the best route for a successful career, while others think that acquiring practical work experience straight from school is more beneficial. Discuss both views and give your opinion.",
       "essay_content": "In contemporary society, individuals often debate whether graduating from university or immediately gaining work experience is more advantageous for long-term career prospects. While practical experience enables young people to develop hands-on workplace skills early, I believe that university education remains indispensable because it provides specialized knowledge and higher career ceilings.\n\nOn the one hand, proponents of entering the workforce straight from secondary school emphasize immediate economic independence. Working right away prevents students from accumulating educational debt and allows them to master interpersonal skills within a professional setting. For instance, in sales and retail industries, real-world customer interactions frequently outweigh theoretical knowledge taught in lecture halls.\n\nOn the other hand, tertiary education provides rigorous analytical training and recognized credentials that are required for professional careers such as medicine, law, and engineering. Furthermore, every students who graduate from reputable universities generally enjoy superior long-term earnings and managerial promotion opportunities.\n\nIn conclusion, while starting work early offers short-term financial advantages, I maintain that university qualification is the most reliable pathway to sustained career achievement.",
@@ -220,5 +220,5 @@
   ],
   "mistakes_history": [],
   "created_at": "2026-09-02T10:10:00.000Z",
-  "updated_at": "2026-09-07T13:46:55.297Z"
+  "updated_at": "2026-09-07T13:54:37.847Z"
 }
