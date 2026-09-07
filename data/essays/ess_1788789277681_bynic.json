@@ -1,10 +1,12 @@
 {
+  "id": "ess_1788789277681_bynic",
   "student_id": "stu_official_1282",
   "student_name": "البطل يزيد",
   "task_type": "task_2",
   "prompt_question": "Many people think that environmental protection should be managed primarily by governments, while others believe that individuals themselves should take greater responsibility. Discuss both views and give your opinion.",
   "essay_content": "Environmental degradation has emerged as one of the most critical global challenges in modern times. While some argue that governments bear the primary obligation to protect the planet, others contend that individual actions are equally pivotal. In my perspective, while national legislation provides the indispensable framework, meaningful environmental conservation can only succeed with widespread civic cooperation.\n\nOn the one hand, state administrations possess the legislative authority and financial capital necessary to implement systemic reforms. Governments can enact strict environmental regulations, penalize heavy industrial polluters, and subsidize green renewable technologies such as solar and wind infrastructure. Without government enforcement, private corporations often prioritize profit over ecological sustainability.\n\nOn the other hand, grass-roots individual habits play a decisive role in reducing everyday carbon footprints. If individuals continue unsustainable consumption patterns, centralized policies will have limited efficacy. However, every citizens must recognize their personal duty to minimize household waste, conserve electricity, and support sustainable public transit.\n\nIn conclusion, although state authorities are responsible for overarching policy and environmental law, the preservation of the natural world requires vigorous individual accountability. Both forces are complementary and indispensable.",
   "word_count": 285,
+  "created_at": "2026-09-07T13:54:37.681Z",
   "feedback": {
     "scores": {
       "task_achievement_or_response": {
@@ -66,7 +68,5 @@
         "recurrence_alert": "⚠️ تكرر هذا الخطأ معك (2) مرات في مقالات سابقة!"
       }
     ]
-  },
-  "id": "ess_1788789277681_bynic",
-  "created_at": "2026-09-07T13:54:37.681Z"
+  }
 }

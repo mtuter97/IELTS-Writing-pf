@@ -335,8 +335,9 @@ export async function renderStudentDashboard() {
   const container = document.getElementById('student-profile-content');
   if (!container) return;
 
-  // 1. If not logged in -> Render clean private Portal Landing with Login Options
-  if (!activeStudent) {
+  try {
+    // 1. If not logged in -> Render clean private Portal Landing with Login Options
+    if (!activeStudent) {
     container.innerHTML = `
       <div class="student-portal-login-card">
         <div class="portal-login-icon">🧬</div>
